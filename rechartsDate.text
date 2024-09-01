@@ -1,8 +1,4 @@
-/* eslint-disable react/no-array-index-key */
 /* eslint-disable linebreak-style */
-
-'use client';
-
 import React, { useEffect, useState } from 'react';
 import { Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -238,7 +234,7 @@ function DateSchedule(props: any) {
         }
       }
       tmpQuery.searchCriteria = sCriteria;
-      tmpFQuery.searchCriteria = sCriteria;
+      tmpFQuery.searchCriteria = sfCriteria;
       dispatch(setSearchData(tmpFQuery));
       dispatch(fetchFlights(tmpFQuery));
       setselectedIndex(dateObj);
@@ -246,27 +242,28 @@ function DateSchedule(props: any) {
   };
 
   const datesToShow = sliceByIndex(dates, activeIndex);
+  console.log(datesToShow, 'datesToShow');
 
-  const onNextClick = (showigDate: any) => {
+  const onNextClick = (showingDate: any) => {
     const currentIndex = findIndex(
       dates,
       (date: any) => date.dateObj === activeIndex,
     );
     const { dateObj } = dates[currentIndex + 1];
     setActiveIndex(dateObj);
-    if (showigDate.eIndex + 1 >= dates.length - 1) {
+    if (showingDate.eIndex + 1 >= dates.length - 1) {
       fetchdate({ dateObj, dateCount: 7, isAfter: true });
     }
   };
 
-  const onPrevClick = (showigDate: any) => {
+  const onPrevClick = (showingDate: any) => {
     const currentIndex = findIndex(
       dates,
       (date: any) => date.dateObj === activeIndex,
     );
     const { dateObj } = dates[currentIndex - 1];
     setActiveIndex(dateObj);
-    if (showigDate.sIndex - 1 <= 1) {
+    if (showingDate.sIndex - 1 <= 1) {
       fetchdate({ dateObj, dateCount: 7, isAfter: false });
     }
   };
@@ -281,22 +278,32 @@ function DateSchedule(props: any) {
     );
   }
 
-  // Transform dates for chart
-  const chartData = dates.map((date: any) => ({
-    name: moment(date.dateObj).format('MMM DD'),
-    price: date.price,
-  }));
+  // Ensure the maxPrice calculation is correct for chart data normalization
+  const maxPrice = Math.max(...datesToShow.showDate.map((date: any) => date.price), 100);
 
+  // Transform datesToShow.showDate for chart
+  const chartData = datesToShow.showDate
+    .map((date: any) => ({
+      name: moment(date.dateObj).format('MMM DD'),
+      price: (date.price / maxPrice) * 100,
+      isActive: date.dateObj === activeIndex,
+    }));
+    console.log(chartData, 'chartData');
   return (
     <>
       <div style={{ width: '100%' }}>
-        <p>Flight Prices Chart</p>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData}>
             <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip formatter={(value: any) => `$${value}`} />
-            <Bar dataKey="price" fill="#8884d8" />
+            <YAxis
+              domain={[0, 100]}
+              tickFormatter={(value: any) => `${value.toFixed(0)}%`}
+            />
+            <Tooltip formatter={(value: any) => `${value}%`} />
+            <Bar
+              dataKey="price"
+              // fill={(entry: any) => (entry.isActive ? '#FF5722' : '#8884d8')}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
