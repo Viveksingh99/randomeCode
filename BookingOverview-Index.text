@@ -1,0 +1,668 @@
+
+import React, {
+  useState, useEffect, Fragment, useRef,
+} from 'react';
+import { connect } from 'react-redux';
+import {
+  Tab, Nav, Row, Col, Button, Alert, Container,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import {
+  map, find, isEmpty, isNull,
+} from 'lodash';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import { FlightSegmentdetails } from '../ThanksContent/flightConfirmation';
+import PassengerBaggageDetail from '../ThanksContent/PassengerBaggageDetails';
+import BaggageDetailsComponent from '../Common/PassengerBaggageDetail/Index';
+import {
+  getformInfo, getAirportNameByCode, formatCurrency, getB2BCookie,
+} from '../../helpers/utilities';
+import styles from './styles.scss';
+import { BOOKING_STATUS, WORKFLOW, WORKFLOW_TYPE } from '../../constants/common';
+import { updateCurrentSeg, fetchBoardingPass, duePaymntInfo } from '../../redux/mmb.redux';
+import { setWorkflow, setRediectUri } from '../../redux/workflow.redux';
+import { sendCheckoutLogs } from '../../redux/checkIn.redux';
+import ModalComponent from '../Modal';
+
+// const { Router } = require('../../next/router');
+
+function CBookingOverview(props: any) {
+  const router = useRouter();
+  const {
+    PNRBookDetails, pnr, lastName, routes, handleMakeChangesBooking, dispatch,
+    isLogged, exchangeRate, selectedCurrencyCode, setCurrentFlightIndex, bPDownloadAllowed,
+    setShowLoader, isAdd, portalType, duePaymntProceed,
+  } = props;
+  console.log(setCurrentFlightIndex, 'setCurrentFlightIndex');
+  const {
+    confirmCode, status, flightInfo, flightAddon,
+    passengersInfo, reservationInfo, // paymentInfo,
+    paymentHistory,
+  } = PNRBookDetails;
+  // const { isPNRAssociated } = reservationInfo;
+  const isProceed = useRef(false);
+  const [flgtDir, setFlgtDir] = useState(0);
+  const [curSegment, setCurSegment] = useState('');
+  const [bpFileData, setFpFileData] = useState({
+    pax: '',
+    files: '',
+  });
+  console.log(curSegment, 'curSegment');
+  const [holdSkySpeed] = useState(reservationInfo ? reservationInfo.isHoldFromSkySpeed : false);
+  const [pendingAmount] = useState(reservationInfo ? reservationInfo.amountToPay : 0);
+  const [pndingAmntCurrency] = useState(reservationInfo ? reservationInfo.amtCurrencyCode : '');
+  let amtDueShow = false;
+  amtDueShow = flightInfo && flightInfo[0] && flightInfo[0].flights[0].isDuePaymentAllowed;
+  if (amtDueShow === false && flightInfo && flightInfo[0]
+      && flightInfo[0] && flightInfo[0].flights.length === 2
+      && flightInfo[0].flights[1].isDuePaymentAllowed) {
+    amtDueShow = true;
+  }
+  const [duePymntAllw] = useState(amtDueShow);
+  const [showCheckOutMdl, setShowCheckOutMdl] = useState(false);
+  const [showDwnloadBPMdl, setShowDwnloadBPMdl] = useState(false);
+
+  const [checkOutURL, setCheckOutURL] = useState('');
+  const [addBookingShow, setAddBookingShow] = useState(isAdd === '1');
+
+  const payDetailData = { paymentHistory, reservationInfo };
+  const { fareGroupInfo } = !isEmpty(flightInfo) ? flightInfo[0] : '';
+  const flightData = !isEmpty(flightInfo) ? getformInfo(flightInfo[0].flights[0]) : '';
+  const retFlightData = !isEmpty(flightInfo) && !isEmpty(flightInfo[0].flights) && flightInfo[0].flights.length === 2 ? getformInfo(flightInfo[0].flights[1]) : '';
+  const { t } = useTranslation();
+
+  const setInitialSegment = (pnrDetails: any) => {
+    console.log(pnrDetails, 'pnrDetails');
+    if (pnrDetails.flightInfo) {
+      dispatch(updateCurrentSeg(pnrDetails.flightInfo[0].flights[0].flightKey));
+      setCurSegment(pnrDetails.flightInfo[0].flights[0].flightKey);
+      setCurrentFlightIndex(0);
+      setFlgtDir(1);
+    }
+    setCurrentFlightIndex(0);
+  };
+
+  useEffect(() => {
+    setInitialSegment(PNRBookDetails);
+    localStorage.setItem('requestPaymentID', '0');
+  }, []);
+
+  useEffect(() => {
+    if (duePaymntProceed && isProceed.current) {
+      dispatch(setRediectUri(`/BookingManagement?pnr=${router.query.pnr}&lastName=${router.query.lastName}${getB2BCookie()}`));
+      document.location.href = '/Payment';
+    }
+  }, [duePaymntProceed]);
+
+  useEffect(() => {
+    setInitialSegment(PNRBookDetails);
+  }, [PNRBookDetails]);
+
+  const changeCurrentSegment = (seg: any, direction: any) => {
+    console.log(seg, 'seg', direction);
+    setCurSegment(seg);
+    dispatch(updateCurrentSeg(seg));
+    setCurrentFlightIndex(direction);
+  };
+
+  const handleFareLockConfirm = () => {
+    dispatch(setWorkflow(WORKFLOW.FARE_LOCK));
+    const url = `/FareLockConfirm?lastName=${lastName}&pnr=${pnr}`;
+    document.location.href = url;
+    // Router.pushRoute(url);
+  };
+
+  const addBookingData = {
+    lastName,
+    pnr,
+  } || {
+    lastName: '',
+    pnr: '',
+  };
+
+  useEffect(() => {
+    if (portalType === WORKFLOW_TYPE.B2C) {
+      const loginData = Cookies.getJSON('USER_DATA');
+      if (PNRBookDetails && PNRBookDetails.passengersInfo) {
+        PNRBookDetails.passengersInfo.some((e: any) => {
+          if (e.firstName.toLowerCase() === loginData.firstName.toLowerCase()
+            && e.lastName.toLowerCase() === loginData.lastName.toLowerCase()) {
+            localStorage.setItem('userValidity', 'true'); return 'true';
+          }
+          localStorage.setItem('userValidity', 'false');
+        });
+      }
+    }
+  });
+
+  const handleCheckIn = (segments: any, flightKey: any, isCheckIn: boolean, direction: number) => {
+    // eslint-disable-next-line no-new-wrappers
+    let urlSegment = new String('');
+    // eslint-disable-next-line array-callback-return
+    segments.map((segment: any) => {
+      urlSegment += `&flights=${flightKey}~${segment.segmentKey}`;
+    });
+    const endPoint = isCheckIn ? 'Checkin' : 'Checkout';
+    const url = `/${endPoint}?pnrNumber=${pnr}&lastName=${lastName}${urlSegment}&direction=${direction}`;
+    if (!isCheckIn) {
+      if (portalType === WORKFLOW_TYPE.B2B) {
+        dispatch(sendCheckoutLogs(pnr, null, true, null)).then(() => {
+          document.location.href = url;
+        });
+      } else {
+        setCheckOutURL(url);
+        setShowCheckOutMdl(true);
+      }
+    } else {
+      document.location.href = url;
+    }
+  };
+
+  const downloadBPFiles = () => {
+    if (bPDownloadAllowed && flgtDir > 0) {
+      setShowLoader(true);
+      dispatch(fetchBoardingPass(pnr, flgtDir)).then((data: any) => {
+        if (!isEmpty(data) && !isNull(data)) {
+          const filterBySeg = data.filter((flist: any) => flist.segmentKey === curSegment);
+          setFpFileData(
+            {
+              pax: passengersInfo,
+              files: filterBySeg,
+            },
+          );
+          setShowDwnloadBPMdl(true);
+        }
+        setShowLoader(false);
+      });
+    }
+  };
+  const handleCheckOutRedirection = () => {
+    dispatch(sendCheckoutLogs(pnr, null, true, null)).then(() => {
+      document.location.href = checkOutURL;
+    });
+  };
+  const renderMMBButton = (fList: any) => {
+    const {
+      isCheckOutAvailable, isMMBAvail,
+      segments, flightKey, flightDirection,
+    } = fList;
+    if (isCheckOutAvailable) {
+      return (
+        <Button
+          className={`${styles.btn} mt-20 fonts-14 start_checkin_btn ${portalType === WORKFLOW_TYPE.B2B ? 'd-none' : ''}`}
+          onClick={() => handleCheckIn(
+            segments, flightKey,
+            false, flightDirection,
+          )}
+        >
+          {t('BookingOverview.lblCheckOut')}
+        </Button>
+      );
+    }
+    if (isMMBAvail) {
+      return <Button className={`${styles.btn} mt-20`} onClick={() => handleMakeChangesBooking(true)}>{t('ThanksPage.lblMngeMyBking')}</Button>;
+    }
+    return <Fragment />;
+  };
+  // const html = t('ManageBooking.lblNotAssociatd');
+
+  const payPendingAmount = () => {
+    dispatch(setWorkflow(WORKFLOW.DUE_PAYMENT));
+    dispatch(duePaymntInfo());
+    isProceed.current = true;
+  };
+
+  function rsnCde(code:any) {
+    switch (code) {
+      case 1: return t('ThanksPage.lblChkAvlFreChrgArptOn');
+      default: return '';
+    }
+  }
+
+
+  return (
+    PNRBookDetails ? (
+      <Fragment>
+        <div className="booking_overview">
+          <h2>{t('BookingOverview.lblBkingOvrvw')}</h2>
+          {
+            !isEmpty(reservationInfo) && typeof reservationInfo !== 'undefined'
+              && !isNull(reservationInfo)
+              && !reservationInfo.isPNRAssociated && isLogged
+              && portalType === WORKFLOW_TYPE.B2C
+              ? (
+                <Fragment>
+                  <Alert variant="warning"><span dangerouslySetInnerHTML={{ __html: t('ManageBooking.lblNotAssociatd') }} /></Alert>
+                  <div className={`${styles.priceLab} ${styles.dFlex} flex-justify-start`}>
+                    <Button type="button" className="btn btn-continue" onClick={() => setAddBookingShow(true)}>
+                      {t('PaymentPP.lblAddBooking')}
+                    </Button>
+                  </div>
+                  <ModalComponent modData={addBookingData} show={addBookingShow} modalSize="smallSize" ModalType="modalWithheader" modalTitle="PassengersPP.lblAddBooking" modalBody="AddbookingModal" onHide={() => setAddBookingShow(false)} />
+                </Fragment>
+              )
+              : <Fragment />
+          }
+          {
+            typeof reservationInfo !== 'undefined'
+              && !isNull(reservationInfo)
+              && !reservationInfo.isPNRAssociated
+              && portalType === WORKFLOW_TYPE.B2C
+              ? ''
+              : (
+                <Row className={`${styles.mt40} ${styles.mb40} ${styles.tfLightItinerary}`}>
+                  <Tab.Container id="thanksTab" defaultActiveKey="seg_0">
+                    <Col xs sm md="12">
+                      <div className={`${styles.customTab2} ${styles.segmentTab} ${styles.mb40}`}>
+                        <Nav variant="tabs" className={styles.navTabs}>
+                          {
+                            flightInfo
+                            && flightInfo[0]
+                            && map(flightInfo[0].flights, (fList: any, fIndex: number) => {
+                              // map(fList.segments, (sList: any, sIndex: number) => (
+                              console.log(fList, 'fvivek');
+                              return (
+                                <Nav.Item
+                                  className={styles.navItem}
+                                  onClick={() => {
+                                    setFlgtDir(fIndex + 1);
+                                    changeCurrentSegment(fList.flightKey, fIndex);
+                                  }}
+                                >
+                                  <Nav.Link eventKey={`seg_${fIndex}`}>
+                                    <span>{getAirportNameByCode(fList.segments[0].depCode, routes)}</span>
+                                    &nbsp;
+                                    <i className={`${styles.foIcon} ${styles.iconFoArrowRightLong2}`} />
+                                    &nbsp;
+                                    <span>{getAirportNameByCode(fList.segments[fList.segments.length - 1].arrCode, routes)}</span>
+                                  </Nav.Link>
+                                </Nav.Item>
+                              )
+                              // ))
+                            })
+                          }
+                        </Nav>
+                      </div>
+                    </Col>
+                    <Col>
+                      <Tab.Content>
+                        {
+                          !isEmpty(flightInfo)
+                          && !isEmpty(flightInfo[0])
+                          && !isEmpty(flightInfo[0].flights)
+                          && flightInfo && flightInfo[0]
+                          && map(flightInfo[0].flights, (fList: any, fIndex: number) => (
+                            map(fList.segments, (sList: any, sIndex: number) => {
+                              const { segmentKey } = sList;
+                              const { cabinClassCode } = find(fareGroupInfo.cabin,
+                                { segmentRefKey: segmentKey });
+                              return (
+                                <Tab.Pane eventKey={`seg_${fIndex}`}>
+                                  <div
+                                    className={`${styles.boxContent} ${(fList.isCheckInAvailable && sIndex === 0) || fList.isCheckOutAvailable ? 'hasCheckin' : 'nocheckin'} flight-deta-row ${styles.mb30}`}
+                                  >
+                                    {
+                                      (!(duePymntAllw || holdSkySpeed) && sIndex === 0)
+                                        ? (
+                                          fList.isCheckInAvailable
+                                            ? (
+                                              <div className={`${styles.boxContent} ${styles.noPad}`}>
+                                                <div className={`${styles.boxBody}`}>
+                                                  <div className="checkin_avail_content">
+                                                    <div className="checkin_icon_content">
+                                                      <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
+                                                      <div className="checkin_content_left">
+                                                        <h5 className={styles.mt0}>{t('ThanksPage.lblChkinAvlble')}</h5>
+                                                        <p>
+                                                          {t('ThanksPage.lblPlsStrtUrChkInInOrdrToGetUrBrdingCrd')}
+                                                        </p>
+                                                      </div>
+                                                    </div>
+                                                    <Button
+                                                      onClick={() => handleCheckIn(
+                                                        fList.segments, fList.flightKey,
+                                                        true, fList.flightDirection,
+                                                      )}
+                                                      className="start_checkin_btn"
+                                                    >
+                                                      {t('ThanksPage.lblStartChkIn')}
+                                                      <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
+                                                    </Button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            ) : (
+                                              fList.reasonCode !== 0
+                                                ? (
+                                                  <div className={`${styles.boxUnavailContent} ${styles.noPad}`}>
+                                                    <div className={`${styles.boxUnavailBody}`}>
+                                                      <div className="checkin_avail_content">
+                                                        <div className="checkin_icon_content">
+                                                          <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
+                                                          <div className="checkin_content_left">
+                                                            <h5 className={styles.mt0}>{t('ThanksPage.lblChkinUnAvlble')}</h5>
+                                                            <p>{rsnCde(fList.reasonCode)}</p>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                ) : (
+                                                  <Fragment />
+                                                )
+                                            ))
+                                        : <Fragment />
+                                    }
+                                    <Fragment>
+                                      {
+                                        portalType === WORKFLOW_TYPE.B2C
+                                          && !fList.isCheckInAvailable && fList.isCheckOutAvailable
+                                          ? (
+                                            <div className={`${styles.boxContent} ${styles.noPad} d-none`}>
+                                              <div className={`${styles.boxBody}`}>
+                                                <div className="checkin_avail_content">
+                                                  <div className="checkin_icon_content">
+                                                    <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
+                                                    <div className="checkin_content_left">
+                                                      <h5 className={`${styles.mt0} ${styles.mb0}`}>{t('BookingOverview.lblChkinCompletd')}</h5>
+                                                    </div>
+                                                  </div>
+                                                  <Button
+                                                    className={`${styles.btn} start_checkin_btn`}
+                                                    onClick={() => handleCheckIn(
+                                                      fList.segments, fList.flightKey,
+                                                      false, fList.flightDirection,
+                                                    )}
+                                                  >
+                                                    {t('BookingOverview.lblCheckOut')}
+                                                    <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
+                                                  </Button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          )
+                                          : <Fragment />
+                                      }
+                                    </Fragment>
+                                    <FlightSegmentdetails
+                                      Routes={routes}
+                                      pnrNumber={confirmCode}
+                                      confirmCode={status}
+                                      ReservData={reservationInfo}
+                                      FlightData={fList}
+                                      Layout="booking"
+                                    />
+                                    <Nav className="mmbBtnTab">
+                                      {
+                                        portalType === WORKFLOW_TYPE.B2C && fList.isCheckOutAvailable
+                                          ? (
+                                            <Nav.Item className={`${styles.navItem} chckoutInfo`}>
+                                              <p>
+                                                {t('BookingOverview.lblCheckOutInfoText1')}
+                                                <br />
+                                                {t('BookingOverview.lblCheckOutInfoText2')}
+                                              </p>
+                                            </Nav.Item>
+                                          )
+                                          : <Fragment />
+                                      }
+                                      <Nav.Item className={`${styles.navItem} text-right`}>
+                                        {
+                                          portalType === WORKFLOW_TYPE.B2C && bPDownloadAllowed ? (
+                                            <Button className="mt-20 fonts-14" onClick={() => downloadBPFiles()}>
+                                              {t('BookingOverview.lblDwnladBPText')}
+                                            </Button>
+                                          )
+                                            : <Fragment />
+                                        }
+                                        {/* {
+                                        bPDownloadAllowed && !isEmpty(fileUrl) && fileUrl !== null
+                                          ? (
+                                            <a
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="mt-20 btn btn-primary"
+                                              href={fileUrl}
+                                              download
+                                            >
+                                              {t('BookingOverview.lblDwnladBPText')}
+                                            </a>
+                                          )
+                                          : <></>
+                                      } */}
+                                        {
+                                          reservationInfo
+                                            && reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK
+                                            && flightInfo && flightInfo[0]
+                                            && isLogged
+                                            && ((reservationInfo.isPNRAssociated && portalType === WORKFLOW_TYPE.B2C)
+                                              || (fList.isMMBAvail && portalType === WORKFLOW_TYPE.B2B))
+                                            ? (
+                                              renderMMBButton(fList)
+                                            )
+                                            : <Fragment />
+                                        }
+                                      </Nav.Item>
+                                    </Nav>
+                                  </div>
+                                  {(duePymntAllw || holdSkySpeed) && (
+                                    <div className="row mb-4">
+                                      <Container className={`${styles.boxContent} mx-3 py-2 px-4 d-flex justify-content-between`}>
+                                        <div className="d-flex align-items-center">
+                                          <h6 className="m-0 text-danger">{`${t('BookingOverview.lblDuePay')} : ${formatCurrency(pendingAmount, pndingAmntCurrency, exchangeRate, selectedCurrencyCode)}`}</h6>
+                                        </div>
+                                        <Button className="btn btn-primary" onClick={payPendingAmount}><h6 className="m-0">{t('BookingOverview.lblProceedPay')}</h6></Button>
+                                      </Container>
+                                    </div>
+                                  )
+                                  }
+                                  <div className={`${styles.boxContent} ${'price_details_tab'} ${styles.noPad}`}>
+                                    <Tab.Container id={`pricingTab_${fIndex}_${sIndex}`} defaultActiveKey={`bookingDetail_${fIndex}_${sIndex}`}>
+                                      {
+                                        reservationInfo
+                                          && reservationInfo.bookingStatus === BOOKING_STATUS.FARELOCK
+                                          ? ''
+                                          : (
+                                            <div className={`${styles.boxHeader} ${styles.noPad}`}>
+                                              <div className="custom-tab">
+                                                <Nav variant="tabs" className={`${styles.navTabs} ${styles.colthree}`}>
+                                                  <Nav.Item className={styles.navItem}>
+                                                    <Nav.Link eventKey={`bookingDetail_${fIndex}_${sIndex}`}>{t('BookingOverview.lblBokngdtls')}</Nav.Link>
+                                                  </Nav.Item>
+                                                  <Nav.Item className={styles.navItem}>
+                                                    <Nav.Link eventKey={`priceDetail_${fIndex}_${sIndex}`}>{t('BookingOverview.lblPredtls')}</Nav.Link>
+                                                  </Nav.Item>
+                                                  <Nav.Item className={styles.navItem}>
+                                                    <Nav.Link eventKey={`paymentDetail_${fIndex}_${sIndex}`}>{t('PaymentPage.lblPaymntDtils')}</Nav.Link>
+                                                  </Nav.Item>
+                                                </Nav>
+                                              </div>
+                                            </div>
+                                          )
+
+                                      }
+                                      <div className={`${styles.boxBody} pricing_Tab`}>
+                                        <Tab.Pane eventKey={`bookingDetail_${fIndex}_${sIndex}`}>
+                                          <div className={styles.bookingDetailsTab}>
+                                            <PassengerBaggageDetail
+                                              cabinclass={cabinClassCode}
+                                              paxData={passengersInfo}
+                                              addData={find(flightAddon,
+                                                (l: any) => l.segmentKey === sList.segmentKey)}
+                                              DetailType="bookingDetails"
+                                              reservationInfo={reservationInfo}
+                                              hasIcon
+                                              exchangeRate={exchangeRate}
+                                              selectedCurrencyCode={selectedCurrencyCode}
+                                            />
+                                          </div>
+                                          {
+                                            (reservationInfo && reservationInfo.bookingStatus === BOOKING_STATUS.FARELOCK)
+                                              ? ''
+                                              : (
+                                                <div className={`${styles.boxContent} ${styles.mt10} ${styles.bookingOwnerBox}`}>
+                                                  <h4 className={styles.mb20}>
+                                                    {t('BookingOverview.lblCntifmnbkingowr')}
+                                                  </h4>
+                                                  <div className={styles.profileTitle}>
+                                                    <i className={`${styles.foIcon} ${styles.iconFoUser2} ${styles.roundIcon}`} />
+                                                    {passengersInfo[0].contactName}
+                                                  </div>
+                                                  <Row className={`${styles.dFlex} ${styles.bookingOwnerRow}`}>
+                                                    <div className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                                      <span>{t('FlightResult.lblEmailID')}</span>
+                                                      <h6>{passengersInfo[0].contactEmail}</h6>
+                                                    </div>
+                                                    <div className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                                      <span>{t('FlightResult.lblMobilePnNumber')}</span>
+                                                      <h6>
+                                                        {passengersInfo[0].phoneNumber}
+                                                        {/* <Button variant="link">
+                                              {t('FlightResult.lblEdit')}
+                                              </Button> */}
+                                                      </h6>
+                                                    </div>
+                                                    {/*
+                                            <div
+                                              className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                            <span>{t('PaymentPage.lblBilingAdrs')}</span>
+                                            <h6>{passengersInfo[0].address}</h6>
+                                          </div>
+                                          */}
+                                                  </Row>
+                                                </div>
+                                              )
+                                          }
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={`priceDetail_${fIndex}_${sIndex}`}>
+                                          <div className={styles.bookingDetailsTab}>
+                                            <div className={`${styles.boxContent} ${styles.mt10} ${styles.priceDetailsBox}`}>
+                                              <div className={`${styles.boxBody}`}>
+                                                <BaggageDetailsComponent
+                                                  paxData={passengersInfo}
+                                                  flightData={flightData}
+                                                  addData={find(flightAddon,
+                                                    (l: any) => l.segmentKey === sList.segmentKey)}
+                                                  isRoundTrip={flightInfo[0].flights.length > 1}
+                                                  fareGroupInfo={fareGroupInfo}
+                                                  DetailType="priceDetails"
+                                                  exchangeRate={exchangeRate}
+                                                  selectedCurrencyCode={selectedCurrencyCode}
+                                                  retFlightData={retFlightData}
+                                                  allAddData={flightAddon}
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={`paymentDetail_${fIndex}_${sIndex}`}>
+                                          <div className={styles.bookingDetailsTab}>
+                                            <PassengerBaggageDetail
+                                              {...payDetailData}
+                                              DetailType="paymentDetails"
+                                              exchangeRate={exchangeRate}
+                                              selectedCurrencyCode={selectedCurrencyCode}
+                                            />
+                                          </div>
+                                        </Tab.Pane>
+                                      </div>
+                                    </Tab.Container>
+                                  </div>
+                                </Tab.Pane>
+                              );
+                            })))}
+                      </Tab.Content>
+                    </Col>
+                  </Tab.Container>
+                </Row>
+              )
+          }
+          <Fragment>
+            <ModalComponent
+              modData=""
+              show={showCheckOutMdl}
+              modalSize="smallSize"
+              ModalType=""
+              selectedTab=""
+              modalTitle=""
+              modalBody="RemoveModal"
+              // removeModalIcon="im-group-passengers"
+              removeModalLinkyes={() => {
+                setShowCheckOutMdl(false);
+                handleCheckOutRedirection();
+              }}
+              removeModalTitle="BookingOverview.lblCheckOutWarnMsg"
+              removeModalCnt="BookingOverview.lblCheckOutInfoMsg"
+              isItemDeleted={false}
+              onHide={() => setShowCheckOutMdl(false)}
+            />
+            <ModalComponent
+              modData={bpFileData}
+              show={showDwnloadBPMdl}
+              modalSize="MedSize"
+              ModalType="modalWithheader"
+              modalTitle="BookingOverview.lblDwnladBPText"
+              modalBody="DownloadBPModal"
+              onHide={() => setShowDwnloadBPMdl(false)}
+            />
+          </Fragment>
+        </div>
+        {
+          <Row>
+            <Col className="text-right">
+              {
+                reservationInfo
+                  && reservationInfo.bookingStatus === BOOKING_STATUS.FARELOCK
+                  && ((reservationInfo.isPNRAssociated && portalType === WORKFLOW_TYPE.B2C)
+                    || (isLogged && portalType === WORKFLOW_TYPE.B2B))
+                  ? (
+                    <Fragment>
+                      <div className="fl-pricebot mt-20">
+                        <p>
+                          {t('FareLock.lblAmountDua')}
+                          {': '}
+                          <span>
+                            {
+                              formatCurrency(
+                                reservationInfo.amountToPay,
+                                reservationInfo.amtCurrencyCode,
+                                exchangeRate,
+                                selectedCurrencyCode,
+                              )
+                            }
+                          </span>
+                        </p>
+                        <Button type="button" className="btn btn-continue" variant="primary" onClick={handleFareLockConfirm}>{t('FareLock.lblCntinebokng')}</Button>
+                      </div>
+                    </Fragment>
+                  )
+                  : ''
+              }
+            </Col>
+          </Row>
+        }
+      </Fragment>
+    ) : (
+      <Fragment>
+        <div className={`${styles.boxContent} ${styles.mt60} ${styles.pb20}`}>
+          <div className={styles.boxBody}>
+            <div className={`${'text-center'} ${styles.flexJustifyCenter}`}>
+              <h2 className="text-center mb-30">{t('Errorpage.lblBookNotAvial')}</h2>
+              <Button variant="link" className="btn btn-continue back_to_link" onClick={() => { window.location.href = '/Profile'; }}>{t('Errorpage.lblBcktoPrfile')}</Button>
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    )
+  );
+}
+
+const mapStateToProps = (state: any) => ({
+  duePaymntProceed: state.mmb.duePayment,
+  selectedCurrencyCode: state.totalAmount.selectedCurrencyCode,
+  currency: state.totalAmount.currencyCode,
+});
+
+export default connect(mapStateToProps)(CBookingOverview);

@@ -1,0 +1,222 @@
+import React from 'react';
+import { Row, Col, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { isEmpty } from 'lodash';
+import moment from 'moment';
+import { connect } from 'react-redux';
+import styles from './styles.scss';
+import { IAppState } from '../../redux/initialState';
+import { WORKFLOW_TYPE, BOOKING_STATUS } from '../../constants/common';
+import { getDurationFromMinute, getAirportNameByCode, getBookingStatus } from '../../helpers/utilities'; // getformInfo
+import PassengerBaggageDetails from './PassengerBaggageDetails';
+
+export function flightConfirmation(props: any) {
+  const {
+    flightData, Routes, ReservInfo, Layout, paxDetails, addonDetail,
+    isCheckInAvailable, cabinInfo, redirectUrl, clickHandler, portalType,
+    exchangeRate, selectedCurrencyCode,
+  } = props;
+  const { t } = useTranslation();
+  const cbnClsCode = (!isEmpty(cabinInfo[0]) && !isEmpty(cabinInfo)) ? cabinInfo[0].cabinClassCode : '';
+  return (
+    <div>
+      <FlightSegmentdetails
+        ReservData={ReservInfo}
+        Routes={Routes}
+        FlightData={flightData}
+        Layout={Layout}
+        portalType={portalType}
+        isCheckInAvailable={isCheckInAvailable}
+        clickHandler={clickHandler}
+        redirectUrl={redirectUrl}
+      />
+      <Row className="row mt-40">
+        <Col>
+          <PassengerBaggageDetails
+            paxData={paxDetails}
+            addData={addonDetail}
+            cabinclass={cbnClsCode}
+            hasIcon
+            DetailType="bookingDetails"
+            reservationInfo={ReservInfo}
+            exchangeRate={exchangeRate}
+            selectedCurrencyCode={selectedCurrencyCode}
+          />
+        </Col>
+      </Row>
+      <Row className={styles.mt40}>
+        <Col>
+          <div className={`${styles.priceLab} ${'d-none'} ${'justify-content-end'}`}>
+            <Button className={styles.btnContinue} type="button">
+              {t('ThanksPage.lblMngeMyBking')}
+            </Button>
+          </div>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+
+export function FlightSegmentdetails(props:any) {
+  const {
+    portalType, FlightData, Layout, Routes, ReservData, isCheckInAvailable, clickHandler,
+  } = props;
+
+  let statusColSize = 0;
+  const { t } = useTranslation();
+
+  switch (Layout) {
+    case 'profile': statusColSize = 4; break;
+    case 'booking': statusColSize = 3; break;
+    default: statusColSize = 5;
+  }
+
+  // Early return if FlightData or FlightData.segments is empty
+  if (isEmpty(FlightData) || !Array.isArray(FlightData.segments) || FlightData.segments.length === 0) {
+    return (
+      <div className={`${styles.boxContent} ${styles.p25}`}>
+        <h4 className={styles.noMar}>
+          {t('ThanksPage.lblNoBkingsFnd')}
+        </h4>
+      </div>
+    );
+  }
+
+  const flightSegments = FlightData.segments;
+  const flightNumberList = flightSegments.map((flight:any) => `${flight.oprAirlineCode} ${flight.flightNumber}`).join(' / ');
+  const firstSegment = flightSegments[0];
+  const lastSegment = flightSegments[flightSegments.length - 1];
+  const isAnyScheduleChanged = flightSegments.some((flight:any) => flight.isScheduleChanged);
+
+  return (
+    <div>
+      <div className={styles.boxContent}>
+        <div className={`${styles.boxBody}`}>
+          {
+            isCheckInAvailable
+            && portalType !== WORKFLOW_TYPE.B2B
+            && (ReservData.bookingStatus !== BOOKING_STATUS.FARELOCK) ? (
+                <div className={`${styles.boxContent} ${styles.mb20}`}>
+                  <div className={`${styles.boxBody}`}>
+                    <div className="checkin_avail_content">
+                      <div className="checkin_icon_content">
+                        <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
+                        <div className="checkin_content_left">
+                          <h5 className={styles.mt0}>{t('ThanksPage.lblChkinAvlble')}</h5>
+                          <p>
+                            {t('ThanksPage.lblPlsStrtUrChkInInOrdrToGetUrBrdingCrd')}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={clickHandler}
+                        className="start_checkin_btn"
+                      >
+                        {t('ThanksPage.lblStartChkIn')}
+                        <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ) : null
+          }
+          <div className={`${styles.flightList} ${styles.selected}`}>
+            <Row className={styles.noMarRightLeft}>
+              <Col xs sm md={statusColSize} className={styles.borRight}>
+                <div className={styles.selectedFare}>
+                  <p>
+                    <span>
+                      {t('PaymentPage.lblCnfrmtnCde')} :
+                    </span>
+                    {' '}
+                    {ReservData.pnrNumber}
+                  </p>
+                  <p>
+                    <span>
+                      {t('PaymentPage.lblStatus')} :
+                    </span>
+                    {' '}
+                    <span style={{ color: flightSegments.some((flight:any) => flight.flightStatus === 'Canceled') ? 'red' : '#333' }}>
+                      {flightSegments.some((flight:any) => flight.flightStatus === 'Canceled') ? t('BookingOverview.lblCanceled') : getBookingStatus(ReservData.bookingStatus)}
+                    </span>
+                  </p>
+                  <p>
+                    <span>
+                      {t('PaymentPage.lblFlightNum')} :
+                    </span>
+                    {' '}
+                    {flightNumberList}
+                  </p>
+                  <p>
+                    <span style={{ color: isAnyScheduleChanged ? 'red' : '#333' }}>
+                      { isAnyScheduleChanged ? t('BookingOverview.lblScheduleChanged') : '' }
+                    </span>
+                  </p>
+                </div>
+              </Col>
+              <Col xs sm md={12 - statusColSize}>
+                <ul className={`${styles.routeInfoList} ${styles.resetList}`}>
+                  <li className={styles.cityInfo}>
+                    <p>{moment(firstSegment.depDateTime).format('ddd, DD MMM YYYY')}</p>
+                    <h2>{moment(firstSegment.depDateTime).format('HH:mm')}</h2>
+                    <p>
+                      {firstSegment.depCode ? getAirportNameByCode(firstSegment.depCode, Routes) : firstSegment.depCode}
+                      {' '}
+                      (
+                      {firstSegment.depCode}
+                      )
+                    </p>
+                  </li>
+                  {flightSegments.map((flight:any, index:number) => (
+                      <li className={styles.durInfo}>
+                        <div>
+                          <p>{getDurationFromMinute(flight.durationInMins)}</p>
+                        </div>
+                        <div>
+                          <p>{`${flight.oprAirlineCode} ${flight.flightNumber}`}</p>
+                        </div>
+                        <div className={styles.stopRepr}>
+                          {index < flightSegments.length - 1 || flightSegments.length === 1 ? (
+                            <i className={`${styles.foIcon} ${styles.iconFoFlight2Right}`} />
+                          ) : null}
+                        </div>
+                        {index < flightSegments.length - 1 && (
+                          <p>
+                          <p>Stoper</p>
+                          {flight.arrCode ? getAirportNameByCode(flight.arrCode, Routes) : flight.arrCode}
+                          {' '}
+                            (
+                          {flight.arrCode}
+                            )
+                        </p>
+                      )}
+                    </li>
+                  )
+                  )}
+                  <li className={styles.cityInfo}>
+                    <p>{moment(lastSegment.arrDateTime).format('ddd, DD MMM YYYY')}</p>
+                    <h2>{moment(lastSegment.arrDateTime).format('HH:mm')}</h2>
+                    <p>
+                      {lastSegment.arrCode ? getAirportNameByCode(lastSegment.arrCode, Routes) : lastSegment.arrCode}
+                      {' '}
+                      (
+                      {lastSegment.arrCode}
+                      )
+                    </p>
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+          </div>
+          <div className={styles.clearfix} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const mapStateToProps = (state: IAppState) => ({
+  portalType: state.workflow.actionType,
+});
+
+export default connect(mapStateToProps)(flightConfirmation);
