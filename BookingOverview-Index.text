@@ -1,4 +1,3 @@
-
 import React, {
   useState, useEffect, Fragment, useRef,
 } from 'react';
@@ -8,7 +7,8 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
-  map, find, isEmpty, isNull,
+  // map, 
+  find, isEmpty, isNull,
 } from 'lodash';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
@@ -73,10 +73,9 @@ function CBookingOverview(props: any) {
   const { t } = useTranslation();
 
   const setInitialSegment = (pnrDetails: any) => {
-    console.log(pnrDetails, 'pnrDetails');
     if (pnrDetails.flightInfo) {
-      dispatch(updateCurrentSeg(pnrDetails.flightInfo[0].flights[0].flightKey));
-      setCurSegment(pnrDetails.flightInfo[0].flights[0].flightKey);
+      dispatch(updateCurrentSeg(pnrDetails.flightInfo[0].flights[0].segments[0].segmentKey));
+      setCurSegment(pnrDetails.flightInfo[0].flights[0].segments[0].segmentKey);
       setCurrentFlightIndex(0);
       setFlgtDir(1);
     }
@@ -100,7 +99,6 @@ function CBookingOverview(props: any) {
   }, [PNRBookDetails]);
 
   const changeCurrentSegment = (seg: any, direction: any) => {
-    console.log(seg, 'seg', direction);
     setCurSegment(seg);
     dispatch(updateCurrentSeg(seg));
     setCurrentFlightIndex(direction);
@@ -213,14 +211,12 @@ function CBookingOverview(props: any) {
     isProceed.current = true;
   };
 
-  function rsnCde(code:any) {
-    switch (code) {
-      case 1: return t('ThanksPage.lblChkAvlFreChrgArptOn');
-      default: return '';
-    }
-  }
-
-
+  // function rsnCde(code:any) {
+  //   switch (code) {
+  //     case 1: return t('ThanksPage.lblChkAvlFreChrgArptOn');
+  //     default: return '';
+  //   }
+  // }
   return (
     PNRBookDetails ? (
       <Fragment>
@@ -252,331 +248,224 @@ function CBookingOverview(props: any) {
               ? ''
               : (
                 <Row className={`${styles.mt40} ${styles.mb40} ${styles.tfLightItinerary}`}>
-                  <Tab.Container id="thanksTab" defaultActiveKey="seg_0">
-                    <Col xs sm md="12">
-                      <div className={`${styles.customTab2} ${styles.segmentTab} ${styles.mb40}`}>
-                        <Nav variant="tabs" className={styles.navTabs}>
-                          {
-                            flightInfo
-                            && flightInfo[0]
-                            && map(flightInfo[0].flights, (fList: any, fIndex: number) => {
-                              // map(fList.segments, (sList: any, sIndex: number) => (
-                              console.log(fList, 'fvivek');
-                              return (
-                                <Nav.Item
-                                  className={styles.navItem}
-                                  onClick={() => {
-                                    setFlgtDir(fIndex + 1);
-                                    changeCurrentSegment(fList.flightKey, fIndex);
-                                  }}
-                                >
-                                  <Nav.Link eventKey={`seg_${fIndex}`}>
-                                    <span>{getAirportNameByCode(fList.segments[0].depCode, routes)}</span>
-                                    &nbsp;
-                                    <i className={`${styles.foIcon} ${styles.iconFoArrowRightLong2}`} />
-                                    &nbsp;
-                                    <span>{getAirportNameByCode(fList.segments[fList.segments.length - 1].arrCode, routes)}</span>
-                                  </Nav.Link>
-                                </Nav.Item>
-                              )
-                              // ))
-                            })
-                          }
-                        </Nav>
-                      </div>
-                    </Col>
-                    <Col>
-                      <Tab.Content>
-                        {
-                          !isEmpty(flightInfo)
-                          && !isEmpty(flightInfo[0])
-                          && !isEmpty(flightInfo[0].flights)
-                          && flightInfo && flightInfo[0]
-                          && map(flightInfo[0].flights, (fList: any, fIndex: number) => (
-                            map(fList.segments, (sList: any, sIndex: number) => {
-                              const { segmentKey } = sList;
-                              const { cabinClassCode } = find(fareGroupInfo.cabin,
-                                { segmentRefKey: segmentKey });
-                              return (
-                                <Tab.Pane eventKey={`seg_${fIndex}`}>
-                                  <div
-                                    className={`${styles.boxContent} ${(fList.isCheckInAvailable && sIndex === 0) || fList.isCheckOutAvailable ? 'hasCheckin' : 'nocheckin'} flight-deta-row ${styles.mb30}`}
-                                  >
-                                    {
-                                      (!(duePymntAllw || holdSkySpeed) && sIndex === 0)
-                                        ? (
-                                          fList.isCheckInAvailable
-                                            ? (
-                                              <div className={`${styles.boxContent} ${styles.noPad}`}>
-                                                <div className={`${styles.boxBody}`}>
-                                                  <div className="checkin_avail_content">
-                                                    <div className="checkin_icon_content">
-                                                      <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
-                                                      <div className="checkin_content_left">
-                                                        <h5 className={styles.mt0}>{t('ThanksPage.lblChkinAvlble')}</h5>
-                                                        <p>
-                                                          {t('ThanksPage.lblPlsStrtUrChkInInOrdrToGetUrBrdingCrd')}
-                                                        </p>
-                                                      </div>
-                                                    </div>
-                                                    <Button
-                                                      onClick={() => handleCheckIn(
-                                                        fList.segments, fList.flightKey,
-                                                        true, fList.flightDirection,
-                                                      )}
-                                                      className="start_checkin_btn"
-                                                    >
-                                                      {t('ThanksPage.lblStartChkIn')}
-                                                      <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
-                                                    </Button>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            ) : (
-                                              fList.reasonCode !== 0
-                                                ? (
-                                                  <div className={`${styles.boxUnavailContent} ${styles.noPad}`}>
-                                                    <div className={`${styles.boxUnavailBody}`}>
-                                                      <div className="checkin_avail_content">
-                                                        <div className="checkin_icon_content">
-                                                          <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
-                                                          <div className="checkin_content_left">
-                                                            <h5 className={styles.mt0}>{t('ThanksPage.lblChkinUnAvlble')}</h5>
-                                                            <p>{rsnCde(fList.reasonCode)}</p>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                ) : (
-                                                  <Fragment />
-                                                )
-                                            ))
-                                        : <Fragment />
-                                    }
-                                    <Fragment>
-                                      {
-                                        portalType === WORKFLOW_TYPE.B2C
-                                          && !fList.isCheckInAvailable && fList.isCheckOutAvailable
-                                          ? (
-                                            <div className={`${styles.boxContent} ${styles.noPad} d-none`}>
-                                              <div className={`${styles.boxBody}`}>
-                                                <div className="checkin_avail_content">
-                                                  <div className="checkin_icon_content">
-                                                    <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
-                                                    <div className="checkin_content_left">
-                                                      <h5 className={`${styles.mt0} ${styles.mb0}`}>{t('BookingOverview.lblChkinCompletd')}</h5>
-                                                    </div>
-                                                  </div>
-                                                  <Button
-                                                    className={`${styles.btn} start_checkin_btn`}
-                                                    onClick={() => handleCheckIn(
-                                                      fList.segments, fList.flightKey,
-                                                      false, fList.flightDirection,
-                                                    )}
-                                                  >
-                                                    {t('BookingOverview.lblCheckOut')}
-                                                    <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
-                                                  </Button>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          )
-                                          : <Fragment />
-                                      }
-                                    </Fragment>
-                                    <FlightSegmentdetails
-                                      Routes={routes}
-                                      pnrNumber={confirmCode}
-                                      confirmCode={status}
-                                      ReservData={reservationInfo}
-                                      FlightData={fList}
-                                      Layout="booking"
-                                    />
-                                    <Nav className="mmbBtnTab">
-                                      {
-                                        portalType === WORKFLOW_TYPE.B2C && fList.isCheckOutAvailable
-                                          ? (
-                                            <Nav.Item className={`${styles.navItem} chckoutInfo`}>
-                                              <p>
-                                                {t('BookingOverview.lblCheckOutInfoText1')}
-                                                <br />
-                                                {t('BookingOverview.lblCheckOutInfoText2')}
-                                              </p>
-                                            </Nav.Item>
-                                          )
-                                          : <Fragment />
-                                      }
-                                      <Nav.Item className={`${styles.navItem} text-right`}>
-                                        {
-                                          portalType === WORKFLOW_TYPE.B2C && bPDownloadAllowed ? (
-                                            <Button className="mt-20 fonts-14" onClick={() => downloadBPFiles()}>
-                                              {t('BookingOverview.lblDwnladBPText')}
-                                            </Button>
-                                          )
-                                            : <Fragment />
-                                        }
-                                        {/* {
-                                        bPDownloadAllowed && !isEmpty(fileUrl) && fileUrl !== null
-                                          ? (
-                                            <a
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              className="mt-20 btn btn-primary"
-                                              href={fileUrl}
-                                              download
-                                            >
-                                              {t('BookingOverview.lblDwnladBPText')}
-                                            </a>
-                                          )
-                                          : <></>
-                                      } */}
-                                        {
-                                          reservationInfo
-                                            && reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK
-                                            && flightInfo && flightInfo[0]
-                                            && isLogged
-                                            && ((reservationInfo.isPNRAssociated && portalType === WORKFLOW_TYPE.B2C)
-                                              || (fList.isMMBAvail && portalType === WORKFLOW_TYPE.B2B))
-                                            ? (
-                                              renderMMBButton(fList)
-                                            )
-                                            : <Fragment />
-                                        }
-                                      </Nav.Item>
-                                    </Nav>
-                                  </div>
-                                  {(duePymntAllw || holdSkySpeed) && (
-                                    <div className="row mb-4">
-                                      <Container className={`${styles.boxContent} mx-3 py-2 px-4 d-flex justify-content-between`}>
-                                        <div className="d-flex align-items-center">
-                                          <h6 className="m-0 text-danger">{`${t('BookingOverview.lblDuePay')} : ${formatCurrency(pendingAmount, pndingAmntCurrency, exchangeRate, selectedCurrencyCode)}`}</h6>
-                                        </div>
-                                        <Button className="btn btn-primary" onClick={payPendingAmount}><h6 className="m-0">{t('BookingOverview.lblProceedPay')}</h6></Button>
-                                      </Container>
-                                    </div>
-                                  )
-                                  }
-                                  <div className={`${styles.boxContent} ${'price_details_tab'} ${styles.noPad}`}>
-                                    <Tab.Container id={`pricingTab_${fIndex}_${sIndex}`} defaultActiveKey={`bookingDetail_${fIndex}_${sIndex}`}>
-                                      {
-                                        reservationInfo
-                                          && reservationInfo.bookingStatus === BOOKING_STATUS.FARELOCK
-                                          ? ''
-                                          : (
-                                            <div className={`${styles.boxHeader} ${styles.noPad}`}>
-                                              <div className="custom-tab">
-                                                <Nav variant="tabs" className={`${styles.navTabs} ${styles.colthree}`}>
-                                                  <Nav.Item className={styles.navItem}>
-                                                    <Nav.Link eventKey={`bookingDetail_${fIndex}_${sIndex}`}>{t('BookingOverview.lblBokngdtls')}</Nav.Link>
-                                                  </Nav.Item>
-                                                  <Nav.Item className={styles.navItem}>
-                                                    <Nav.Link eventKey={`priceDetail_${fIndex}_${sIndex}`}>{t('BookingOverview.lblPredtls')}</Nav.Link>
-                                                  </Nav.Item>
-                                                  <Nav.Item className={styles.navItem}>
-                                                    <Nav.Link eventKey={`paymentDetail_${fIndex}_${sIndex}`}>{t('PaymentPage.lblPaymntDtils')}</Nav.Link>
-                                                  </Nav.Item>
-                                                </Nav>
-                                              </div>
-                                            </div>
-                                          )
-
-                                      }
-                                      <div className={`${styles.boxBody} pricing_Tab`}>
-                                        <Tab.Pane eventKey={`bookingDetail_${fIndex}_${sIndex}`}>
-                                          <div className={styles.bookingDetailsTab}>
-                                            <PassengerBaggageDetail
-                                              cabinclass={cabinClassCode}
-                                              paxData={passengersInfo}
-                                              addData={find(flightAddon,
-                                                (l: any) => l.segmentKey === sList.segmentKey)}
-                                              DetailType="bookingDetails"
-                                              reservationInfo={reservationInfo}
-                                              hasIcon
-                                              exchangeRate={exchangeRate}
-                                              selectedCurrencyCode={selectedCurrencyCode}
-                                            />
-                                          </div>
-                                          {
-                                            (reservationInfo && reservationInfo.bookingStatus === BOOKING_STATUS.FARELOCK)
-                                              ? ''
-                                              : (
-                                                <div className={`${styles.boxContent} ${styles.mt10} ${styles.bookingOwnerBox}`}>
-                                                  <h4 className={styles.mb20}>
-                                                    {t('BookingOverview.lblCntifmnbkingowr')}
-                                                  </h4>
-                                                  <div className={styles.profileTitle}>
-                                                    <i className={`${styles.foIcon} ${styles.iconFoUser2} ${styles.roundIcon}`} />
-                                                    {passengersInfo[0].contactName}
-                                                  </div>
-                                                  <Row className={`${styles.dFlex} ${styles.bookingOwnerRow}`}>
-                                                    <div className={`${styles.dFlex} ${styles.flexColumn}`}>
-                                                      <span>{t('FlightResult.lblEmailID')}</span>
-                                                      <h6>{passengersInfo[0].contactEmail}</h6>
-                                                    </div>
-                                                    <div className={`${styles.dFlex} ${styles.flexColumn}`}>
-                                                      <span>{t('FlightResult.lblMobilePnNumber')}</span>
-                                                      <h6>
-                                                        {passengersInfo[0].phoneNumber}
-                                                        {/* <Button variant="link">
-                                              {t('FlightResult.lblEdit')}
-                                              </Button> */}
-                                                      </h6>
-                                                    </div>
-                                                    {/*
-                                            <div
-                                              className={`${styles.dFlex} ${styles.flexColumn}`}>
-                                            <span>{t('PaymentPage.lblBilingAdrs')}</span>
-                                            <h6>{passengersInfo[0].address}</h6>
-                                          </div>
-                                          */}
-                                                  </Row>
-                                                </div>
-                                              )
-                                          }
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey={`priceDetail_${fIndex}_${sIndex}`}>
-                                          <div className={styles.bookingDetailsTab}>
-                                            <div className={`${styles.boxContent} ${styles.mt10} ${styles.priceDetailsBox}`}>
-                                              <div className={`${styles.boxBody}`}>
-                                                <BaggageDetailsComponent
-                                                  paxData={passengersInfo}
-                                                  flightData={flightData}
-                                                  addData={find(flightAddon,
-                                                    (l: any) => l.segmentKey === sList.segmentKey)}
-                                                  isRoundTrip={flightInfo[0].flights.length > 1}
-                                                  fareGroupInfo={fareGroupInfo}
-                                                  DetailType="priceDetails"
-                                                  exchangeRate={exchangeRate}
-                                                  selectedCurrencyCode={selectedCurrencyCode}
-                                                  retFlightData={retFlightData}
-                                                  allAddData={flightAddon}
-                                                />
-                                              </div>
-                                            </div>
-                                          </div>
-
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey={`paymentDetail_${fIndex}_${sIndex}`}>
-                                          <div className={styles.bookingDetailsTab}>
-                                            <PassengerBaggageDetail
-                                              {...payDetailData}
-                                              DetailType="paymentDetails"
-                                              exchangeRate={exchangeRate}
-                                              selectedCurrencyCode={selectedCurrencyCode}
-                                            />
-                                          </div>
-                                        </Tab.Pane>
+                <Tab.Container id="thanksTab" defaultActiveKey="seg_0">
+                  <Col xs sm md="12">
+                    <div className={`${styles.customTab2} ${styles.segmentTab} ${styles.mb40}`}>
+                      <Nav variant="tabs" className={styles.navTabs}>
+                        {flightInfo && flightInfo[0] && flightInfo[0].flights.map((fList:any, fIndex:any) => (
+                          <Nav.Item
+                            className={styles.navItem}
+                            onClick={() => {
+                              setFlgtDir(fIndex + 1);
+                              changeCurrentSegment(fList.flightKey, fIndex);
+                            }}
+                          >
+                            <Nav.Link eventKey={`seg_${fIndex}`}>
+                              <span>{getAirportNameByCode(fList.segments[0].depCode, routes)}</span>
+                              &nbsp;
+                              <i className={`${styles.foIcon} ${styles.iconFoArrowRightLong2}`} />
+                              &nbsp;
+                              <span>{getAirportNameByCode(fList.segments[fList.segments.length - 1].arrCode, routes)}</span>
+                            </Nav.Link>
+                          </Nav.Item>
+                        ))}
+                      </Nav>
+                    </div>
+                  </Col>
+                  <Col>
+                    <Tab.Content>
+                      {flightInfo && flightInfo[0] && flightInfo[0].flights.map((fList:any, fIndex:any) => (
+                        <Tab.Pane eventKey={`seg_${fIndex}`}>
+                          <div
+                            className={`${styles.boxContent} ${(fList.isCheckInAvailable && fList.segments.length > 0) || fList.isCheckOutAvailable ? 'hasCheckin' : 'nocheckin'} flight-deta-row ${styles.mb30}`}
+                          >
+                            {(duePymntAllw || holdSkySpeed) && fList.isCheckInAvailable ? (
+                              <div className={`${styles.boxContent} ${styles.noPad}`}>
+                                <div className={`${styles.boxBody}`}>
+                                  <div className="checkin_avail_content">
+                                    <div className="checkin_icon_content">
+                                      <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
+                                      <div className="checkin_content_left">
+                                        <h5 className={styles.mt0}>{t('ThanksPage.lblChkinAvlble')}</h5>
+                                        <p>{t('ThanksPage.lblPlsStrtUrChkInInOrdrToGetUrBrdingCrd')}</p>
                                       </div>
-                                    </Tab.Container>
+                                    </div>
+                                    <Button
+                                      onClick={() => handleCheckIn(fList.segments, fList.flightKey, true, fList.flightDirection)}
+                                      className="start_checkin_btn"
+                                    >
+                                      {t('ThanksPage.lblStartChkIn')}
+                                      <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
+                                    </Button>
                                   </div>
-                                </Tab.Pane>
-                              );
-                            })))}
-                      </Tab.Content>
-                    </Col>
-                  </Tab.Container>
-                </Row>
+                                </div>
+                              </div>
+                            ) : (
+                              <Fragment />
+                            )}
+              
+                            {portalType === WORKFLOW_TYPE.B2C && !fList.isCheckInAvailable && fList.isCheckOutAvailable && (
+                              <div className={`${styles.boxContent} ${styles.noPad} d-none`}>
+                                <div className={`${styles.boxBody}`}>
+                                  <div className="checkin_avail_content">
+                                    <div className="checkin_icon_content">
+                                      <span><i className={`${styles.imgIconXs} ${styles.imCheckinBlueIcon}`} /></span>
+                                      <div className="checkin_content_left">
+                                        <h5 className={`${styles.mt0} ${styles.mb0}`}>{t('BookingOverview.lblChkinCompletd')}</h5>
+                                      </div>
+                                    </div>
+                                    <Button
+                                      className={`${styles.btn} start_checkin_btn`}
+                                      onClick={() => handleCheckIn(fList.segments, fList.flightKey, false, fList.flightDirection)}
+                                    >
+                                      {t('BookingOverview.lblCheckOut')}
+                                      <i className={`${styles.foIcon} ${styles.iconArrowRight}`} />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+              
+                            <FlightSegmentdetails
+                              Routes={routes}
+                              pnrNumber={confirmCode}
+                              confirmCode={status}
+                              ReservData={reservationInfo}
+                              FlightData={fList}
+                              Layout="booking"
+                            />
+              
+                            <Nav className="mmbBtnTab">
+                              {portalType === WORKFLOW_TYPE.B2C && fList.isCheckOutAvailable && (
+                                <Nav.Item className={`${styles.navItem} chckoutInfo`}>
+                                  <p>
+                                    {t('BookingOverview.lblCheckOutInfoText1')}
+                                    <br />
+                                    {t('BookingOverview.lblCheckOutInfoText2')}
+                                  </p>
+                                </Nav.Item>
+                              )}
+                              <Nav.Item className={`${styles.navItem} text-right`}>
+                                {portalType === WORKFLOW_TYPE.B2C && bPDownloadAllowed && (
+                                  <Button className="mt-20 fonts-14" onClick={() => downloadBPFiles()}>
+                                    {t('BookingOverview.lblDwnladBPText')}
+                                  </Button>
+                                )}
+                                {reservationInfo && reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK && isLogged && (
+                                  (reservationInfo.isPNRAssociated && portalType === WORKFLOW_TYPE.B2C) ||
+                                  (fList.isMMBAvail && portalType === WORKFLOW_TYPE.B2B) && renderMMBButton(fList)
+                                )}
+                              </Nav.Item>
+                            </Nav>
+              
+                            {(duePymntAllw || holdSkySpeed) && (
+                              <div className="row mb-4">
+                                <Container className={`${styles.boxContent} mx-3 py-2 px-4 d-flex justify-content-between`}>
+                                  <div className="d-flex align-items-center">
+                                    <h6 className="m-0 text-danger">{`${t('BookingOverview.lblDuePay')} : ${formatCurrency(pendingAmount, pndingAmntCurrency, exchangeRate, selectedCurrencyCode)}`}</h6>
+                                  </div>
+                                  <Button className="btn btn-primary" onClick={payPendingAmount}>
+                                    <h6 className="m-0">{t('BookingOverview.lblProceedPay')}</h6>
+                                  </Button>
+                                </Container>
+                              </div>
+                            )}
+              
+                            <div className={`${styles.boxContent} ${'price_details_tab'} ${styles.noPad}`}>
+                              <Tab.Container id={`pricingTab_${fIndex}`} defaultActiveKey={`bookingDetail_${fIndex}`}>
+                                {!reservationInfo || reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK ? (
+                                  <div className={`${styles.boxHeader} ${styles.noPad}`}>
+                                    <div className="custom-tab">
+                                      <Nav variant="tabs" className={`${styles.navTabs} ${styles.colthree}`}>
+                                        <Nav.Item className={styles.navItem}>
+                                          <Nav.Link eventKey={`bookingDetail_${fIndex}`}>{t('BookingOverview.lblBokngdtls')}</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item className={styles.navItem}>
+                                          <Nav.Link eventKey={`priceDetail_${fIndex}`}>{t('BookingOverview.lblPredtls')}</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item className={styles.navItem}>
+                                          <Nav.Link eventKey={`paymentDetail_${fIndex}`}>{t('PaymentPage.lblPaymntDtils')}</Nav.Link>
+                                        </Nav.Item>
+                                      </Nav>
+                                    </div>
+                                  </div>
+                                ) : null}
+              
+                                <div className={`${styles.boxBody} pricing_Tab`}>
+                                  <Tab.Pane eventKey={`bookingDetail_${fIndex}`}>
+                                    <div className={styles.bookingDetailsTab}>
+                                      <PassengerBaggageDetail
+                                        // cabinclass={cabinClassCode}
+                                        paxData={passengersInfo}
+                                        addData={find(flightAddon, (l) => l.segmentKey === fList.segments[0].segmentKey)}
+                                        DetailType="bookingDetails"
+                                        reservationInfo={reservationInfo}
+                                        hasIcon
+                                        exchangeRate={exchangeRate}
+                                        selectedCurrencyCode={selectedCurrencyCode}
+                                      />
+                                    </div>
+                                    {reservationInfo && reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK && (
+                                      <div className={`${styles.boxContent} ${styles.mt10} ${styles.bookingOwnerBox}`}>
+                                        <h4 className={styles.mb20}>{t('BookingOverview.lblCntifmnbkingowr')}</h4>
+                                        <div className={styles.profileTitle}>
+                                          <i className={`${styles.foIcon} ${styles.iconFoUser2} ${styles.roundIcon}`} />
+                                          {passengersInfo[0].contactName}
+                                        </div>
+                                        <Row className={`${styles.dFlex} ${styles.bookingOwnerRow}`}>
+                                          <div className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                            <span>{t('FlightResult.lblEmailID')}</span>
+                                            <h6>{passengersInfo[0].contactEmail}</h6>
+                                          </div>
+                                          <div className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                            <span>{t('FlightResult.lblMobilePnNumber')}</span>
+                                            <h6>{passengersInfo[0].phoneNumber}</h6>
+                                          </div>
+                                        </Row>
+                                      </div>
+                                    )}
+                                  </Tab.Pane>
+                                  <Tab.Pane eventKey={`priceDetail_${fIndex}`}>
+                                    <div className={styles.bookingDetailsTab}>
+                                      <div className={`${styles.boxContent} ${styles.mt10} ${styles.priceDetailsBox}`}>
+                                        <div className={`${styles.boxBody}`}>
+                                          <BaggageDetailsComponent
+                                            paxData={passengersInfo}
+                                            flightData={flightData}
+                                            addData={find(flightAddon, (l) => l.segmentKey === fList.segments[0].segmentKey)}
+                                            isRoundTrip={flightInfo[0].flights.length > 1}
+                                            fareGroupInfo={fareGroupInfo}
+                                            DetailType="priceDetails"
+                                            exchangeRate={exchangeRate}
+                                            selectedCurrencyCode={selectedCurrencyCode}
+                                            retFlightData={retFlightData}
+                                            allAddData={flightAddon}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Tab.Pane>
+                                  <Tab.Pane eventKey={`paymentDetail_${fIndex}`}>
+                                    <div className={styles.bookingDetailsTab}>
+                                      <PassengerBaggageDetail
+                                        {...payDetailData}
+                                        DetailType="paymentDetails"
+                                        exchangeRate={exchangeRate}
+                                        selectedCurrencyCode={selectedCurrencyCode}
+                                      />
+                                    </div>
+                                  </Tab.Pane>
+                                </div>
+                              </Tab.Container>
+                            </div>
+                          </div>
+                        </Tab.Pane>
+                      ))}
+                    </Tab.Content>
+                  </Col>
+                </Tab.Container>
+              </Row>
+              
               )
           }
           <Fragment>
