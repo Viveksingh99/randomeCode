@@ -1,0 +1,897 @@
+/* eslint-disable linebreak-style */
+import React, {
+  useEffect, useState, Fragment, useRef,
+} from 'react';
+import { connect } from 'react-redux';
+import serialize from 'form-serialize';
+import {
+  Row, Col, Button,
+  Form, Alert,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import {
+  map, isEmpty, includes, toString,
+  compact, uniq, find,
+} from 'lodash';
+import Cookies from 'js-cookie';
+import * as Scroll from 'react-scroll';
+import PassengerDetails from './passengerDetails';
+import ContactDetails from './contactDetails';
+import Addons from '../Addons';
+import ModalComponent from '../Modal';
+import styles from './styles.scss';
+import {
+  fetchPayment, setBookingError, getPackageSummary,
+  setGPAYWalletToken, setPaymentRetry,
+  checkWalletAmountAvailability, applyingVoucher,
+  resetVoucher,
+} from '../../redux/payment.redux';
+import { updateCashbackStatus } from '../../redux/flight.redux';
+import {
+  getPaymentInfo,
+} from '../../redux/fareLock.redux';
+import { getProfilePayments } from '../../redux/profile.redux';
+import {
+  setCurrency, walletActions,
+} from '../../redux/price.redux';
+import {
+   getLanguageCode,
+} from '../../helpers/utilities';
+import PageLoader from '../PageLoaderModal';
+import {
+  WORKFLOW, DEFAULT_CURRENCY_CODE,
+  PAYMENT_METHOD_IDS, GOOGLE_PAY_TOKEN, COOKIE_T_TOKEN, WORKFLOW_TYPE,
+  PAGE_LOAD_TYPE,
+  VOUCHER_STATUS,
+} from '../../constants/common';
+import { IAppState } from '../../redux/initialState';
+import PaymentComponent from '../../Service/IPaymentComponent';
+import moment from 'moment';
+import { sendPassengerData } from '../../redux/passengerContent';
+
+const { Router } = require('../../next/router');
+
+const paymentComponent = new PaymentComponent();
+
+const { scroller } = Scroll;
+const scroll = Scroll.animateScroll;
+function passengerContent(props: any) {
+  const {
+    paymentGroup, dispatch, flight, PaxData, isBooKPNRLoader,
+    query, paymentForm, changePaxPriceInfo,
+    isLogged, paymentError, promoData, isClubFare,
+    isPNRFailed, addons, selectedAddon, actionState,
+    canProceed, selAddonResult, totalAmount, userData,
+    workflow, walletToken, exchangeRate,
+    selectedCurrencyCode, currencyConversion,
+    exchangeRateID, sourceCurrency, sessionRedirect,
+    paymentRetry, bookingError, billingInfo, isFetchingPayments, portalType,
+    isRouteChanging, selectPaymentErr,
+    isPassportDataShow, isCashbackAvail, isCashbackActive, flightData, isNewLogin, profInfo, setImPassenger, imPassenger, payTypeId, setPayTypeId
+  } = props;
+  console.log(PaxData, 'PaxData');
+  const [loaderType, setLoaderType] = useState(PAGE_LOAD_TYPE.PRICING);
+  const [paymenttRetry, setPaymenttRetry] = useState(paymentRetry);
+  const [selectedPayErr, setselectedPayErr] = useState('');
+  const [showcashbackModal, setShowcashbackModal] = useState(false);
+  const { paymentGroups: pg } = paymentGroup;
+  
+
+  useEffect(() => {
+    if (selectedCurrencyCode === '') {
+      dispatch(setCurrency(DEFAULT_CURRENCY_CODE));
+    }
+  }, [selectedCurrencyCode]);
+
+  const [isShowLoader, setIsShowLoader] = useState(isBooKPNRLoader);
+  const { pnr, reservationType } = query;
+  const { addNameLater, smsItinerary } = addons;
+  const {
+    automatedCheckIn: selAutoCheckin, addNameLater: IsSelNameLater, fareLock: selFarelock,
+  } = selectedAddon;
+  const {
+    totalPrice, currencyCode,
+    walletAmountApplied, walletChosen,
+  } = totalAmount;
+
+  const { t } = useTranslation();
+  const payForm = useRef<Form & HTMLFormElement>(null);
+  const [validated, setValidated] = useState(false);
+  const [showAddonError, setAddonError] = useState(canProceed);
+  const [showPaxConfirmation, setPaxConfirmation] = useState(false);
+  const [paxDetails, setPaxDetails] = useState(null);
+  const [paxObject, setPaxObject] = useState({});
+  const [addonErrorMsg, setAddonErrorMsg] = useState(selAddonResult);
+  const [isMobCodeErr, setIsMobCodeErr] = useState(false);
+  const [isEmailValid, setEmailValid] = useState(isLogged || paymentRetry);
+  // const [payTypeId, setPayTypeId] = useState(walletChosen ? PAYMENT_METHOD_IDS.WALLET : 0);
+  const [currentTab, setCurrentTab] = useState(walletChosen ? 'my_payments' : 'new_card');
+  const [selVoucherCode, setSelVoucherCode] = useState('');
+  const [formValidated, setFormValidated] = useState(false);
+  const [isFareLockZeroPay, setIsFareLockZeroPay] = useState(false);
+console.log(formValidated);
+  const enabledPaxConfirmation = false;
+  let obj: any = [];
+  let mobileNumber: any = '';
+  let emailAddress: any = '';
+  let mobileCode: any = '';
+  let allowPayment: boolean = false;
+
+  const { isZeroPayment } = promoData;
+  const encToken = Cookies.get(COOKIE_T_TOKEN);
+
+  if ((portalType === WORKFLOW_TYPE.B2C) && isLogged) {
+    ({ mobileNumber, emailAddress, mobileCode } = userData);
+  }
+
+  const [emailid, setEmailid] = useState(emailAddress);
+  const [cnfEmailid, setCnfEmailid] = useState(emailAddress);
+
+  const [isEmalMtch, setisEmalMtch] = useState(emailid === cnfEmailid);
+
+  useEffect(() => {
+    const { paymentGroups: pg } = paymentGroup;
+    const creditCardAvial = pg && (find(pg, (x: any) => x.groupName === 'Credit/Debit Card'
+    || x.groupName === 'Credit or Debit Card'
+    || x.groupName === 'UnionPay'
+    || x.groupName === 'All Cards: exc. Russian'));
+    const qiwiAvail = pg && find(pg, (x: any) => x.groupName === 'Qiwi');
+    const getPayNowAvail = pg && find(pg, (x: any) => x.groupName === 'Pay Now');
+    if (isEmpty(creditCardAvial)) {
+      setPayTypeId(walletChosen ? PAYMENT_METHOD_IDS.WALLET : 0);
+      if (isEmpty(qiwiAvail) && !isEmpty(getPayNowAvail) && actionState !== WORKFLOW.FARE_LOCK) {
+        setPayTypeId(
+          selectedCurrencyCode === DEFAULT_CURRENCY_CODE
+            ? PAYMENT_METHOD_IDS.PAYNOW : 0,
+        );
+        setCurrentTab('b2b_wallet_payment');
+      } else {
+        setCurrentTab(walletChosen ? 'my_payments' : 'new_card');
+      }
+    } else {
+      setCurrentTab(walletChosen ? 'my_payments' : 'new_card');
+    }
+    if (isEmpty(payTypeId) || payTypeId === 0) {
+      const alphaCardPaymentMethod = pg
+        && find(pg, (x: any) => x.groupName === 'Credit or Debit Card');
+      const getnetCardPaymentMethod = pg
+        && find(pg, (x: any) => x.groupName === 'Credit/Debit Card');
+      const unionPayPaymentMethod = pg
+        && find(pg, (x: any) => x.groupName === 'UnionPay');
+      const maibBankPaymentMethod = pg
+        && find(pg, (x: any) => x.groupName === 'All Cards: exc. Russian');
+      const aebBankPaymentMethod = pg
+        && find(pg, (x: any) => x.groupName === 'AEB Bank');        
+      let availcardsCount = 0;
+      if (!isEmpty(alphaCardPaymentMethod)) {
+        availcardsCount += 1;
+      }
+      if (!isEmpty(getnetCardPaymentMethod)) {
+        availcardsCount += 1;
+      }
+      if (!isEmpty(unionPayPaymentMethod)) {
+        availcardsCount += 1;
+      }
+      if (!isEmpty(maibBankPaymentMethod)) {
+        availcardsCount += 1;
+      }
+      if (!isEmpty(aebBankPaymentMethod)) {
+        availcardsCount += 1;
+      }
+      if (availcardsCount === 1) {
+        if (isEmpty(alphaCardPaymentMethod) || isEmpty(getnetCardPaymentMethod)) {
+          if (!isEmpty(alphaCardPaymentMethod)) {
+            const [cardPaymentt] = alphaCardPaymentMethod.payments;
+            if (!isEmpty(cardPaymentt)) {
+              setPayTypeId(cardPaymentt.paymentTypeID);
+            }
+          } else if (!isEmpty(getnetCardPaymentMethod)) {
+            const [cardPaymentt] = getnetCardPaymentMethod.payments;
+            if (!isEmpty(cardPaymentt)) {
+              setPayTypeId(cardPaymentt.paymentTypeID);
+            }
+          } else if (!isEmpty(unionPayPaymentMethod)) {
+            const [cardPaymentt] = unionPayPaymentMethod.payments;
+            if (!isEmpty(cardPaymentt)) {
+              setPayTypeId(cardPaymentt.paymentTypeID);
+            }
+          } else if (!isEmpty(maibBankPaymentMethod)) {
+            const [cardPaymentt] = maibBankPaymentMethod.payments;
+            if (!isEmpty(cardPaymentt)) {
+              setPayTypeId(cardPaymentt.paymentTypeID);
+            }
+          } else if (!isEmpty(aebBankPaymentMethod)) {
+            const [cardPaymentt] = aebBankPaymentMethod.payments;
+            if (!isEmpty(cardPaymentt)) {
+              setPayTypeId(cardPaymentt.paymentTypeID);
+            }
+          }  
+        }
+      }
+    }
+  }, [paymentGroup]);
+
+  useEffect(() => {
+    dispatch(getPackageSummary());
+    dispatch(checkWalletAmountAvailability());
+  }, [walletAmountApplied, totalPrice, currencyCode, payTypeId]);
+
+  useEffect(() => {
+    if (!selectPaymentErr.isSuccess) {
+      setselectedPayErr(selectPaymentErr.msgs);
+      scroll.scrollToTop();
+      setIsShowLoader(false);
+    }
+  }, [selectPaymentErr]);
+
+  useEffect(() => {
+    if (isNewLogin) {
+      scroll.scrollToTop();
+      setIsShowLoader(false);
+    }
+  }, [isNewLogin]);
+
+  const onPAxDetailConfirmed = (paxObjectt: any) => {
+    setIsShowLoader(true);
+    const { cardID, paymentId } = paxObjectt.cardInfo;
+    let filterdPayID = compact(paymentId);
+    filterdPayID = uniq(filterdPayID);
+    paymentComponent.paymentProcess(actionState, dispatch, {
+      filterdPayID,
+      cardID,
+      uriRedirect: workflow.uriRedirect,
+      sessionRedirect: workflow.sessionRedirect,
+      obj: paxObjectt,
+      setAddonError,
+      setAddonErrorMsg,
+      changePaxPriceInfo,
+      paymentForm,
+      pnr,
+      reservationType,
+      userData,
+      portalType,
+    });
+    setPaxConfirmation(showPaxConfirmation);
+  };
+
+  useEffect(() => {
+    if (walletToken !== '') onPAxDetailConfirmed(paxObject);
+  }, [walletToken]);
+
+  const paySubmitHandler = (event: any) => {
+    setLoaderType(PAGE_LOAD_TYPE.PAYMENT);
+    const form = event.currentTarget;
+    obj = serialize(form, { hash: true });
+    event.preventDefault(); // remove for success
+    event.stopPropagation(); // remove for success
+    const { cardInfo } = obj;
+    console.log(Object.values(obj.passenger), 'obj');
+    setisEmalMtch(emailid === cnfEmailid);
+    let cardID: any = 0;
+    let paymentId: any = 0;
+    if (!isEmpty(cardInfo)) {
+      ({ cardID, paymentId } = cardInfo);
+    }
+    let filterdPayID = compact(paymentId);
+    filterdPayID = uniq(filterdPayID);
+    const amountToPay = totalPrice - walletAmountApplied;
+    const isWalletSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.WALLET));
+    const isVoucherSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.VOUCHER));
+    const isSCSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.SAVED_CARDS));
+    const isCCSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.CARD));
+    const isAlphaCCSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.ALPHA_CARD));
+    const isUnionPayCCSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.UNIONPAY_CARD));
+    const isMAIBBankSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.MAIB_BANK));
+    const isAEBBankSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.AEB_BANK));
+    const isQiwiSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.QIWI));
+    const isBPaySelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.BPAY));
+    const isB2BWaltSelected = includes(filterdPayID, toString(PAYMENT_METHOD_IDS.PAYNOW));
+    if (
+      (isWalletSelected && isVoucherSelected
+        && (isCCSelected || isAlphaCCSelected || isUnionPayCCSelected || isMAIBBankSelected || isAEBBankSelected))
+      || (isWalletSelected && isVoucherSelected && isSCSelected)
+      || (isWalletSelected && (isCCSelected || isAlphaCCSelected || isUnionPayCCSelected || isMAIBBankSelected || isAEBBankSelected))
+      || (isWalletSelected && isSCSelected)
+      || (isVoucherSelected && (isCCSelected || isAlphaCCSelected || isUnionPayCCSelected || isMAIBBankSelected || isAEBBankSelected))
+      || (isVoucherSelected && isSCSelected)
+      || (isWalletSelected && isVoucherSelected && amountToPay === 0)
+      || (isWalletSelected && amountToPay === 0)
+      || (isVoucherSelected && amountToPay === 0)
+      || (isCCSelected || isAlphaCCSelected || isUnionPayCCSelected || isMAIBBankSelected || isAEBBankSelected)
+      || isSCSelected
+      || isZeroPayment
+      || isQiwiSelected
+      || isBPaySelected
+      || isB2BWaltSelected
+      || isFareLockZeroPay
+    ) {
+      allowPayment = true;
+    }
+    if (
+      form.checkValidity()
+      && (props.actionState === WORKFLOW.SEARCH_FLIGHT
+        ? (obj.contactdetail.mobileCode !== '0' && obj.contactdetail.mobileCode !== '' && isEmailValid && isEmalMtch)
+        : true
+      )
+      && (
+        (payTypeId === PAYMENT_METHOD_IDS.CARD
+          || payTypeId === PAYMENT_METHOD_IDS.ALPHA_CARD
+          || payTypeId === PAYMENT_METHOD_IDS.UNIONPAY_CARD
+          || payTypeId === PAYMENT_METHOD_IDS.MAIB_BANK
+          || payTypeId === PAYMENT_METHOD_IDS.AEB_BANK)
+          ? !isEmpty(cardID) : true
+      )
+      && !isEmpty(filterdPayID) && allowPayment
+    ) {
+      setIsMobCodeErr(false);
+      setPaxDetails(obj.passenger);
+      setFormValidated(true);
+      // if (!applyingPromo) {
+      setIsShowLoader(!includes(filterdPayID, toString(PAYMENT_METHOD_IDS.GPAY)));
+      if (props.actionState === WORKFLOW.SEARCH_FLIGHT && enabledPaxConfirmation) {
+        setPaxConfirmation(true);
+        setPaxObject(obj);
+      } else if (!includes(filterdPayID, toString(PAYMENT_METHOD_IDS.GPAY))) {
+        paymentComponent.paymentProcess(actionState, dispatch, {
+          paymentId: filterdPayID,
+          cardID,
+          uriRedirect: workflow.uriRedirect,
+          sessionRedirect: workflow.sessionRedirect,
+          obj,
+          setAddonError,
+          setAddonErrorMsg,
+          changePaxPriceInfo,
+          paymentForm,
+          pnr,
+          reservationType,
+          userData,
+          portalType,
+        });
+      } else if (includes(paymentId, toString(PAYMENT_METHOD_IDS.GPAY))) {
+        setPaxObject(obj);
+      }
+      // }
+      event.preventDefault(); // remove for success
+      event.stopPropagation(); // remove for success
+    } else if (props.actionState === WORKFLOW.SEARCH_FLIGHT) {
+      setFormValidated(false);
+      setIsMobCodeErr(obj.contactdetail.mobileCode === '0' || obj.contactdetail.mobileCode === '');
+      setIsShowLoader(false);
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      setFormValidated(false);
+      setIsMobCodeErr(true);
+      setIsShowLoader(false);
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const errField = document.querySelectorAll('.form-control:invalid') || document.querySelectorAll('.is-invalid') || document.querySelectorAll('.in-valid');
+    if (errField.length > 0) {
+      const curErrField = errField[0].getAttribute('name');
+      scroller.scrollTo(
+        curErrField !== null ? curErrField.toString() : '',
+        {
+          duration: 800,
+          delay: 100,
+          smooth: true,
+          offset: -200,
+        },
+      );
+    }
+    setValidated(true);
+    event.preventDefault();
+    event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!form.checkValidity()) {
+      setFormValidated(false);
+      return;
+    }
+
+    obj = serialize(form, { hash: true });
+
+    if (!isEmpty(cardInfo)) {
+      ({ cardID, paymentId } = cardInfo);
+    }
+    filterdPayID = uniq(filterdPayID);
+
+    // if (allowPayment) {
+      const passengersInfo = Object.values(obj.passenger).map((passenger: any) => {
+        const { lastName, ...rest } = passenger;
+        return { surName: lastName, ...rest };
+      });
+
+      const ISendPassengerDataRequest = {
+        token: '',
+        paxInfoId: 0,
+        passengersInfo,
+        billingInfo: obj.contactdetail,
+      };
+      dispatch(sendPassengerData(ISendPassengerDataRequest));
+      
+    // } else {
+    //   setFormValidated(false);
+    // }
+    Router.pushRoute('/Baggage');
+  };
+
+  useEffect(() => {
+    if (!isEmpty(selVoucherCode)) {
+      const voucherField = document.getElementById('voucherCodeInput');
+      const getVoucherField = voucherField !== null ? voucherField.getAttribute('id') : null;
+      scroller.scrollTo(
+        getVoucherField !== null ? getVoucherField.toString() : '',
+        {
+          duration: 800,
+          delay: 100,
+          smooth: true,
+          offset: -200,
+        },
+      );
+    }
+  }, [selVoucherCode]);
+  useEffect(() => {
+    switch (props.actionState) {
+      case WORKFLOW.FARE_LOCK:
+        dispatch(getPaymentInfo());
+        break;
+      default:
+        dispatch(fetchPayment());
+        break;
+    }
+  }, [flight]);
+  useEffect(() => {
+    if (!isBooKPNRLoader) {
+      setIsShowLoader(false);
+      scroll.scrollToTop();
+    } else {
+      setIsShowLoader(true);
+    }
+  }, [isBooKPNRLoader]);
+  useEffect(() => {
+    if (isFetchingPayments) {
+      setIsShowLoader(true);
+    } else {
+      setIsShowLoader(false);
+    }
+  }, [isFetchingPayments]);
+  const [bookingErrors, setBookingErrors] = useState(bookingError);
+
+  useEffect(() => {
+    if (isLogged || paymentRetry || !isEmpty(billingInfo.email)) {
+      dispatch(walletActions(false));
+      setEmailValid(true);
+    }
+    const result = {
+      msgs: [],
+      isSuccess: false,
+    };
+    // dispatch(applyWallet(false));
+    dispatch(walletActions(false));
+    setIsFareLockZeroPay(selectedAddon.fareLock.length > 0 && totalPrice === 0);
+    dispatch(setBookingError(result));
+    setBookingErrors(null);
+    Cookies.remove(GOOGLE_PAY_TOKEN, { path: '/', domain: process.env.AUTH_COOKIE_DOMAIN });
+    const getPaymentToken = setInterval(async () => {
+      const waToken = typeof Cookies.get(GOOGLE_PAY_TOKEN) !== 'undefined' ? Cookies.get(GOOGLE_PAY_TOKEN) : '';
+      if (waToken !== '') {
+        dispatch(setGPAYWalletToken(waToken || ''));
+      }
+    }, 1000);
+    const alphaCardPaymentMethod = pg
+      && find(pg, (x: any) => x.groupName === 'Credit or Debit Card');
+    const getnetCardPaymentMethod = pg
+      && find(pg, (x: any) => x.groupName === 'Credit/Debit Card');
+    const unionPayPaymentMethod = pg
+      && find(pg, (x: any) => x.groupName === 'UnionPay');
+    const maibBankPaymentMethod = pg
+      && find(pg, (x: any) => x.groupName === 'All Cards: exc. Russian');
+    const aebBankPaymentMethod = pg
+      && find(pg, (x: any) => x.groupName === 'AEB Bank');
+    let availcardsCount = 0;
+    if (!isEmpty(alphaCardPaymentMethod)) {
+      availcardsCount += 1;
+    }
+    if (!isEmpty(getnetCardPaymentMethod)) {
+      availcardsCount += 1;
+    }
+    if (!isEmpty(unionPayPaymentMethod)) {
+      availcardsCount += 1;
+    }
+    if (!isEmpty(maibBankPaymentMethod)) {
+      availcardsCount += 1;
+    }
+    if (!isEmpty(aebBankPaymentMethod)) {
+      availcardsCount += 1;
+    }
+    if (availcardsCount === 1) {
+      if (isEmpty(alphaCardPaymentMethod) || isEmpty(getnetCardPaymentMethod)) {
+        if (!isEmpty(alphaCardPaymentMethod)) {
+          const [cardPaymentt] = alphaCardPaymentMethod.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setPayTypeId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(getnetCardPaymentMethod)) {
+          const [cardPaymentt] = getnetCardPaymentMethod.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setPayTypeId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(unionPayPaymentMethod)) {
+          const [cardPaymentt] = unionPayPaymentMethod.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setPayTypeId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(maibBankPaymentMethod)) {
+          const [cardPaymentt] = maibBankPaymentMethod.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setPayTypeId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(aebBankPaymentMethod)) {
+          const [cardPaymentt] = aebBankPaymentMethod.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setPayTypeId(cardPaymentt.paymentTypeID);
+          }
+        }
+      }
+    }
+    return () => clearInterval(getPaymentToken);
+  }, []);
+  // const hideGetPaymentDetails = process.env.PAYMENT_GATEWAY === 'ALPHA';
+  const hideGetPaymentDetails = false;
+
+  useEffect(() => {
+    setBookingErrors(bookingError);
+  }, [bookingError]);
+  useEffect(() => {
+    if (payTypeId !== PAYMENT_METHOD_IDS.INVALID_PAYMENT) {
+      dispatch(applyingVoucher(false));
+    }
+    if (isCashbackAvail && isCashbackActive) {
+      if (currentTab === 'new_card') {
+        if (
+          (
+            payTypeId !== PAYMENT_METHOD_IDS.CARD
+            && payTypeId !== PAYMENT_METHOD_IDS.ALPHA_CARD
+            && payTypeId !== PAYMENT_METHOD_IDS.UNIONPAY_CARD
+            && payTypeId !== PAYMENT_METHOD_IDS.MAIB_BANK
+            && payTypeId !== PAYMENT_METHOD_IDS.AEB_BANK
+            && payTypeId !== PAYMENT_METHOD_IDS.INVALID_PAYMENT
+          )
+          || (promoData.status !== '' && promoData.status === VOUCHER_STATUS.AVAILABLE)
+        ) {
+          setShowcashbackModal(true);
+        }
+      } else if (currentTab === 'my_payments') {
+        if (payTypeId === PAYMENT_METHOD_IDS.INVALID_PAYMENT || (promoData.status !== '' && promoData.status === VOUCHER_STATUS.AVAILABLE)) {
+          setShowcashbackModal(true);
+        }
+      }
+    }
+    if (isCashbackAvail && isCashbackActive
+      && walletChosen && (payTypeId === PAYMENT_METHOD_IDS.CARD
+        || payTypeId === PAYMENT_METHOD_IDS.ALPHA_CARD
+        || payTypeId === PAYMENT_METHOD_IDS.UNIONPAY_CARD
+        || payTypeId === PAYMENT_METHOD_IDS.MAIB_BANK
+        || payTypeId === PAYMENT_METHOD_IDS.AEB_BANK)) {
+      dispatch(walletActions(false));
+    }
+    if (isCashbackAvail && (payTypeId === PAYMENT_METHOD_IDS.CARD
+      || payTypeId === PAYMENT_METHOD_IDS.ALPHA_CARD
+      || payTypeId === PAYMENT_METHOD_IDS.UNIONPAY_CARD
+      || payTypeId === PAYMENT_METHOD_IDS.MAIB_BANK
+      || payTypeId === PAYMENT_METHOD_IDS.AEB_BANK)
+      && promoData.status !== VOUCHER_STATUS.AVAILABLE
+      && !walletChosen && selFarelock.length === 0) {
+      dispatch(updateCashbackStatus(true));
+    }
+  }, [payTypeId, promoData.status, walletChosen, currentTab]);
+  const handleCashbackContinue = () => {
+    setShowcashbackModal(false);
+    dispatch(updateCashbackStatus(false));
+  };
+
+  const handleCashbackMdlHide = () => {
+    setShowcashbackModal(false);
+    if (currentTab === 'my_payments') {
+      setCurrentTab('new_card');
+      dispatch(walletActions(false));
+    }
+    setSelVoucherCode('');
+    if (promoData.status === VOUCHER_STATUS.AVAILABLE) {
+      setSelVoucherCode('');
+      dispatch(resetVoucher());
+    }
+    const cardPaymentMethod = pg
+      && find(pg, (x: any) => x.groupName === 'Credit/Debit Card' || x.groupName === 'Credit or Debit Card'
+      || x.groupName === 'UnionPay' || x.groupName === 'All Cards: exc. Russian');
+    if (!isEmpty(cardPaymentMethod)) {
+      const [cardPaymentt] = cardPaymentMethod.payments;
+      if (!isEmpty(cardPaymentt)) {
+        setPayTypeId(cardPaymentt.paymentTypeID);
+      }
+    }
+  };
+  const IsBookingCurrency = true;
+  const userAvail = () => {
+  }
+
+  useEffect(() => {
+    if (isLogged && portalType === WORKFLOW_TYPE.B2C
+      && !hideGetPaymentDetails && !isEmpty(paymentGroup)) {
+      setIsShowLoader(true);
+      dispatch(getProfilePayments(IsBookingCurrency)).then(() => {
+        setIsShowLoader(false);
+      });
+    }
+  }, [isLogged, paymentGroup]);
+  
+  return (
+    <div className="">
+      <PageLoader loadType={loaderType} show={isShowLoader || isRouteChanging} />
+      {
+        (isPNRFailed && typeof bookingErrors !== 'undefined' && actionState !== WORKFLOW.SEARCH_FLIGHT)
+          ? map(bookingErrors, (erList: any) => (
+            <Alert key={`${erList.code}_bookpnr`} variant="danger">{erList.msgText}</Alert>
+          ))
+          : ''
+      }
+      {
+        !selectPaymentErr.isSuccess && !isEmpty(selectedPayErr)
+          ? map(selectedPayErr, (erList: any) => (
+            <Alert key={`${erList.code}_selctdPay`} variant="danger">{erList.msgText}</Alert>
+          ))
+          : ''
+      }
+      <Form as="form" autoComplete="new-payment" ref={payForm} noValidate validated={validated} id="paymentForm" onSubmit={(ev: any) => paySubmitHandler(ev)}>
+        {
+          actionState === WORKFLOW.SEARCH_FLIGHT
+            ? (
+              <Fragment>
+                <Row className={styles.xxsNoMar}>
+                  <Col xs sm md className={styles.xxsNoPad}>
+                    <PassengerDetails
+                      actionState={actionState}
+                      paxDetails={PaxData}
+                      isLoggedIn={isLogged}
+                      addNameLater={addNameLater}
+                      autoCheckin={selAutoCheckin}
+                      IsSelNameLater={IsSelNameLater}
+                      isClubFare={isClubFare}
+                      isPassportDataShow={isPassportDataShow}
+                      profInfo={profInfo}
+                      checkData={userAvail}
+                      travelDate={moment(flightData[0].flights[0].segments[0].depDateTime).set('hour' , 23).set('minute', 59)}
+                      imPassenger={imPassenger}
+                      setImPassenger={setImPassenger}
+                    />
+                    <ContactDetails
+                      contactDetails={{ mobileCode, mobileNumber, emailAddress }}
+                      smsItinerary={smsItinerary}
+                      isMobCodeErr={isMobCodeErr}
+                      isEmailValid={setEmailValid}
+                      setError={setIsMobCodeErr}
+                      emailid={setEmailid}
+                      cnfEmailid={setCnfEmailid}
+                      isEmailMatch={isEmalMtch}
+                      isFarelock={selectedAddon.fareLock}
+                      isLoggedIn={isLogged}
+                      isNewLogin={isNewLogin}
+                    />
+                  </Col>
+                </Row>
+                <Row className={`${styles.xxsNoMar} d-none`}>
+                  <Col xs sm="6" md="12" className={`${styles.mt40} ${styles.xxsNoPad}`}>
+                    <Addons />
+                  </Col>
+                </Row>
+              </Fragment>
+            ) : ''
+        }
+        <Row className={`${styles.mt40} ${styles.xxsNoMar} ${!isEmpty(currencyConversion) && actionState === WORKFLOW.SEARCH_FLIGHT ? '' : 'd-none'}`}>
+          <Col xs sm md className={styles.xxsNoPad}>
+            <div className={`${styles.boxContent} ${styles.paymentMethods}`}>
+              <div className={`${styles.boxBody} ${styles.p25}`}>
+                <h4 className={styles.mb20}>{t('PaymentPage.lblmultiCurrencyQuest')}</h4>
+                <Col xs="12" sm="12" md="5" className={`${styles.formClm1} ${styles.mt20}`}>
+                  <Form.Group>
+                    <Form.Control
+                      value={selectedCurrencyCode}
+                      autoComplete="off"
+                      as="select"
+                      required
+                      name="currencyExchange[paymentCurrency]"
+                      onChange={(ev: any) => {
+                        dispatch(setCurrency(ev.target.value));
+                      }}
+                    >
+                      <option value="EUR">{t('MultiCurrency.EUR')}</option>
+                      {
+                        map(currencyConversion, (currency: any, index: any) => (
+                          <option
+                            key={`currency_${currency.targetCurrency}_${index}`}
+                            value={currency.targetCurrency}
+                          >
+                            {t(`MultiCurrency.${currency.targetCurrency}`)}
+                          </option>
+                        ))
+                      }
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Control type="hidden" value={exchangeRate} name="currencyExchange[exchangeRate]" />
+                  <Form.Control type="hidden" value={exchangeRateID} name="currencyExchange[exchangeRateID]" />
+                  <Form.Control type="hidden" value={sourceCurrency} name="currencyExchange[sourceCurrency]" />
+                </Col>
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Row className={`${styles.mt40} ${styles.xxsNoMar}`}>
+          <Col xs sm md className={styles.xxsNoPad}>
+            <div className={`${styles.boxContent} ${styles.paymentMethods}`}>
+              <div className={`${styles.boxBody} ${styles.p25}`}>
+                <Row className={styles.xxsNoMar}>
+                  <Col xs sm md className={styles.xxsNoPad}>
+                    <div className={`${styles.totalPriceSec} ${styles.dFlex} ${styles.flexAlignCenter} ${styles.flexJustifyEnd} ${styles.mt40}`}>
+                      <div className={`${styles.priceLab} ${styles.dFlex} ${styles.flexAlignCenter}`}>
+                        <Form.Control type="hidden" value={totalPrice} name="uiTotalAmount" />
+                        <Form.Control type="hidden" value={getLanguageCode()} name="languageCode" />
+                        <Form.Control type="hidden" value={currencyCode} name="currency" />
+                        <Button className={`${styles.btn} ${styles.btnContinue}`} type="submit">
+                         Continue
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </div>
+            <Row className={`${styles.mt40} ${styles.xxsNoMar}`}>
+              <Col xs sm md className={styles.xxsNoPad} />
+            </Row>
+          </Col>
+        </Row>
+      </Form>
+      <ModalComponent
+        modData={paxDetails}
+        show={showPaxConfirmation}
+        modalSize="MedSize"
+        ModalType=""
+        modalTitle="PaymentPage.lblCnFrmPaxDetails"
+        modalBody="ConfirmPaxDetails"
+        onContinue={() => onPAxDetailConfirmed(paxObject)}
+        onClose={() => setPaxConfirmation(!showPaxConfirmation)}
+      />
+      <ModalComponent
+        modData={paymentError}
+        show={paymenttRetry}
+        modalSize="MedSize"
+        ModalType="modalWithheadercaption"
+        modalCaption="PaymentFailure.lblPymetreasonSubTitle"
+        modalTitle="PaymentFailure.lblPymetprblm"
+        modalBody="PaymentFailure"
+        onClose={() => { dispatch(setPaymentRetry(false)); setPaymenttRetry(!paymenttRetry); }}
+        onHide={() => { dispatch(setPaymentRetry(false)); setPaymenttRetry(!paymenttRetry); }}
+      />
+      <ModalComponent
+        modData={addonErrorMsg}
+        show={!showAddonError}
+        modalSize="MedSize"
+        isError
+        ModalType=""
+        modalTitle="FlightResult.lblAddonSelecError"
+        modalBody="AddonSelectionError"
+        onHide={() => setAddonError(!showAddonError)}
+      />
+      {
+        actionState === WORKFLOW.SEARCH_FLIGHT ? (
+          <ModalComponent
+            modData={bookingErrors}
+            show={isPNRFailed && typeof bookingErrors !== 'undefined' && bookingErrors.length > 0}
+            // show
+            modalSize="MedSize"
+            ModalType="modalWithheader"
+            modalTitle="PaymentPage.lblBookPNRFailure"
+            modalBody="BookingFailure"
+            onClose={() => {
+              window.location.href = portalType === WORKFLOW_TYPE.B2C ? sessionRedirect : `${process.env.AGENT_ENTRY_PATH}/RetainSession/RetainLoginSession?t=${encToken}`;
+            }}
+            onHide={() => {
+              setIsShowLoader(true);
+              window.location.href = portalType === WORKFLOW_TYPE.B2C ? sessionRedirect : `${process.env.AGENT_ENTRY_PATH}/RetainSession/RetainLoginSession?t=${encToken}`;
+            }}
+            hideCloseButton
+          />
+        ) : <></>
+      }
+      <ModalComponent modData={addonErrorMsg} show={!showAddonError} modalSize="MedSize" isError ModalType="" modalTitle="FlightResult.lblAddonSelecError" modalBody="AddonSelectionError" onHide={() => setAddonError(!showAddonError)} />
+      {
+        portalType === WORKFLOW_TYPE.B2C && isCashbackAvail && isCashbackActive
+          ? (
+            <ModalComponent
+              modData=""
+              show={showcashbackModal}
+              modalSize="smallSize"
+              ModalType=""
+              selectedTab=""
+              modalTitle=""
+              modalBody="RemoveModal"
+            // removeModalIcon="im-group-passengers"
+              removeModalLinkyes={() => {
+                handleCashbackContinue();
+              }}
+              removeModalTitle="FlightResult.lblCashBack"
+              removeModalCnt="FlightResult.lblCashBackMsg1"
+              isItemDeleted={false}
+              onHide={() => {
+                handleCashbackMdlHide();
+              }}
+            />
+          )
+          : <Fragment />
+      }
+    </div>
+  );
+}
+
+const mapStateToProps = (state: IAppState) => ({
+  isLogged: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: state.auth.userData,
+  paymentGroup: state.workflow.actionState === WORKFLOW.FARE_LOCK
+    ? state.fareLock.payments : state.payment.paymentGroup,
+  selectPaymentErr: state.payment.selectPaymentErr,
+  paymentError: state.payment.payErr,
+  bookingError: state.payment.bookErr,
+  isPNRFailed: state.payment.isPNRFailed,
+  SelectPayment: state.payment.SelectPayment,
+  ReservationID: state.payment.ReservationID,
+  PNRdetails: state.payment.PNRdetails,
+  PaxData: state.payment.PaxData,
+  isClubFare: state.flight.clubSelected,
+  paxInfoDetails: state.payment.paxInfoDetails,
+  isBooKPNRSuccess: state.payment.isBooKPNRSuccess,
+  isBooKPNRLoader: state.payment.isBooKPNRLoader,
+  paymentRequest: state.payment.paymentRequest,
+  paymentRetry: state.payment.paymentRetry,
+  totalFlightFare: state.workflow.actionState === WORKFLOW.CHECK_IN
+    ? null : state.flight.totalFlightFare,
+  currency: state.workflow.actionState === WORKFLOW.CHECK_IN ? 'EUR' : state.flight.totalFlightFare.currency,
+  totalAddonsPrice: state.addon.totalAddonsPrice,
+  actionState: state.workflow.actionState,
+  addons: state.addon.availableAddons,
+  selectedAddon: state.addon.selectedAddons,
+  workflow: state.workflow,
+  query: state.flight.query,
+  paymentForm: state.payment.paymentForm,
+  selAddonResult: (state.workflow.actionState === WORKFLOW.CHECK_IN)
+    ? state.checkin.selAddonResult : state.addon.selAddonResult,
+  canProceed: (state.workflow.actionState === WORKFLOW.CHECK_IN)
+    ? state.checkin.canProceed : state.addon.canProceed,
+  totalAmount: state.totalAmount,
+  portalType: state.workflow.actionType,
+  changePaxPriceInfo: state.mmb.changePaxPriceInfo,
+  promoData: state.payment.PromoDetails,
+  billingInfo: state.payment.billingInfo,
+  walletToken: state.payment.walletToken,
+  isAmountBeyondWallet: state.payment.isAmountBeyondWallet,
+  applyingPromo: state.payment.applyingPromo,
+  exchangeRate: state.totalAmount.exchangeRate,
+  selectedCurrencyCode: state.totalAmount.selectedCurrencyCode,
+  currencyConversion: state.totalAmount.currencyConversion,
+  exchangeRateID: state.totalAmount.exchangeRateID,
+  sourceCurrency: state.totalAmount.sourceCurrency,
+  sessionRedirect: state.workflow.sessionRedirect,
+  isFetchingPayments: (state.workflow.actionState === WORKFLOW.FARE_LOCK)
+    ? state.fareLock.isFetchingPayments : state.payment.isFetchingPayments,
+  isRouteChanging: state.workflow.isRouteChanging,
+  isPassportDataShow: state.flight.isPassportDataShow,
+  isCashbackAvail: state.flight.isCashbackAvail,
+  isCashbackActive: state.flight.isCashbackActive,
+  flightData: (state.workflow.actionState === WORKFLOW.CHECK_IN) ? state.checkin.flightsDoBooking : state.flight.selectedIBOBFlight,
+  isNewLogin: state.auth.isNewLogin,
+  profInfo: !isEmpty(state.profile) ? state.profile.profInfo : null,
+});
+
+export default connect(mapStateToProps)(passengerContent);
