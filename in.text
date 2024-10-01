@@ -57,7 +57,8 @@ function ResultBox(props: any) {
     userData, discountableSearch, dispatch, preSelection,
     exchangeRate, selectedCurrencyCode, isClubExpired, chooseFlgt,
     actionState, isClubFareBooking, isLoggedIn, isSSOShow,
-    clubSelected, portalType, isClubMember,
+    clubSelected, portalType, isClubMember, setshowPrice,
+    showPrice,
   } = props;
   if (!isFetching && flights.length > 0) {
     const { ob, ib } = preSelection;
@@ -87,6 +88,8 @@ function ResultBox(props: any) {
           resultFor={resultFor}
           flights={flights}
           isFetching={isFetching}
+          setshowPrice={setshowPrice}
+          showPrice={showPrice}
         />
       );
   }
@@ -242,6 +245,8 @@ function ResultBox(props: any) {
                             isLoggedIn={isLoggedIn}
                             chooseFlgt={(choose: any) => chooseFlgt(choose)}
                             fareGroups={fareGroupConstant}
+                            setshowPrice={setshowPrice}
+                            showPrice={showPrice}
                           />
                         ))
                       }
@@ -279,6 +284,8 @@ function Result(props: any) {
   } = props;
 
   const [showPriceChart, setshowPriceChart] = useState(false);
+  const [showPrice, setshowPrice] = useState('');
+console.log(showPrice, 'showPriceshowPrice');
   const flightSelected = (resultFor === 'outBound') ? outBound : inBound;
   useEffect(() => {
     document.body.classList.remove('search-view');
@@ -309,6 +316,8 @@ function Result(props: any) {
             exchangeRate={exchangeRate}
             selectedCurrencyCode={selectedCurrencyCode}
             isClubExpired={isClubExpired}
+            setshowPrice={setshowPrice}
+            showPrice={showPrice}
           />
         </div>
       </div>

@@ -77,9 +77,9 @@ function FlightPriceInfo(props: any) {
     fareGroupp, clubSelected, clubSelection,
     discountableSearch, isClubMember, actionState,
     selectedCurrencyCode, exchangeRate, isClubFareBooking, isClubExpired,
-    fareInfo, // handleClubSelectionn,
-    setFlightSelection, // showFares,
-    fareGroups, flightKey, // userData, // isSSOShow, isLoggedIn,
+    fareInfo, handleClubSelectionn, setshowPrice,
+    setFlightSelection, // showFares, fareGroups,
+    flightKey, // userData, // isSSOShow, isLoggedIn,
     // portalType, addCompare, closeButton,
   } = props;
   const { cabinClassCode } = fareInfo.cabin[0];
@@ -172,37 +172,24 @@ function FlightPriceInfo(props: any) {
       </Col>
     );
   }
+
   const handlePriceSelection = (
     handle: boolean = true,
     flightKeyy: any,
     flightOfferKey: any,
     cabinClassCodee: any,
-    // clubType: any,
+    clubType: any,
     cashback: any,
   ) => {
-    const clubType = handle ? 'withDiscount' : 'withoutDiscount';
-    setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareGroups[cabinClassCodee], clubType, cashback);
-    // showFares();
+    console.log(clubType, 'clubType');
+    if (handle) {
+      setshowPrice(clubType === 'withDiscount' ? 'withDiscount' : 'withoutDiscount');
+      setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareInfo, clubType, cashback);
+    } else {
+      handleClubSelectionn(clubType === 'withDiscount');
+    }
   };
-  const hndlPrcslct = (clbSelected: any) => {
-    // const allKeys = Object.keys(fareGroups);
-    // let upKey = '';
-    // if (cabinCd === allKeys[allKeys.length - 1] || cabinCd === allKeys[allKeys.length - 1] || cabinCd === allKeys[0]) {
-      handlePriceSelection(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, cashbackPriceInfo);
-    //   return;
-    // }
 
-    // for (let i = 0; i < allKeys.length; i++) {
-    //   if (allKeys[i] === cabinCd) {
-    //     upKey = allKeys[i + 1];
-    //     break;
-    //   }
-    // }
-    // setBrandSel(cabinCd);
-    // setShwBrndOptn(true);
-    // setbrndPrce(fareGroups[cabinCd]);
-    // setbrndUpPrce(fareGroups[`${upKey}`]);
-  };
   return (
     <Col xs sm md="4">
       <ul className="resultselectinfo">
@@ -225,7 +212,7 @@ function FlightPriceInfo(props: any) {
                 )
                 : 'SoldOut'}
             </h3>
-            <Button disabled={!fareInfo.flightOfferKey} className="fare-selct-small btnprmain" onClick={() => { hndlPrcslct(cabinClassCode); }}>
+            <Button disabled={!fareInfo.flightOfferKey} className="fare-selct-small btnprmain" onClick={() => { handlePriceSelection(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withDiscount', cashbackPriceInfo); }}>
               {(!fareInfo.flightOfferKey) ? 'SoldOut' : 'Select'}
             </Button>
           </p>
@@ -244,7 +231,7 @@ function FlightPriceInfo(props: any) {
                 )
                 : 'SoldOut'}
             </h3>
-            <Button disabled={!fareInfo.flightOfferKey} className="btnprmaina" onClick={() => { hndlPrcslct(cabinClassCode); }}>
+            <Button disabled={!fareInfo.flightOfferKey} className="btnprmaina" onClick={() => { handlePriceSelection(!clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withoutDiscount', cashbackPriceInfo); }}>
               {(!fareInfo.flightOfferKey) ? 'SoldOut' : 'Select'}
             </Button>
           </p>
@@ -378,11 +365,13 @@ export function FareGroup(props: any) {
   const {
     fareInfo, clubSelected, // handleClubSelectionn,
     setFlightSelection,
+    showPrice,
     // showFares,
     fareGroups,
-    flightKey, userData, discountableSearch, actionState, // isSSOShow, isLoggedIn,
-    selectedCurrencyCode, exchangeRate, isClubFareBooking, addCompare, closeButton,
+    flightKey, discountableSearch, // isSSOShow, isLoggedIn,
+    selectedCurrencyCode, exchangeRate, addCompare, closeButton,
   } = props;
+
   const { t } = useTranslation();
   // const showDiscount = (portalType === WORKFLOW_TYPE.B2B) ? 'd-none' : '';
   const { cabinClassCode } = fareInfo.cabin[0];
@@ -441,7 +430,7 @@ export function FareGroup(props: any) {
   let discountPromoClub: any;
   let discountPromo: any;
   let totPerPaxDiscAmount: number = 0;
-
+  console.log(discountAmount, discountPromo);
   if (discountableSearch) {
     discounts = find(priceListInfo, { name: 'DISCOUNT' });
     if (!isEmpty(discounts)) {
@@ -461,20 +450,20 @@ export function FareGroup(props: any) {
   const discountPromoClubAmount = typeof discountPromoClub !== 'undefined' ? discountPromoClub.perPaxDiscount : 0;
   const discountPromoAmount = typeof discountPromo !== 'undefined' ? discountPromo.perPaxDiscount : 0;
 
-  const isNormlFareOnlyAllow = (actionState === WORKFLOW.MMB && !isClubFareBooking);
-  const isClubFareOnlyAllow = (actionState === WORKFLOW.MMB && isClubFareBooking);
+  // const isNormlFareOnlyAllow = (actionState === WORKFLOW.MMB && !isClubFareBooking);
+  // const isClubFareOnlyAllow = (actionState === WORKFLOW.MMB && isClubFareBooking);
 
-  const { paxInfoID } = userData || -1;
-  const { personKey } = userData || '';
-  const isValidPaxInfo = (paxInfoID > 0 || personKey !== '');
-  const clubFareBtnProp = !isValidPaxInfo || isEmpty(discountAmount) ? {
-    disabled: true,
-  } : {};
+  // const { paxInfoID } = userData || -1;
+  // const { personKey } = userData || '';
+  // const isValidPaxInfo = (paxInfoID > 0 || personKey !== '');
+  // const clubFareBtnProp = !isValidPaxInfo || isEmpty(discountAmount) ? {
+  //   disabled: true,
+  // } : {};
 
   const hndlPrcslct = (cabinCd: any, clbSelected: any) => {
     const allKeys = Object.keys(fareGroups);
     let upKey = '';
-    if (cabinCd === allKeys[allKeys.length - 1] || cabinCd === allKeys[allKeys.length - 1]) {
+    if (cabinCd === allKeys[allKeys.length - 1] || cabinCd === allKeys[allKeys.length - 2]) {
       handlePriceSelection(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, cashbackPriceInfo);
       return;
     }
@@ -564,86 +553,30 @@ export function FareGroup(props: any) {
               <div>
                 UPGRADE
               </div>
-              <div>
-                {
-                  (discountableSearch && clubSelected) ? (
-                    <Fragment>
-                      {
-                        isNormlFareOnlyAllow
-                          ? <></>
-                          : (
-                            <div {...clubFareBtnProp}>
-                              {
-                                typeof discountPromoClub !== 'undefined'
-                                  ? (
-                                    <h4 className="strikeout">
-                                      {
-                                        formatCurrency(
-                                          (adultFare.amount + adultFare.tax - totPerPaxDiscAmount),
-                                          currencyCode,
-                                          exchangeRate,
-                                          selectedCurrencyCode,
-                                        )
-                                      }
-                                    </h4>
-                                  )
-                                  : ''
-                              }
-                              <h4 className="brnd-amount">
-                                {
-                                  formatCurrency(
-                                    (adultFare.amount + adultFare.tax) - discountPromoClubAmount - totPerPaxDiscAmount,
-                                    currencyCode,
-                                    exchangeRate,
-                                    selectedCurrencyCode,
-                                  )
-                                }
-                                &nbsp;
-                              </h4>
-                              {!clubSelected ? <p>{t('FlightResult.lblFLYONEDiscountClbPrice')}</p> : ''}
-                            </div>
-                          )
-                      }
-                    </Fragment>
-                  ) : (
-                    <Fragment />
-                  )
-                }
-                {
-                  !isClubFareOnlyAllow && !clubSelected
-                    ? (
-                      <div>
-                        {
-                          typeof discountPromo !== 'undefined'
-                            ? (
-                              <h4 className="strikeout">
-                                {
-                                  formatCurrency(
-                                    (adultFare.amount + adultFare.tax),
-                                    currencyCode,
-                                    exchangeRate,
-                                    selectedCurrencyCode,
-                                  )
-                                }
-                              </h4>
-                            )
-                            : ''
-                        }
-                        <h4 className="brnd-amount">
-                          {
-                            formatCurrency(
-                              (adultFare.amount + adultFare.tax) - discountPromoAmount,
-                              currencyCode,
-                              exchangeRate,
-                              selectedCurrencyCode,
-                            )
-                          }
-                        </h4>
-                      </div>
-                    )
-                    : <Fragment />
-                }
-              </div>
+              {showPrice === 'withDiscount' ?
+                (
+                  <span className="strikeout">
+                    {
+                      formatCurrency(
+                        (adultFare.amount + adultFare.tax) - discountPromoClubAmount - totPerPaxDiscAmount,
+                        currencyCode,
+                        exchangeRate,
+                        selectedCurrencyCode,
+                      )
+                    }
+                  </span>
+                ) : (
+                  <span className="brnd-amount">
+                    {
+                      formatCurrency(
+                        (adultFare.amount + adultFare.tax) - discountPromoAmount,
+                        currencyCode,
+                        exchangeRate,
+                        selectedCurrencyCode,
+                      )
+                    }
+                  </span>
+                )}
             </Button>
           </div>
         </div>
@@ -825,7 +758,7 @@ function FlightInfo(props: any) {
     clubType: '',
   });
   const {
-    flights, resultFor, routes, userData, discountableSearch,
+    flights, resultFor, routes, userData, discountableSearch, setshowPrice,
     clubSelected, portalType, isClubMember, actionState,
     isFetching, reservationInfo, isClubExpired, isSSOShow, isLoggedIn,
     selectedCurrencyCode, exchangeRate, dispatch, fetchFlightError, chooseFlgt,
@@ -1097,6 +1030,7 @@ function FlightInfo(props: any) {
                                   isLoggedIn={isLoggedIn}
                                   chooseFlgt={(choose: any) => chooseFlgt(choose)}
                                   fareGroups={fareGroupConstant}
+                                  setshowPrice={setshowPrice}
                                 />
                               ))
                             }
