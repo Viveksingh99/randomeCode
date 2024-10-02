@@ -74,14 +74,15 @@ function FlightDetailInfo(props: any) {
 
 function FlightPriceInfo(props: any) {
   const {
-    fareGroupp, clubSelected, clubSelection,
-    discountableSearch, isClubMember, actionState,
-    selectedCurrencyCode, exchangeRate, isClubFareBooking, isClubExpired,
+    fareGroupp, clubSelected, // clubSelection,isClubMember
+    discountableSearch, actionState,
+    selectedCurrencyCode, exchangeRate, isClubFareBooking, //isClubExpired,
     fareInfo, handleClubSelectionn, setshowPrice,
     setFlightSelection, // showFares, fareGroups,
     flightKey, // userData, // isSSOShow, isLoggedIn,
     // portalType, addCompare, closeButton,
   } = props;
+  console.log(clubSelected, 'clubSelected');
   const { cabinClassCode } = fareInfo.cabin[0];
   // const [brndSel, setBrandSel] = useState('');
   // const [brndPrce, setbrndPrce] = useState();
@@ -103,6 +104,7 @@ function FlightPriceInfo(props: any) {
   let discountAmount: any;
   let discountPromo: any;
   let totPerPaxDiscAmount: number = 0;
+  console.log(discountAmount);
   if (discountableSearch) {
     discounts = find(priceListInfo, { name: 'DISCOUNT' });
     if (!isEmpty(discounts)) {
@@ -119,28 +121,7 @@ function FlightPriceInfo(props: any) {
   }
   const discountPromoAmount = typeof discountPromo !== 'undefined' ? discountPromo.perPaxDiscount : 0;
   const isNormlFareOnlyAllow = (actionState === WORKFLOW.MMB && !isClubFareBooking);
-  const isClubFareOnlyAllow = (actionState === WORKFLOW.MMB && isClubFareBooking);
-
-  useEffect(() => {
-    if (
-      isClubMember
-      && discountableSearch
-      && !isClubExpired
-      && !isEmpty(discountAmount)
-      && WORKFLOW.SEARCH_FLIGHT === actionState
-    ) {
-      clubSelection(isClubMember, true);
-    }
-  }, []);
-
-  useEffect(() => {
-  }, [clubSelected]);
-
-  useEffect(() => {
-    if (isClubFareOnlyAllow) {
-      clubSelection(true, true);
-    }
-  }, [isClubFareOnlyAllow]);
+  // const isClubFareOnlyAllow = (actionState === WORKFLOW.MMB && isClubFareBooking);
 
   const adultFare = isSoldOut ? null : find(perPaxPriceInfo, { paxType: 'ADT' });
 
@@ -210,9 +191,9 @@ function FlightPriceInfo(props: any) {
                   exchangeRate,
                   selectedCurrencyCode,
                 )
-                : 'SoldOut'}
+                : ''}
             </h3>
-            <Button disabled={!fareInfo.flightOfferKey} className="fare-selct-small btnprmain" onClick={() => { handlePriceSelection(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withDiscount', cashbackPriceInfo); }}>
+            <Button disabled={!fareInfo.flightOfferKey} className="fare-selct-small btnprmain" onClick={() => { handlePriceSelection(!clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withDiscount', cashbackPriceInfo); }}>
               {(!fareInfo.flightOfferKey) ? 'SoldOut' : 'Select'}
             </Button>
           </p>
@@ -229,7 +210,7 @@ function FlightPriceInfo(props: any) {
                   exchangeRate,
                   selectedCurrencyCode,
                 )
-                : 'SoldOut'}
+                : ''}
             </h3>
             <Button disabled={!fareInfo.flightOfferKey} className="btnprmaina" onClick={() => { handlePriceSelection(!clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withoutDiscount', cashbackPriceInfo); }}>
               {(!fareInfo.flightOfferKey) ? 'SoldOut' : 'Select'}
@@ -366,10 +347,9 @@ export function FareGroup(props: any) {
     fareInfo, clubSelected, // handleClubSelectionn,
     setFlightSelection,
     showPrice,
-    // showFares,
-    fareGroups,
+    fareGroups, previousFareInfo,
     flightKey, discountableSearch, // isSSOShow, isLoggedIn,
-    selectedCurrencyCode, exchangeRate, addCompare, closeButton,
+     addCompare, closeButton,
   } = props;
 
   const { t } = useTranslation();
@@ -423,14 +403,26 @@ export function FareGroup(props: any) {
     );
   }
 
-  const { currencyCode, priceInfo } = fareInfo;
+  const { priceInfo } = fareInfo;
   const { perPaxPriceInfo, priceListInfo, cashbackPriceInfo } = priceInfo;
   const adultFare = find(perPaxPriceInfo, { paxType: 'ADT' });
+  // const adultFares = perPaxPriceInfo.filter((fare: any) => fare.paxType === 'ADT');
+  console.log(previousFareInfo, 'previousFareInfo')
+  let upgradePrice = 0;
+  if (previousFareInfo) {
+    const previousAdultFare = find(previousFareInfo.priceInfo.perPaxPriceInfo, { paxType: 'ADT' });
+    const currentAmount = adultFare && adultFare.amount !== undefined ? adultFare.amount : 0;
+    const currentTax = adultFare && adultFare.tax !== undefined ? adultFare.tax : 0;
+    const previousAmount = previousAdultFare && previousAdultFare.amount !== undefined ? previousAdultFare.amount : 0;
+    const previousTax = previousAdultFare && previousAdultFare.tax !== undefined ? previousAdultFare.tax : 0;
+    upgradePrice = (currentAmount + currentTax) - (previousAmount + previousTax);
+  }
+
   let discounts; let discountInfo; let discountAmount;
   let discountPromoClub: any;
   let discountPromo: any;
   let totPerPaxDiscAmount: number = 0;
-  console.log(discountAmount, discountPromo);
+  console.log(discountAmount, discountPromo, totPerPaxDiscAmount, discountPromoClub);
   if (discountableSearch) {
     discounts = find(priceListInfo, { name: 'DISCOUNT' });
     if (!isEmpty(discounts)) {
@@ -447,8 +439,8 @@ export function FareGroup(props: any) {
     }
   }
 
-  const discountPromoClubAmount = typeof discountPromoClub !== 'undefined' ? discountPromoClub.perPaxDiscount : 0;
-  const discountPromoAmount = typeof discountPromo !== 'undefined' ? discountPromo.perPaxDiscount : 0;
+  // const discountPromoClubAmount = typeof discountPromoClub !== 'undefined' ? discountPromoClub.perPaxDiscount : 0;
+  // const discountPromoAmount = typeof discountPromo !== 'undefined' ? discountPromo.perPaxDiscount : 0;
 
   // const isNormlFareOnlyAllow = (actionState === WORKFLOW.MMB && !isClubFareBooking);
   // const isClubFareOnlyAllow = (actionState === WORKFLOW.MMB && isClubFareBooking);
@@ -464,6 +456,7 @@ export function FareGroup(props: any) {
     const allKeys = Object.keys(fareGroups);
     let upKey = '';
     if (cabinCd === allKeys[allKeys.length - 1] || cabinCd === allKeys[allKeys.length - 2]) {
+      // console.log(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, cashbackPriceInfo);
       handlePriceSelection(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, cashbackPriceInfo);
       return;
     }
@@ -481,6 +474,8 @@ export function FareGroup(props: any) {
     setbrndUpPrce(fareGroups[`${upKey}`]);
   };
 
+
+
   const handlePriceSelection = (
     handle: boolean = true,
     flightKeyy: any,
@@ -490,12 +485,18 @@ export function FareGroup(props: any) {
     cashback: any,
   ) => {
     const clubType = handle ? 'withDiscount' : 'withoutDiscount';
+    // if (handle) {
+    // console.log(fareGroups[cabinClassCodee]);
+    // console.log(flightKeyy, cabinClassCodee, flightOfferKey, fareGroups[cabinClassCodee], clubType, cashback);
     setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareGroups[cabinClassCodee], clubType, cashback);
-    // showFares();
+    // } else {
+    //   handleClubSelectionn(clubType === 'withDiscount');
+    // }
+    setShwBrndOptn(false);
   };
   return (
     <>
-      <Col xs="4" sm="4" md="4" style={{ position: 'relative' }} className={`${addCompare ? 'compare' : ''} `}>
+      <Col xs="4" sm="4" md="4" className={`${addCompare ? 'compare' : ''}`} style={{ position: 'relative', display: cabinClassCode === 'LI' ? 'none' : '' }}>
         {cabinClassCode === 'LO' && <p className={styles.recommendtion}>We Recommended</p>}
         <div className={`${styles.fareBox} ${cabinClassCode === 'LO' ? styles.loyalFareBx : styles.fareBx}`}>
           {cabinClassCode === 'LO' && (
@@ -555,26 +556,40 @@ export function FareGroup(props: any) {
               </div>
               {showPrice === 'withDiscount' ?
                 (
-                  <span className="strikeout">
-                    {
+                  <span>
+                    € +{
+                      upgradePrice
+                    }.00
+                    {/* {
                       formatCurrency(
-                        (adultFare.amount + adultFare.tax) - discountPromoClubAmount - totPerPaxDiscAmount,
+                        formattedUpgradePrice,
                         currencyCode,
                         exchangeRate,
                         selectedCurrencyCode,
                       )
-                    }
+                    } */}
                   </span>
+                  // <span>
+                  //   {
+                  //     formatCurrency(
+                  //       (adultFare.amount + adultFare.tax) - discountPromoClubAmount - totPerPaxDiscAmount,
+                  //       currencyCode,
+                  //       exchangeRate,
+                  //       selectedCurrencyCode,
+                  //     )
+                  //   }
+                  // </span>
                 ) : (
-                  <span className="brnd-amount">
-                    {
+                  <span>
+                    € +{upgradePrice}.00
+                    {/* {
                       formatCurrency(
                         (adultFare.amount + adultFare.tax) - discountPromoAmount,
                         currencyCode,
                         exchangeRate,
                         selectedCurrencyCode,
                       )
-                    }
+                    } */}
                   </span>
                 )}
             </Button>
@@ -582,9 +597,7 @@ export function FareGroup(props: any) {
         </div>
       </Col>
       <ModalComponent
-        modData={{
-          brndSel, brndPrce, brndUpPrce, clubSelected,
-        }}
+        modData={{ brndSel, brndPrce, brndUpPrce, clubSelected }}
         show={shwBrndOptn}
         modalSize="LargeSize"
         isError={false}

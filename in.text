@@ -211,27 +211,25 @@ function ResultBox(props: any) {
                 >
                   <div>
                     <Row style={{ alignItems: 'flex-end', marginTop: '0px' }} className={`${styles.noMarRightLeft} ${styles.fareRow}`}>
-                      {
-                        Object.values(fareGroupConstant).slice(1).map((faregInfo: any) => (
+                      {Object.values(fareGroupConstant).map((faregInfo: any, index: number, arr: any[]) => {
+                        const previousFaregInfo = index > 0 ? arr[index - 1] : null;
+                        return (
                           <FareGroup
                             key={`${faregInfo.flightOfferKey}`}
                             fareInfo={faregInfo}
+                            previousFareInfo={previousFaregInfo} // Pass the previous fare info
                             userData={userData}
                             clubSelected={clubSelected}
                             resultFor={resultFor}
                             flightKey={flight.itinerary.flightKey}
-                            setFlightSelection={
-                              (
-                                flightKey: string,
-                                cabinClass: string,
-                                flightOfferKey: string,
-                                fareInfo: any,
-                                clubType: string,
-                                cashback: any,
-                              ) => handleFlightSelection(
-                                flightKey, cabinClass, flightOfferKey, fareInfo, clubType, cashback,
-                              )
-                            }
+                            setFlightSelection={(
+                              flightKey: string,
+                              cabinClass: string,
+                              flightOfferKey: string,
+                              fareInfo: any,
+                              clubType: string,
+                              cashback: any,
+                            ) => handleFlightSelection(flightKey, cabinClass, flightOfferKey, fareInfo, clubType, cashback)}
                             discountableSearch={discountableSearch}
                             portalType={portalType}
                             isClubMember={isClubMember}
@@ -248,8 +246,8 @@ function ResultBox(props: any) {
                             setshowPrice={setshowPrice}
                             showPrice={showPrice}
                           />
-                        ))
-                      }
+                        );
+                      })}
                     </Row>
                     <a className="comparebtn" href="javascript: void(0)" onClick={() => { setAddCompare(true); }}>Compare</a>
                   </div>
