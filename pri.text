@@ -1,0 +1,49 @@
+export function formatCurrency(
+  amount: string | number,
+  currency: string,
+  exchangeRate: number,
+  selCurrency: string,
+  options: {
+    showPlusSign?: boolean,   // Show "+" sign
+    showDecimals?: boolean    // Show decimals like ".00"
+  } = {} // Default to empty object
+) {
+  let validAmount: string | number = '0';
+  let curr = (selCurrency === '' || selCurrency === DEFAULT_CURRENCY_CODE) ? currency : selCurrency;
+
+  if (!isEmpty(curr)) {
+    curr = curr.toUpperCase();
+  }
+
+  const exchange = (exchangeRate === 0) ? 1 : exchangeRate;
+  if (Number(amount) > 0) {
+    const amountConversion = (Number(amount) * exchange);
+
+    // Decide precision based on showDecimals option
+    const precision = curr === 'MDL' || curr === 'RUB' ? 0 : (options.showDecimals ? 2 : (amountConversion % 1 === 0 ? 0 : 2));
+
+    validAmount = Number(amountConversion).toFixed(precision);
+  } else {
+    validAmount = Number(amount);
+  }
+
+  if (!curr) return '';
+
+  const symbols: { [key: string]: string } = {
+    RUB: '₽',
+    USD: '$',
+    MDL: 'MDL',
+    EUR: '€',
+    GBP: '£',
+    RON: 'RON',
+    UAH: '₴',
+    TRY: '₺',
+    AMD: '֏',
+  };
+
+  // Handle the optional "+" sign
+  const amountWithSign = options.showPlusSign ? `+${validAmount}` : validAmount;
+
+  return `${symbols[curr] || curr} ${amountWithSign}`;
+}
+

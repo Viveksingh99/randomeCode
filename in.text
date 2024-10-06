@@ -1,1 +1,351 @@
-vivek singh
+/* eslint-disable linebreak-style */
+import React, { useEffect, useState } from 'react';
+import { BounceLoader } from 'react-spinners';
+import { connect } from 'react-redux';
+import { isEmpty, find } from 'lodash';
+import { Row } from 'react-bootstrap';
+import { setAviaSelection } from '../../redux/routes.redux';
+import { selectFlight } from '../../redux/flight.redux';
+import JourneyInfo from './journeyinfo';
+import DateSchedule from './dateScheduler';
+import FlightInfo, { FareGroup, ShowSelectedFlight } from './FlightInfo';
+import styles from './styles.scss';
+import { WORKFLOW } from '../../constants/common';
+
+function chooseFlight(
+  flights: any, direction: string, avReqKey: string,
+  dispatch: any, userData: any, isClubExpired: boolean,
+) {
+  const [avflightKey, cabinClass] = avReqKey.split(/-/g);
+  const reqFlight = find(flights, (flight: any) => {
+    const { avKey } = flight.itinerary;
+    return avKey === avflightKey;
+  });
+  if (!isEmpty(reqFlight)) {
+    const { itinerary, fareGroupInfo } = reqFlight;
+    const { flightKey } = itinerary;
+    const fareInfo = find(fareGroupInfo, (fareInfoo: any) => {
+      const { cabinClassCode } = fareInfoo.cabin[0];
+      return cabinClassCode === cabinClass;
+    });
+    let clubInfo: any = [];
+    let clubMemberType = 'withoutDiscount';
+    if (!isEmpty(userData)) {
+      ({ clubInfo } = userData);
+      clubMemberType = (!isEmpty(clubInfo) && clubInfo.length > 0 && !isClubExpired) ? 'withDiscount' : 'withoutDiscount';
+    }
+    if (typeof fareInfo !== 'undefined') {
+      const { flightOfferKey } = fareInfo;
+      dispatch(selectFlight({
+        direction,
+        info: {
+          flightKey,
+          flightOfferKey,
+          cabinClass,
+          fareInfo,
+          itinerary,
+          clubType: clubMemberType,
+        },
+      }));
+    }
+  }
+}
+
+function ResultBox(props: any) {
+  const {
+    flights, routes, selection, resultFor, isFetching,
+    userData, discountableSearch, dispatch, preSelection,
+    exchangeRate, selectedCurrencyCode, isClubExpired, chooseFlgt,
+    actionState, isClubFareBooking, isLoggedIn, isSSOShow,
+    clubSelected, portalType, isClubMember, setshowPrice,
+    showPrice,
+  } = props;
+  if (!isFetching && flights.length > 0) {
+    const { ob, ib } = preSelection;
+    if (resultFor === 'outBound' && !isEmpty(ob) && isEmpty(selection)) {
+      chooseFlight(flights, resultFor, ob, dispatch, userData, isClubExpired);
+      dispatch(setAviaSelection({ ob: '', ib }));
+    }
+    if (resultFor === 'inBound' && !isEmpty(ib) && isEmpty(selection)) {
+      chooseFlight(flights, resultFor, ib, dispatch, userData, isClubExpired);
+      dispatch(setAviaSelection({ ob, ib: '' }));
+    }
+  }
+
+  if (isEmpty(selection)) {
+    return (isFetching) ? (
+      <div className="d-flex justify-content-center">
+        <BounceLoader
+          size={60}
+          color="#123abc"
+          loading={isFetching}
+        />
+      </div>
+    )
+      : (
+        <FlightInfo
+          userData={userData}
+          resultFor={resultFor}
+          flights={flights}
+          isFetching={isFetching}
+          setshowPrice={setshowPrice}
+          showPrice={showPrice}
+        />
+      );
+  }
+  const [chooseFlights, setChooseFlights] = useState({
+    flightKey: '',
+    cabinClass: '',
+    flightOfferKey: '',
+    fareInfo: {},
+    itinerary: {},
+    clubType: '',
+  });
+  const [availFlights, setAvailFlights] = useState(flights);
+  const [addCompare, setAddCompare] = useState(false);
+  useEffect(() => {
+    if (!isFetching) {
+      setAvailFlights(flights);
+    }
+    return () => {
+      setAvailFlights([]);
+    };
+  }, [flights]);
+  const handleFlightSelection = (
+    flightKey: string,
+    cabinClass: string,
+    flightOfferKey: string,
+    fareInfo: any,
+    clubType: string,
+    cashback: any,
+  ) => {
+    const selFlightObj = find(flights, (flight: any) => {
+      const { itinerary } = flight;
+      return itinerary.flightKey === flightKey;
+    });
+    setChooseFlights({
+      flightKey,
+      cabinClass,
+      flightOfferKey,
+      fareInfo,
+      itinerary: selFlightObj.itinerary,
+      clubType,
+    });
+    dispatch(selectFlight({
+      direction: resultFor,
+      info: {
+        flightKey,
+        flightOfferKey,
+        cabinClass,
+        fareInfo,
+        itinerary: selFlightObj.itinerary,
+        clubType,
+        cashback,
+      },
+    }));
+  };
+
+  return (
+    <>
+      <ShowSelectedFlight
+        discountableSearch={discountableSearch}
+        routes={routes}
+        resultFor={resultFor}
+        fareGroup={selection.fareInfo}
+        clubType={selection.clubType}
+        flights={selection.itinerary}
+        exchangeRate={exchangeRate}
+        selectedCurrencyCode={selectedCurrencyCode}
+      />
+      <div>
+        <div>
+          {
+            availFlights && availFlights.map((flight: any) => {
+              const fareGroupConstant = {
+                LI: {
+                  cabin: [
+                    {
+                      cabinClassCode: 'LI',
+                    },
+                  ],
+                },
+                ST: {
+                  cabin: [
+                    {
+                      cabinClassCode: 'ST',
+                    },
+                  ],
+                },
+                LO: {
+                  cabin: [
+                    {
+                      cabinClassCode: 'LO',
+                    },
+                  ],
+                },
+                AD: {
+                  cabin: [
+                    {
+                      cabinClassCode: 'AD',
+                    },
+                  ],
+                },
+              };
+              find(flight.fareGroupInfo, (fg: any) => {
+                const { cabin } = fg;
+                if (cabin[0].cabinClassCode === 'LI') {
+                  fareGroupConstant.LI = fg;
+                } else if (cabin[0].cabinClassCode === 'ST') {
+                  fareGroupConstant.ST = fg;
+                } else if (cabin[0].cabinClassCode === 'LO') {
+                  fareGroupConstant.LO = fg;
+                } else {
+                  fareGroupConstant.AD = fg;
+                }
+              });
+              
+              const showonlySelected = (chooseFlights.flightKey === flight.itinerary.flightKey) ? 'visible selected' : 'invisible';
+              return (
+                <div
+                  key={`${flight.itinerary.flightKey}`}
+                  className={`${styles.flightList} ${chooseFlights.flightKey === '' ? '' : showonlySelected}`}
+                >
+                  <div>
+                    <Row style={{ alignItems: 'flex-end', marginTop: '0px' }} className={`${styles.noMarRightLeft} ${styles.fareRow}`}>
+                      {Object.values(fareGroupConstant).map((faregInfo: any) => {
+                        // const firstFare = Object.values(fareGroupConstant)[0];
+                        const firstFare = Object.values(fareGroupConstant).find((fare:any) => fare && fare.flightOfferKey);
+                        return (
+                          <FareGroup
+                            key={`${faregInfo.flightOfferKey}`}
+                            fareInfo={faregInfo}
+                            userData={userData}
+                            clubSelected={clubSelected}
+                            firstFareInfo={firstFare}
+                            resultFor={resultFor}
+                            flightKey={flight.itinerary.flightKey}
+                            setFlightSelection={(
+                              flightKey: string,
+                              cabinClass: string,
+                              flightOfferKey: string,
+                              fareInfo: any,
+                              clubType: string,
+                              cashback: any,
+                            ) => handleFlightSelection(flightKey, cabinClass, flightOfferKey, fareInfo, clubType, cashback)}
+                            discountableSearch={discountableSearch}
+                            portalType={portalType}
+                            isClubMember={isClubMember}
+                            selectedCurrencyCode={selectedCurrencyCode}
+                            exchangeRate={exchangeRate}
+                            isClubFareBooking={isClubFareBooking}
+                            actionState={actionState}
+                            addCompare={addCompare}
+                            closeButton={(close: boolean) => { setAddCompare(close); }}
+                            isSSOShow={isSSOShow}
+                            isLoggedIn={isLoggedIn}
+                            chooseFlgt={(choose: any) => chooseFlgt(choose)}
+                            fareGroups={fareGroupConstant}
+                            setshowPrice={setshowPrice}
+                            showPrice={showPrice}
+                          />
+                        );
+                      })}
+                    </Row>
+                    <a className="comparebtn" href="javascript: void(0)" onClick={() => { setAddCompare(true); }}>Compare</a>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function Result(props: any) {
+  const {
+    depCityName,
+    arrCityName,
+    isFetching,
+    query,
+    dispatch,
+    resultFor,
+    outBound,
+    inBound,
+    routes,
+    userData,
+    discountableSearch,
+    preSelection,
+    exchangeRate,
+    selectedCurrencyCode,
+    flights,
+    resetReduxState,
+    isClubExpired,
+  } = props;
+
+  const [showPriceChart, setshowPriceChart] = useState(false);
+  const [showPrice, setshowPrice] = useState('');
+  const flightSelected = (resultFor === 'outBound') ? outBound : inBound;
+  useEffect(() => {
+    document.body.classList.remove('search-view');
+    // dispatch(fetchAvailability(query));
+  }, [JSON.stringify(query), query]);
+  return (
+    <div>
+      <JourneyInfo depCityName={depCityName} resultFor={resultFor} arrCityName={arrCityName} flights={flights} showPriceChart={showPriceChart} setshowPriceChart={setshowPriceChart} />
+      <div className={styles.boxContent}>
+        {
+          (isEmpty(flightSelected)) ? (
+            <div className={styles.boxHeader}>
+              <DateSchedule resetReduxState={resetReduxState} resultFor={resultFor} showPriceChart={showPriceChart} />
+            </div>
+          ) : ''
+        }
+        <div className={`${styles.boxBody} ${styles.noPad}`}>
+          <ResultBox
+            userData={userData}
+            resultFor={resultFor}
+            flights={flights}
+            selection={flightSelected}
+            routes={routes}
+            isFetching={isFetching}
+            discountableSearch={discountableSearch}
+            dispatch={dispatch}
+            preSelection={preSelection}
+            exchangeRate={exchangeRate}
+            selectedCurrencyCode={selectedCurrencyCode}
+            isClubExpired={isClubExpired}
+            setshowPrice={setshowPrice}
+            showPrice={showPrice}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const mapStateToProps = (state: any) => ({
+  inBoundFlights: state.flight.availInBoundFlights,
+  isFetching: state.flight.isFetching,
+  outBoundFlights: state.flight.availOutBoundFlights,
+  preSelection: state.routes.preSelection,
+  query: state.routes.dateSchduleData,
+  outBound: state.flight.selectedOutboundInfo,
+  discountableSearch: state.flight.discountableSearch,
+  inBound: state.flight.selectedInboundInfo,
+  routes: state.routes,
+  exchangeRate: state.totalAmount.exchangeRate,
+  selectedCurrencyCode: state.totalAmount.selectedCurrencyCode,
+  isClubExpired: state.auth.isClubExpired,
+  clubSelected: state.flight.clubSelected,
+  portalType: state.workflow.actionType,
+  isClubMember: state.auth.userHasClubSubscription,
+  actionState: state.workflow.actionState,
+  isSSOShow: state.auth.isSSOShow,
+  reservationInfo: (state.workflow.actionState === WORKFLOW.MMB)
+    ? state.mmb.PNRBookDetails.reservationInfo : { isClubFareBooking: false },
+  fetchFlightError: state.flight.fetchFlightError,
+  isLoggedIn: state.auth.isLoggedIn,
+});
+
+export default connect(mapStateToProps)(Result);
