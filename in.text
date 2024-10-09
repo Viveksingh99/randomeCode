@@ -205,6 +205,7 @@ function ResultBox(props: any) {
               });
               
               const showonlySelected = (chooseFlights.flightKey === flight.itinerary.flightKey) ? 'visible selected' : 'invisible';
+              const [selectedFare, setSelectedFare] = useState<string | null>(null);
               return (
                 <div
                   key={`${flight.itinerary.flightKey}`}
@@ -215,6 +216,7 @@ function ResultBox(props: any) {
                       {Object.values(fareGroupConstant).map((faregInfo: any) => {
                         // const firstFare = Object.values(fareGroupConstant)[0];
                         const firstFare = Object.values(fareGroupConstant).find((fare:any) => fare && fare.flightOfferKey);
+                        console.log(faregInfo, 'faregInfofaregInfo');
                         return (
                           <FareGroup
                             key={`${faregInfo.flightOfferKey}`}
@@ -247,6 +249,8 @@ function ResultBox(props: any) {
                             fareGroups={fareGroupConstant}
                             setshowPrice={setshowPrice}
                             showPrice={showPrice}
+                            selectedFare={selectedFare}
+                            setSelectedFare={setSelectedFare}
                           />
                         );
                       })}
