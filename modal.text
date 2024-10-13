@@ -58,8 +58,8 @@ const { scroller } = Scroll;
 function ModalContent(props: any) {
   const {
     modalBody, dispatch, checkinFlowProps, fromCMS, onHide,
-    onContinue, changePaxPriceInfo, userData, onClose, passenger,
-    modData, flight, handlePriceSlct, exchangeRate, selectedCurrencyCode, setSelectedFare
+    onContinue, changePaxPriceInfo, userData, onClose, passenger, hndlPrcslctmodal,
+    modData, flight, handlePriceSlct, exchangeRate, selectedCurrencyCode, setSelectedFare, handlePriceSelection
   } = props;
   let ModalBodyContent: any = '';
   switch (modalBody) {
@@ -95,7 +95,7 @@ function ModalContent(props: any) {
       const { modData, onHide } = props;
       ModalBodyContent = <SmallBagMod companion={modData} onHide={onHide} />;
     }
-	 break;
+      break;
     case 'ConfirmData': {
       const {
         onSelectStep,
@@ -454,11 +454,18 @@ function ModalContent(props: any) {
       const { modData } = props;
       ModalBodyContent = (
         <Farechange
+          flightKey={modData.flightKey}
+          fareInfo={modData.fareInfo}
+          cabinClassCode={modData.cabinClassCode}
+          cashbackPriceInfo={modData.cashbackPriceInfo}
           brandSel={modData.brndSel}
+          showPrice={modData.showPrice}
           onHide={onHide}
           brndPrc={modData.brndPrce}
           brndUpPrce={modData.brndUpPrce}
           prceSelct={handlePriceSlct}
+          handlePriceSelection={handlePriceSelection}
+          hndlPrcslctmodal={hndlPrcslctmodal}
           clubSelected={modData.clubSelected}
           exchangeRate={exchangeRate}
           selectedCurrencyCode={selectedCurrencyCode}
@@ -585,235 +592,235 @@ function ModalContent(props: any) {
 }
 
 const Bag10Kg = ({ onhide }: any) => (
-    <>
-      <div
-        style={{
-          fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
-        }}
-        onClick={() => onhide()}
-      >
-x
+  <>
+    <div
+      style={{
+        fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
+      }}
+      onClick={() => onhide()}
+    >
+      x
+    </div>
+    <div className="row">
+      <div className="col-sm-3">
+        <i className={`${styles.imMedBg} ${styles.imgSmlkgInf}`} />
       </div>
-      <div className="row">
-        <div className="col-sm-3">
-          <i className={`${styles.imMedBg} ${styles.imgSmlkgInf}`} />
+      <div className="col-sm-9 mt-3">
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>Your checked-in Bag must be dropped off at the bag drop desk before entering security</p>
         </div>
-        <div className="col-sm-9 mt-3">
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>Your checked-in Bag must be dropped off at the bag drop desk before entering security</p>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>You can add a Checked-in bag up to 2 hours before your flight scheduled departure time</p>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>The weight of checked pieces of baggage cannot be combined and each piece is considered as such.</p>
-          </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>You can add a Checked-in bag up to 2 hours before your flight scheduled departure time</p>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>The weight of checked pieces of baggage cannot be combined and each piece is considered as such.</p>
         </div>
       </div>
-    </>
+    </div>
+  </>
 );
 
 const Bag20Kg = ({ onhide }: any) => (
-    <>
-      <div
-        style={{
-          fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
-        }}
-        onClick={() => onhide()}
-      >
-x
+  <>
+    <div
+      style={{
+        fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
+      }}
+      onClick={() => onhide()}
+    >
+      x
+    </div>
+    <div className="row">
+      <div className="col-sm-3">
+        <i className={`${styles.imLgBg} ${styles.imgSmlkgInf}`} />
       </div>
-      <div className="row">
-        <div className="col-sm-3">
-          <i className={`${styles.imLgBg} ${styles.imgSmlkgInf}`} />
+      <div className="col-sm-9 mt-3">
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>Your checked-in Bag must be dropped off at the bag drop desk before entering security</p>
         </div>
-        <div className="col-sm-9 mt-3">
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>Your checked-in Bag must be dropped off at the bag drop desk before entering security</p>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>You can add a Checked-in bag up to 2 hours before your flight scheduled departure time</p>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>The weight of checked pieces of baggage cannot be combined and each piece is considered as such.</p>
-          </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>You can add a Checked-in bag up to 2 hours before your flight scheduled departure time</p>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>The weight of checked pieces of baggage cannot be combined and each piece is considered as such.</p>
         </div>
       </div>
-    </>
+    </div>
+  </>
 );
 
 const Bag30Kg = ({ onhide }: any) => (
-    <>
-      <div
-        style={{
-          fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
-        }}
-        onClick={() => onhide()}
-      >
-x
+  <>
+    <div
+      style={{
+        fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
+      }}
+      onClick={() => onhide()}
+    >
+      x
+    </div>
+    <div className="row">
+      <div className="col-sm-3">
+        <i className={`${styles.imMxBg} ${styles.imgSmlkgInf}`} />
       </div>
-      <div className="row">
-        <div className="col-sm-3">
-          <i className={`${styles.imMxBg} ${styles.imgSmlkgInf}`} />
+      <div className="col-sm-9 mt-3">
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>Your checked-in Bag must be dropped off at the bag drop desk before entering security</p>
         </div>
-        <div className="col-sm-9 mt-3">
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>Your checked-in Bag must be dropped off at the bag drop desk before entering security</p>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>You can add a Checked-in bag up to 2 hours before your flight scheduled departure time</p>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <i className={`${styles.imCheckIco} mt-1`} />
-            <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>The weight of checked pieces of baggage cannot be combined and each piece is considered as such.</p>
-          </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>You can add a Checked-in bag up to 2 hours before your flight scheduled departure time</p>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <i className={`${styles.imCheckIco} mt-1`} />
+          <p style={{ marginBottom: '5px', fontSize: '14px', marginLeft: '5px' }}>The weight of checked pieces of baggage cannot be combined and each piece is considered as such.</p>
         </div>
       </div>
-    </>
+    </div>
+  </>
 );
 
 export const LeaveMessageModal = ({ firstName, onHide }: any) => (
-    <>
-      <div className="dialog-wrapper">
-        <div
-          style={{
-            fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
-          }}
-          onClick={() => onHide()}
-        >
-x
-        </div>
-        <div className="dialog">
-          <div className="top">
-            <i className="fo-icon icon-fo-user" />
-            {firstName !== '' ? (
-              <b>
-                <p>
-                  {' '}
-                  {firstName}
-, before you go... did you know?
-                </p>
-              </b>
-            ) : <b><p>Before you go... did you know?</p></b>}
-          </div>
-          <div className="dialog-body">
-            <div className="icon-box">
-              <i className="leavemessageicon" />
-            </div>
-            <div className="dialog-content">
-              <p style={{ fontSize: '14px' }}>
-Prices may increase the closer you are to the departure date.
-                <br />
-Make sure you secure this price now!
-                {' '}
-              </p>
-              <div className="dialog-button" onClick={() => onHide()}>
-                I'LL FINISH MY BOOKING NOW!
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-);
-
-const PriortModl = ({ onhide }: any) => (
-    <>
+  <>
+    <div className="dialog-wrapper">
       <div
         style={{
           fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
         }}
-        onClick={() => onhide()}
+        onClick={() => onHide()}
       >
-x
+        x
       </div>
-      <div>
-        <p className="m-0" style={{ fontSize: '18px', fontWeight: 600 }}>Cabin Bags</p>
-        <p className="m-0 mb-3" style={{ fontSize: '14px' }}>Make sure your luggage does not exceed the dimensions 40x30x20 cm (backpack) and 50x40x25 cm (suitcase).</p>
-      </div>
-      <div className="row mb-3">
-        <div className="col-sm-3">
-          <p className="text-center" style={{ fontSize: '14px', fontWeight: 600 }}>Small Bagpack</p>
-          <p
-            className="p-0 m-1 text-center position-absolute"
-            style={{
-              fontSize: '15px', rotate: '270deg', left: '-15px', top: '100px',
-            }}
-          >
-40 cm
-          </p>
-          <div className="d-flex align-items-center position-relative justify-content-center">
-            <div className={`px-2 ${styles.bagHeight} position-relative`}>
-              <div className={`p-0 m-0 ${styles.bagWidth}`}>
-                <i className="im-small1-bg" />
-              </div>
-              <p className="p-0 mt-1 mb-0 mx-0 text-center" style={{ fontSize: '15px' }}>25 cm</p>
+      <div className="dialog">
+        <div className="top">
+          <i className="fo-icon icon-fo-user" />
+          {firstName !== '' ? (
+            <b>
+              <p>
+                {' '}
+                {firstName}
+                , before you go... did you know?
+              </p>
+            </b>
+          ) : <b><p>Before you go... did you know?</p></b>}
+        </div>
+        <div className="dialog-body">
+          <div className="icon-box">
+            <i className="leavemessageicon" />
+          </div>
+          <div className="dialog-content">
+            <p style={{ fontSize: '14px' }}>
+              Prices may increase the closer you are to the departure date.
+              <br />
+              Make sure you secure this price now!
+              {' '}
+            </p>
+            <div className="dialog-button" onClick={() => onHide()}>
+              I'LL FINISH MY BOOKING NOW!
             </div>
           </div>
         </div>
-        <div className="col-sm-3">
-          <div className="d-flex align-items-center position-relative justify-content-center">
-            {/* <div className={`px-2 ${styles.bagHeight} position-relative`}>
-              <div className={`p-0 m-0 ${styles.bagWidth}`}> */}
-            <i className="im-small2-bg" />
-            {/* </div>
-            </div> */}
+      </div>
+    </div>
+  </>
+);
+
+const PriortModl = ({ onhide }: any) => (
+  <>
+    <div
+      style={{
+        fontSize: '25px', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
+      }}
+      onClick={() => onhide()}
+    >
+      x
+    </div>
+    <div>
+      <p className="m-0" style={{ fontSize: '18px', fontWeight: 600 }}>Cabin Bags</p>
+      <p className="m-0 mb-3" style={{ fontSize: '14px' }}>Make sure your luggage does not exceed the dimensions 40x30x20 cm (backpack) and 50x40x25 cm (suitcase).</p>
+    </div>
+    <div className="row mb-3">
+      <div className="col-sm-3">
+        <p className="text-center" style={{ fontSize: '14px', fontWeight: 600 }}>Small Bagpack</p>
+        <p
+          className="p-0 m-1 text-center position-absolute"
+          style={{
+            fontSize: '15px', rotate: '270deg', left: '-15px', top: '100px',
+          }}
+        >
+          40 cm
+        </p>
+        <div className="d-flex align-items-center position-relative justify-content-center">
+          <div className={`px-2 ${styles.bagHeight} position-relative`}>
+            <div className={`p-0 m-0 ${styles.bagWidth}`}>
+              <i className="im-small1-bg" />
+            </div>
+            <p className="p-0 mt-1 mb-0 mx-0 text-center" style={{ fontSize: '15px' }}>25 cm</p>
           </div>
         </div>
-        {/* <div>
+      </div>
+      <div className="col-sm-3">
+        <div className="d-flex align-items-center position-relative justify-content-center">
+          {/* <div className={`px-2 ${styles.bagHeight} position-relative`}>
+              <div className={`p-0 m-0 ${styles.bagWidth}`}> */}
+          <i className="im-small2-bg" />
+          {/* </div>
+            </div> */}
+        </div>
+      </div>
+      {/* <div>
         <p>The backpack must fit under the seat in front of you.</p>
         </div> */}
-        <div className="col-sm-3">
-          <p className="text-center" style={{ fontSize: '14px', fontWeight: 600 }}>10 Kg cabin bag</p>
-          <p
-            className="p-0 m-1 text-center position-absolute"
-            style={{
-              fontSize: '15px', rotate: '270deg', left: '-15px', top: '100px',
-            }}
-          >
-40 cm
-          </p>
-          <div className="d-flex align-items-center position-relative justify-content-center">
-            <div className={`px-2 ${styles.bagHeight} position-relative`}>
-              <div className={`p-0 m-0 ${styles.bagWidth}`}>
-                <i className={`${styles.imMedBg}  ${styles.imgSmlkgPrior}`} />
-              </div>
-              <p className="p-0 mt-1 mb-0 mx-0 text-center" style={{ fontSize: '15px' }}>25 cm</p>
+      <div className="col-sm-3">
+        <p className="text-center" style={{ fontSize: '14px', fontWeight: 600 }}>10 Kg cabin bag</p>
+        <p
+          className="p-0 m-1 text-center position-absolute"
+          style={{
+            fontSize: '15px', rotate: '270deg', left: '-15px', top: '100px',
+          }}
+        >
+          40 cm
+        </p>
+        <div className="d-flex align-items-center position-relative justify-content-center">
+          <div className={`px-2 ${styles.bagHeight} position-relative`}>
+            <div className={`p-0 m-0 ${styles.bagWidth}`}>
+              <i className={`${styles.imMedBg}  ${styles.imgSmlkgPrior}`} />
             </div>
-          </div>
-        </div>
-        <div className="col-sm-3">
-          <div className="d-flex align-items-center position-relative justify-content-center">
-            {/* <div className={`px-2 ${styles.bagHeight} position-relative`}>
-              <div className={`p-0 m-0 ${styles.bagWidth}`}> */}
-            <i className="im-upper-bg" />
-            {/* </div>
-            </div> */}
-          </div>
-        </div>
-        {/* <div>
-        <p>The suitcase must fit in the overhead compartment.</p>
-        </div> */}
-        <div className="row justify-content-center" style={{ width: '100%', margin: '10px 0px 0px 0px' }}>
-          <div className="col-sm-6">
-            {/* <i className="im-avail-white" /> */}
-            <p className="col-sm-12 m-0 pl-2 p-1" style={{ background: '#e8e9ef' }}>The backpack must fit under the seat in front of you.</p>
-          </div>
-          <div className="col-sm-6">
-            {/* <i className="im-avail-white" /> */}
-            <p className="col-sm-12 m-0 pl-2 p-1" style={{ background: '#e8e9ef' }}>The suitcase must fit in the overhead compartment.</p>
+            <p className="p-0 mt-1 mb-0 mx-0 text-center" style={{ fontSize: '15px' }}>25 cm</p>
           </div>
         </div>
       </div>
-    </>
+      <div className="col-sm-3">
+        <div className="d-flex align-items-center position-relative justify-content-center">
+          {/* <div className={`px-2 ${styles.bagHeight} position-relative`}>
+              <div className={`p-0 m-0 ${styles.bagWidth}`}> */}
+          <i className="im-upper-bg" />
+          {/* </div>
+            </div> */}
+        </div>
+      </div>
+      {/* <div>
+        <p>The suitcase must fit in the overhead compartment.</p>
+        </div> */}
+      <div className="row justify-content-center" style={{ width: '100%', margin: '10px 0px 0px 0px' }}>
+        <div className="col-sm-6">
+          {/* <i className="im-avail-white" /> */}
+          <p className="col-sm-12 m-0 pl-2 p-1" style={{ background: '#e8e9ef' }}>The backpack must fit under the seat in front of you.</p>
+        </div>
+        <div className="col-sm-6">
+          {/* <i className="im-avail-white" /> */}
+          <p className="col-sm-12 m-0 pl-2 p-1" style={{ background: '#e8e9ef' }}>The suitcase must fit in the overhead compartment.</p>
+        </div>
+      </div>
+    </div>
+  </>
 );
 
 const SmallBagMod = (props: any) => {
@@ -831,7 +838,7 @@ const SmallBagMod = (props: any) => {
             fontSize: '100%', cursor: 'pointer', position: 'absolute', right: '20px', top: '10px', lineHeight: '20px',
           }}
         >
-X
+          X
         </small>
       </p>
       <p style={{ fontSize: '12px', fontWeight: 500, color: 'black' }}>Make sure your backpack does not exceed the dimensions 40x30x20 cm. It must fit under the seat in front of you</p>
@@ -866,7 +873,7 @@ X
           className="p-1 mt-4"
         >
           <i className="im-alert-icon" />
-      If you bring a second bag or if your bag is big to fit under the seat, you will be charged a fee of up to 70€ or local currency equivalent at the boarding gate.
+          If you bring a second bag or if your bag is big to fit under the seat, you will be charged a fee of up to 70€ or local currency equivalent at the boarding gate.
         </p>
       </div>
     </div>
@@ -911,11 +918,16 @@ const SeatSelection = (props: any) => {
 const Farechange = (props: any) => {
   const { t } = useTranslation();
   const {
-    brandSel, onHide, prceSelct, brndPrc, brndUpPrce, clubSelected, setSelectedFare,
+    brandSel, onHide, prceSelct, brndPrc, brndUpPrce, clubSelected, setSelectedFare, handlePriceSelection,
+    flightKey, fareInfo, cabinClassCode, cashbackPriceInfo, showPrice, hndlPrcslctmodal,
     // exchangeRate, selectedCurrencyCode
   } = props;
+  console.log(brndUpPrce, 'hhahahahaha');
+console.log(cabinClassCode, 'kakkakaakak');
+  console.log(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withDiscount', cashbackPriceInfo,'viviviviviviv')
+  console.log(fareInfo.flightOfferKey, flightKey, 'showPriceshowPrice', hndlPrcslctmodal, clubSelected,cabinClassCode, prceSelct);
+  console.log(brndPrc, brndUpPrce, 'showPriceshowPrice', cashbackPriceInfo, handlePriceSelection);
   const { Standard, Loyal, Advanced } = BundleList;
-  console.log(setSelectedFare, 'modalsetSelectedFare');
   const upGreatedPrice = (brndUpPrce.priceInfo.total - brndPrc.priceInfo.total).toFixed(2);
   const brndTitle: any = {
     ST: ['Standard', 'Loyal'],
@@ -998,12 +1010,27 @@ const Farechange = (props: any) => {
       </ul>
       <p className="row mt-3 m-1 d-flex justify-content-end">
         <div className="col-sm-8 row">
-          <div className="col-sm-6 d-flex justify-content-center align-items-center current-brand" onClick={() => prceSelct(brndPrc, clubSelected)}>
-            {'Continue with'}
-            <br />
-            {`${brndTitle[brandSel][0]} Fare`}
-          </div>
-          <Button style={{ lineHeight: '1', fontSize: '13px' }} className="col-sm-6" onClick={() => { prceSelct(brndUpPrce, clubSelected); setSelectedFare('LO')}}>{`Select ${brndTitle[brandSel][1]} Fare`}</Button>
+          {
+            showPrice === 'withDiscount' ? (
+              <>
+              <div className="col-sm-6 d-flex justify-content-center align-items-center current-brand" onClick={() => handlePriceSelection(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withDiscount', cashbackPriceInfo)}>
+                {'Continue with'}
+                <br />
+                {`${brndTitle[brandSel][0]} Fare`}
+              </div>
+              <Button style={{ lineHeight: '1', fontSize: '13px' }} className="col-sm-6" onClick={() => { handlePriceSelection(clubSelected, brndUpPrce.flightKeyRefs[0], brndUpPrce.flightOfferKey, brndUpPrce.cabin[0].cabinClassCode, 'withDiscount', brndUpPrce.priceInfo.cashbackPriceInfo); setSelectedFare('LO'); }}>{`Select ${brndTitle[brandSel][1]} Fare`}</Button>
+              </>
+            ) : (
+              <>
+              <div className="col-sm-6 d-flex justify-content-center align-items-center current-brand" onClick={() => handlePriceSelection(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, 'withoutDiscount', cashbackPriceInfo)}>
+                {'Continue with'}
+                <br />
+                {`${brndTitle[brandSel][0]} Fare`}
+              </div>
+              <Button style={{ lineHeight: '1', fontSize: '13px' }} className="col-sm-6" onClick={() => { handlePriceSelection(clubSelected, brndUpPrce.flightKeyRefs[0], brndUpPrce.flightOfferKey, brndUpPrce.cabin[0].cabinClassCode, 'withoutDiscount', brndUpPrce.priceInfo.cashbackPriceInfo); setSelectedFare('LO'); }}>{`Select ${brndTitle[brandSel][1]} Fare`}</Button>
+              </>
+            )
+          }
         </div>
       </p>
     </>
@@ -6475,8 +6502,8 @@ function ModalComponent(props: any) {
     handelSocialSignupGendershow, isSocialLogin, socialInfomation,
     actionState, isCancelFlightAllowed, userAgent, setselectdVoucher,
     userData, isPrefill, socialLoginInfo, setLoginSelTabId, setIsPrefill, multipleFOP,
-    passenger, flight, handlePriceSlct, onSelectStep,
-    setIsCallApi,
+    passenger, flight, handlePriceSlct, onSelectStep, handlePriceSelection,
+    setIsCallApi, hndlPrcslctmodal,
     handleCheckinSaveModelShow,
     travelDocDetail, setSelectedFare,
   } = props;
@@ -6559,6 +6586,8 @@ function ModalComponent(props: any) {
     passenger,
     flight,
     handlePriceSlct,
+    handlePriceSelection,
+    hndlPrcslctmodal,
     onSelectStep,
     setIsCallApi,
     handleCheckinSaveModelShow,
@@ -6675,7 +6704,7 @@ function ModalComponent(props: any) {
       {...modalCloseProps}
       className={`${overrideProfileDetailPopupStyle} ${socialMedSignupClass} ${configModalSize} ${isError ? 'blue_bg' : ''} ${modalBody === 'freeBg' || modalBody === '10Kg'
         || modalBody === '20Kg' || modalBody === '30Kg' || modalBody === 'priorBg' ? styles.shiftModal : ''
-      }`}
+        }`}
       show={show}
       onHide={onHide}
     >

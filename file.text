@@ -186,7 +186,6 @@ function FlightPriceInfo(props: any) {
     clubType: any,
     cashback: any,
   ) => {
-    console.log(clubType, 'clubType');
     if (handle) {
       setshowPrice(clubType === 'withDiscount' ? 'withDiscount' : 'withoutDiscount');
       setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareInfo, clubType, cashback);
@@ -367,7 +366,7 @@ function SoldOutFareGroup(props: any) {
 
 export function FareGroup(props: any) {
   const {
-    fareInfo, clubSelected, // handleClubSelectionn,
+    fareInfo, clubSelected, handleClubSelectionn,
     setFlightSelection, selectedCurrencyCode,
     showPrice, exchangeRate,
     fareGroups, // previousFareInfo,
@@ -375,6 +374,7 @@ export function FareGroup(props: any) {
     addCompare, closeButton, firstFareInfo, selectedFare,
     setSelectedFare,
   } = props;
+  console.log(fareInfo, 'fareInfo');
   const { t } = useTranslation();
   // const showDiscount = (portalType === WORKFLOW_TYPE.B2B) ? 'd-none' : '';
   const { cabinClassCode } = fareInfo.cabin[0];
@@ -382,7 +382,7 @@ export function FareGroup(props: any) {
   const [brndPrce, setbrndPrce] = useState();
   const [brndUpPrce, setbrndUpPrce] = useState();
   const [shwBrndOptn, setShwBrndOptn] = useState(false);
-  // const [selectedFare, setSelectedFare] = useState<string | null>(null);
+  console.log(brndSel, brndPrce, brndUpPrce, shwBrndOptn, 'vivivvivivi');
   let cabinName: any;
   let cabinIcon;
   let cabinTag;
@@ -461,7 +461,7 @@ export function FareGroup(props: any) {
     const currentTotalPrice = currentAmount + currentTax; // Total price of the current fare
     upgradePrice = currentTotalPrice - fullFirstFarePrice; // Difference from the first fare
   }
-console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice');
+  console.log(fullFirstFarePrice, 'fullFirstFarePrice', upgradePrice, 'upgradePrice');
   // let upgradePrice = 0;
   // if (previousFareInfo) {
   //   const previousAdultFare = find(previousFareInfo.priceInfo.perPaxPriceInfo, { paxType: 'ADT' });
@@ -506,13 +506,18 @@ console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice
   //   disabled: true,
   // } : {};
 
-  const hndlPrcslct = (cabinCd: any, clbSelected: any) => {
+  const hndlPrcslctmodal = (clbSelected: any, Discount: any) => {
+    handlePriceSelection(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, Discount, cashbackPriceInfo);
+  };
+
+  const hndlPrcslct = (cabinCd: any, clbSelected: any, Discount: any) => {
+    console.log(clbSelected, cabinCd, Discount, 'cabinCd');
     setSelectedFare(cabinClassCode);
     const allKeys = Object.keys(fareGroups);
     let upKey = '';
     if (cabinCd === allKeys[allKeys.length - 1] || cabinCd === allKeys[allKeys.length - 2]) {
-      // console.log(clubSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, cashbackPriceInfo);
-      handlePriceSelection(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, cashbackPriceInfo);
+      console.log(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, Discount, cashbackPriceInfo, 'jdhsjdsjhdjshjds');
+      handlePriceSelection(clbSelected, flightKey, fareInfo.flightOfferKey, cabinClassCode, Discount, cashbackPriceInfo);
       return;
     }
 
@@ -534,26 +539,17 @@ console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice
     flightKeyy: any,
     flightOfferKey: any,
     cabinClassCodee: any,
-    // clubType: any,
+    clubType: any,
     cashback: any,
   ) => {
-    // const clubType = handle ? 'withDiscount' : 'withoutDiscount';
-    const clubType = handle ? 'withDiscount' : 'withoutDiscount';
-    setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareGroups[cabinClassCodee], clubType, cashback);
-    setSelectedFare(cabinClassCode);
-    // if (handle) {
-    // console.log(fareGroups[cabinClassCodee]);
-    // console.log(flightKeyy, cabinClassCodee, flightOfferKey, fareGroups[cabinClassCodee], clubType, cashback);
-    // setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareGroups[cabinClassCodee], clubType, cashback);
-    // } else {
-    //   handleClubSelectionn(clubType === 'withDiscount');
-    // }
-    // setShwBrndOptn(false);
-    // setSelectedFare(cabinClassCode);
+    console.log(flightKeyy, flightOfferKey, cabinClassCodee, clubType, cashback, 'shshshshsh');
+    if (handle) {
+      setFlightSelection(flightKeyy, cabinClassCodee, flightOfferKey, fareInfo, clubType, cashback);
+    } else {
+      handleClubSelectionn(clubType === 'withDiscount');
+    }
+    setShwBrndOptn(false);
   };
-  // const handleButtonClick = () => {
-    // setSelectedFare(cabinClassCode);
-  // };
 
   return (
     <>
@@ -611,9 +607,9 @@ console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice
                 })
               }
             </ul>
-            <Button className="fare-selct" onClick={() => { hndlPrcslct(cabinClassCode, clubSelected); }} style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              {showPrice === 'withDiscount' ?
-                (
+            {showPrice === 'withDiscount' ?
+              (
+                <Button className="fare-selct" onClick={() => { hndlPrcslct(cabinClassCode, clubSelected, 'withDiscount'); }} style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                   <span>
                     {
                       formatCurrency(
@@ -625,7 +621,9 @@ console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice
                       )
                     }
                   </span>
-                ) : (
+                </Button>
+              ) : (
+                <Button className="fare-selct" onClick={() => { hndlPrcslct(cabinClassCode, clubSelected, 'withoutDiscount'); }} style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                   <span>
                     {
                       formatCurrency(
@@ -637,14 +635,14 @@ console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice
                       )
                     }
                   </span>
-                )}
-              {selectedFare === cabinClassCode ? (<div>Selected ✓</div>) : ''}
-            </Button>
+                  {selectedFare === cabinClassCode && (<div>Selected ✓</div>)}
+                </Button>
+              )}
           </div>
         </div>
       </Col>
       <ModalComponent
-        modData={{ brndSel, brndPrce, brndUpPrce, clubSelected }}
+        modData={{ brndSel, brndPrce, brndUpPrce, clubSelected, flightKey, fareInfo, cabinClassCode, cashbackPriceInfo, showPrice }}
         show={shwBrndOptn}
         modalSize="LargeSize"
         isError={false}
@@ -653,8 +651,10 @@ console.log(fullFirstFarePrice,'fullFirstFarePrice', upgradePrice, 'upgradePrice
         modalBody="UpgradeFare"
         onHide={() => setShwBrndOptn(false)}
         setSelectedFare={setSelectedFare}
-        //handlePriceSlct={(data:any) => console.log(data)}
-        handlePriceSlct={(data: any, isClub: boolean) => handlePriceSelection(isClub, data.flightKeyRefs[0], data.flightOfferKey, data.cabin[0].cabinClassCode, true)}
+        hndlPrcslctmodal={hndlPrcslctmodal}
+        handlePriceSelection={handlePriceSelection}
+        // handlePriceSlct={(data: any, isClub: boolean) => console.log(isClub, data.flightKeyRefs[0], data.flightOfferKey, data.cabin[0].cabinClassCode, data.clubType, true, 'vivekkkk')}
+        handlePriceSlct={(data: any, isClub: boolean, clubType: string) => handlePriceSelection(isClub, data.flightKeyRefs[0], data.flightOfferKey, data.cabin[0].cabinClassCode, true, clubType)}
       />
     </>
   );
