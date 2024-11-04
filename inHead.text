@@ -1,0 +1,42 @@
+import React from 'react';
+import { useRouter } from 'next/router';
+import styles from './styles.scss';
+
+
+function InHead() {
+  const router = useRouter();
+  const currentPath = router.pathname.toLowerCase();
+
+  // console.log("Currentpathname", currentPath);
+
+  return (
+    <div className={styles.activeBar}>
+      <div style={{ color: currentPath === '/flightresult' ? '#304296' : 'gray' }}><h4>Flight ⟩</h4></div>
+      <h4 style={{ color: currentPath === '/passengerdetails' ? '#304296' : 'gray' }}>PassengerDetails ⟩</h4>
+      <h4 style={{ color: currentPath === '/baggage' ? '#304296' : 'gray' }}>Baggages ⟩</h4>
+      <h4 style={{ color: currentPath === '/seatselection' ? '#304296' : 'gray' }}>Seats ⟩</h4>
+      <h4 style={{ color: currentPath === '/services' ? '#304296' : 'gray' }}>Services ⟩</h4>
+      <h4 style={{ color: currentPath === '/payment' ? '#304296' : 'gray' }}>Payment ⟩</h4>
+    </div>
+  );
+}
+
+export default InHead;
+
+.activeBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border: 15px solid #e6e7e1;
+  padding: 12px 30px 5px 30px;
+}
+
+export const activeBar: string;
+
+
+  {inHead}
+          {mainContent}
+
+
+inHead={<InHead />}
