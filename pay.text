@@ -1,0 +1,18 @@
+useEffect(() => {
+    paymentGroups.forEach((child: any) => {
+      const firstPayment = child.payments[0];
+      switch (firstPayment.paymentTypeID) {
+        // case PAYMENT_METHOD_IDS.UNIONPAY_CARD:
+        case PAYMENT_METHOD_IDS.MAIB_BANK:
+        case PAYMENT_METHOD_IDS.AEB_BANK:
+          if (actionState !== WORKFLOW.VOUCHER_PURCHASE) {
+            setMakeChangeValue(firstPayment.paymentTypeID);
+            setPayTypeId(firstPayment.paymentTypeID);
+            console.log(firstPayment.paymentTypeID, 'firstPayment');
+          }
+          break;
+        default:
+          break;
+      }
+    });
+}, [paymentGroups, actionState]);
