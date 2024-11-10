@@ -1,0 +1,35 @@
+passDetail-page
+
+
+  const [emailMatch, setEmailMatch] = useState(true);
+move on index page page and send props in contact Detail page 
+
+
+ if (form.checkValidity() && result && emailMatch) {
+      dispatch(sendPassengerData(ISendPassengerDataRequest));
+      if (selectedAddons.fareLock && selectedAddons.fareLock.length > 0) {
+        Router.pushRoute('/Payment');
+      } else {
+        Router.pushRoute('/Baggage');
+      }
+    } else {
+      setFormValidated(false);
+    }
+
+
+
+    emailMatch = {emailMatch}
+    setEmailMatch={setEmailMatch}
+
+
+
+
+
+    header index line no === 738
+
+
+     {
+     (portalType == WORKFLOW_TYPE.B2B) ? (
+      <Button variant="link" className={`${styles.navLink} ${isLoggedIn ? 'd-none' : ''}`} onClick={() => HandleMMBShow()}>{t('FlightResult.lblAgencyLogin')}</Button>
+     ) : <></>
+    }

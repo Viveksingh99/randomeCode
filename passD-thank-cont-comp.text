@@ -1,0 +1,390 @@
+import React, { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
+import { groupBy, map, isEmpty, find } from 'lodash';
+import moment from 'moment';
+import styles from './styles.scss';
+import PaxPayment from '../../constants/PaxPayment';
+import { formatCurrency, getBookingStatus } from '../../helpers/utilities';
+import { BOOKING_STATUS } from '../../constants/common';
+
+function passangerinfo(paxData: any, addData: any, cabinclass: any) {
+  const { t } = useTranslation();
+  const BAG10kg = `1 x 10Kg ${t('Baggage.lblBgeInclud')}`;
+  const BAG20kg = `1 x 20Kg ${t('Baggage.lblBgeInclud')}`;
+  const formbgWeight = (getdata: any) => {
+    const temp: any = [];
+    map(getdata, (baggage: any, key: any) => {
+      const bgWeight =
+        baggage.length && key ? (
+          <Fragment>
+            <span>
+              {baggage.length}
+              &nbsp; x &nbsp;
+              {t(`Passengers.lbl${key}kgCkdInBge`)}
+            </span>
+          </Fragment>
+        ) : (
+          '-'
+        );
+      temp.push(bgWeight);
+    });
+    return temp;
+  };
+
+  const getIncludedBags = (cabin: string) => {
+    switch (cabin) {
+      case 'AD':
+        return (
+          <Fragment>
+            <span>{BAG10kg}</span>
+            <span>{BAG20kg}</span>
+          </Fragment>
+        );
+      case 'LO':
+        return <span>{BAG20kg}</span>;
+      case 'ST':
+        return <Fragment />;
+      default:
+        return <Fragment />;
+    }
+  };
+
+  const noCheckinBags = (cabin: string) => {
+    switch (cabin) {
+      case 'AD':
+      case 'LO':
+        return <Fragment />;
+      case 'ST':
+      default:
+        return <Fragment>{t('Passengers.lblNoChkInBag')}</Fragment>;
+    }
+  };
+
+  const getCabinBags = (cabin: string) => {
+    if (cabin !== '') {
+      switch (cabin) {
+        case 'AD':
+          return (
+            <Fragment>
+              <span>
+                40x30x20 &nbsp;
+                {t('Ancillaries.lblFYPrityRdMoreCnt1')}
+              </span>
+              <span>
+                50x40x25 &nbsp;
+                {t('Ancillaries.lblFYPrityRdMoreCnt1')}
+              </span>
+            </Fragment>
+          );
+        case 'LO':
+          return `40x30x20 ${t('Ancillaries.lblFYPrityRdMoreCnt1')}`;
+        default:
+          return `40x30x20 ${t('Ancillaries.lblFYPrityRdMoreCnt1')}`;
+      }
+    } else {
+      return t('Baggage.lblNoCabinBag');
+    }
+  };
+  const paxname =
+    !isEmpty(paxData) &&
+    paxData.map((pax: any) => {
+      type ServiceKey =
+        | 'changeFlex'
+        | 'bundles'
+        | 'otherFees'
+        | 'sportsEquipment'
+        | 'priorityNotification'
+        | 'automatedCheckIn'
+        | 'meals'
+        | 'seat'
+        | 'baggage'
+        | 'airportCheckIn'
+        | 'pets'
+        | 'onTimeGuarantee'
+        | 'largeCabinBag'
+        | 'earlyCheckIn'
+        | 'baggageGuarantee'
+        | 'smsItinerary';
+      const iconMap: Record<ServiceKey, string> = {
+        seat: `${styles.iconFoSeat}`,
+        baggage: 'baggage',
+        airportCheckIn: 'airportCheckIn',
+        earlyCheckIn: 'earlyCheckIn',
+        baggageGuarantee: 'baggageGuarantee',
+        onTimeGuarantee: 'onTimeGuarantee',
+        smsItinerary: 'smsItinerary',
+        largeCabinBag: 'largeCabinBag',
+        pets: 'pets',
+        meals: 'meals',
+        automatedCheckIn: 'automatedCheckIn',
+        priorityNotification: 'priorityNotification',
+        changeFlex: 'changeFlexas',
+        sportsEquipment: 'sportsEquipmentas',
+        bundles: 'bundles',
+        otherFees: 'euroIcon'
+      };
+      //   const addonByPax = typeof addData !== 'undefined' && find(addData.paxAddon, (x: any) => x.paxKey === pax.paxKey);
+      //   console.log(addonByPax.paxKey, 'addData');
+      //   const additionalServices = addonByPax && addonByPax.addons;
+      // const filteredKeys = additionalServices && Object.entries(additionalServices)
+      //   .filter(([, value]) => value !== null)
+      //   .map(([key]) => {
+      //     const serviceKey = key as ServiceKey;
+      //     return (
+      //       <div key={key}>
+      //         <p>
+      //           <span>
+      //             <i className={`${styles.foIcon} ${iconMap[serviceKey] || iconMap.largeCabinBag} ${styles.roundIcon}`} />
+      //           </span>
+      //           {key}
+      //         </p>
+      //       </div>
+      //     );
+      //   });
+      const addonByPax = typeof addData !== 'undefined' && find(addData.paxAddon, (x: any) => x.paxKey === pax.paxKey);
+      const additionalServices = addonByPax && addonByPax.addons ? addonByPax.addons : {};
+      const filteredKeys = Object.entries(additionalServices)
+        .filter(([, value]) => value !== null)
+        .map(([key]) => {
+          const serviceKey = key as ServiceKey;
+          const iconClass = iconMap[serviceKey] || iconMap.largeCabinBag;
+          const displayKey = /^Infant\d+$/.test(addonByPax.paxKey)
+            ? 'No Services'
+            : key;
+          return (
+            <div key={key}>
+              <p>
+                <span>
+                  <i
+                    className={`${styles.foIcon} ${iconClass} ${styles.roundIcon}`}
+                  />
+                </span>
+                {displayKey}
+              </p>
+            </div>
+          );
+        });
+
+      if (
+        !isEmpty(addData) &&
+        typeof addonByPax !== 'undefined' &&
+        !isEmpty(addonByPax)
+      ) {
+        const m = addData ? addonByPax : { baggage: null, seat: null };
+        const { baggage, seat, largeCabinBag } = m.addons;
+        const isBagSelected = !isEmpty(baggage) && baggage.length > 0;
+        console.log(isBagSelected,'baggage');
+        return {
+          clm1: `${pax.firstName} ${
+            typeof pax.surName === 'undefined' ? pax.lastName : pax.surName
+          }`,
+          clm2:
+            pax.paxType !== 'Infant'
+              ? getCabinBags(!isEmpty(largeCabinBag) ? 'AD' : cabinclass)
+              : getCabinBags(''),
+          clm3: (
+            <Fragment>
+              {pax.paxType !== 'Infant' ? getIncludedBags(cabinclass) : ''}
+              { isBagSelected ? [...formbgWeight(groupBy(baggage, 'weight'))] : ''}
+              {(!isBagSelected && cabinclass === 'ST') || pax.paxType === 'Infant' ? t('Baggage.lblNoChkInBag') : ''}
+              {/* { !isBagSelected ? t('Baggage.lblNoChkInBag') : ''} */}
+            </Fragment>
+          ),
+          clm4:
+            !isEmpty(seat) && seat
+              ? seat.seatNumber
+              : t('SeatPage.lblNoSeatSlcted'),
+          clm5: <div>{filteredKeys}</div>
+        };
+      }
+      let column3 = noCheckinBags(cabinclass);
+      if (cabinclass !== 'ST') {
+        column3 =
+          pax.paxType !== 'Infant'
+            ? getIncludedBags(cabinclass)
+            : noCheckinBags('');
+      }
+      return {
+        clm1: `${pax.firstName} ${
+          typeof pax.surName === 'undefined' ? pax.lastName : pax.surName
+        }`,
+        clm2:
+          pax.paxType !== 'Infant'
+            ? getCabinBags(cabinclass)
+            : t('Baggage.lblNoCabinBag'),
+        clm3: column3,
+        clm4: t('SeatPage.lblNoSeatSlcted')
+      };
+    });
+  return paxname;
+}
+function paymentInfoBind(
+  paymentHistory: any
+  // exchangeRate :any, selectedCurrencyCode: any
+) {
+  return map(paymentHistory, (payList: any) => ({
+    clm1: `${payList.cardType}`,
+    clm2: moment(payList.paymentDate).format('ddd, DD MMM YYYY'),
+    clm3: formatCurrency(
+      payList.amountPaid,
+      payList.currency,
+      0,
+      payList.currency
+    ),
+    clm4: getBookingStatus(payList.status)
+  }));
+}
+
+export default function PassengerBaggageDetail(props: any) {
+  const {
+    DetailType,
+    paxData,
+    addData,
+    paymentHistory,
+    reservationInfo,
+    cabinclass
+    // exchangeRate, selectedCurrencyCode,
+  } = props;
+  const GetBookingData: any = PaxPayment;
+  let GetBookingDetails: any = GetBookingData[DetailType];
+  let GetBookingHead: any = '';
+  const { t } = useTranslation();
+  switch (DetailType) {
+    case 'bookingDetails':
+      GetBookingHead = (
+        <ul className={styles.textBold}>
+          <li>{t('SeatPage.lblPassngrs')}</li>
+          <li>{t('Passengers.lblCbnBge')}</li>
+          <li>{t('Baggage.lblChkdinBge')}</li>
+          <li>{t('SeatPage.lblSeats')}</li>
+          <li>{t('FlightResult.lblAddTionalServices')}</li>
+        </ul>
+      );
+      GetBookingDetails = passangerinfo(paxData, addData, cabinclass);
+      break;
+    case 'paymentDetails':
+      GetBookingHead = (
+        <ul className={styles.textBold}>
+          <li>{t('ManageBooking.lblPaymentMethod')}</li>
+          <li>{t('ManageBooking.lblDatePayment')}</li>
+          <li>{t('FlightResult.lblTotal')}</li>
+          <li>{t('ThanksPage.lblStatus')}</li>
+        </ul>
+      );
+      GetBookingDetails = paymentInfoBind(
+        paymentHistory
+        // exchangeRate, selectedCurrencyCode,
+      );
+      break;
+    default:
+      GetBookingHead = '';
+  }
+  return (
+    <div
+      className={`${styles.boxContent} ${styles.mt10} ${styles.thanksItinerary}`}
+      key={DetailType}
+    >
+      <div
+        className={`${styles.boxHeader} ${styles.noPadTopBot} ${styles.boxListHead}`}
+      >
+        {GetBookingHead}
+      </div>
+      <div className={`${styles.boxBody} ${styles.boxListBody}`}>
+        {map(GetBookingDetails, (bookItem: any, index: number) => {
+          return (
+            <ul key={`GetBookingDetails-${index}`}>
+              <li>
+                {props.hasIcon ? (
+                  <i
+                    className={`${styles.foIcon} ${styles.iconFoUser2} ${styles.roundIcon}`}
+                  />
+                ) : (
+                  ''
+                )}
+                {bookItem.clm1}
+              </li>
+              <li>
+                {!isEmpty(reservationInfo) &&
+                reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK ? (
+                  <Fragment>
+                    {props.hasIcon ? (
+                      <i
+                        className={`${styles.foIcon} ${styles.iconFoBaggage} ${styles.roundIcon}`}
+                      />
+                    ) : (
+                      ''
+                    )}
+                    <div className="bagitem">{bookItem.clm2}</div>
+                  </Fragment>
+                ) : (
+                  ''
+                )}
+              </li>
+              <li>
+                {!isEmpty(reservationInfo) &&
+                reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK ? (
+                  <Fragment>
+                    {props.hasIcon ? (
+                      <span>
+                  <i className={`${styles.foIcon} ${styles.iconFoBaggage} ${styles.roundIcon}`} />
+                      </span>
+              )
+                : ''
+            }
+            <div className="bagitem">
+              {bookItem.clm3}
+            </div>
+                  </Fragment>
+        )
+        : ''
+    }
+              </li>
+              <li>
+    {
+      (!isEmpty(reservationInfo)
+      && reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK)
+        ? (
+                  <Fragment>
+            {
+              props.hasIcon ? (
+                <i className={`${styles.foIcon} ${styles.iconFoSeat} ${styles.roundIcon}`} />
+              )
+                : ''
+            }
+                    {bookItem.clm4}
+                  </Fragment>
+        )
+        : ''
+    }
+              </li>
+  {bookItem.clm5 && <li>
+    {
+      (!isEmpty(reservationInfo)
+      && reservationInfo.bookingStatus !== BOOKING_STATUS.FARELOCK)
+        ? (
+								  
+					  
+                    <Fragment>
+                      {/* {
+              props.hasIcon ? (
+					  
+					 
+                <i className={`${styles.roundIcon} priorityNotification`} />
+              )
+                : ''
+            } */}
+                      {bookItem.clm5}
+                    </Fragment>
+        )
+        : ''
+    }
+  </li>}
+            </ul>
+)
+}
+          )
+        }
+      </div>
+    </div>
+  );
+}
