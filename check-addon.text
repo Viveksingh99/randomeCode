@@ -21,7 +21,7 @@
                                     <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                       <div className="img-box">
                                         <img src="./static/images/addservice/priority-notification.png" className="img-fluid" alt="" />
-                                        <p> {t('Ancillaries.lblBgegutebdTxt1')} </p>
+                                        <p> {t('Ancillaries.lblBgegutehdTxt')} </p>
                                         <button className="service-btn" onClick={() => onContinueBaggageManagement()}>Add to trip</button>
                                       </div>
                                     </div>
