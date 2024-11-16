@@ -1,42 +1,138 @@
+
 import React from 'react';
 import { useRouter } from 'next/router';
 import styles from './styles.scss';
 
-
-function InHead() {
+const InHead = () => {
   const router = useRouter();
   const currentPath = router.pathname.toLowerCase();
 
-  // console.log("Currentpathname", currentPath);
+  const steps = [
+    { path: '/flightresult', label: 'Flight', icone: <i className="im-passprt" /> },
+    { path: '/passengerdetails', label: 'Passengers', icone: <i className="im-chld-trvl" /> },
+    { path: '/baggage', label: 'Baggages', icone: <i className="im-infnt-trvl" /> },
+    { path: '/seatselection', label: 'Seats', icone: <i className="im-check-ico" /> },
+    { path: '/services', label: 'Services', icone: <i className="im-alert-icon" /> },
+    { path: '/payment', label: 'Payment', icone: <i className="im-standard-up" /> },
+  ];
+
+  const currentStepIndex = steps.findIndex((step:any) => step.path === currentPath);
+
+  const getStepStatus = (index: number) => {
+    if (index < currentStepIndex) return 'done';
+    if (index === currentStepIndex) return 'current';
+    return 'upcoming';
+  };
 
   return (
     <div className={styles.activeBar}>
-      <div style={{ color: currentPath === '/flightresult' ? '#304296' : 'gray' }}><h4>Flight ⟩</h4></div>
-      <h4 style={{ color: currentPath === '/passengerdetails' ? '#304296' : 'gray' }}>PassengerDetails ⟩</h4>
-      <h4 style={{ color: currentPath === '/baggage' ? '#304296' : 'gray' }}>Baggages ⟩</h4>
-      <h4 style={{ color: currentPath === '/seatselection' ? '#304296' : 'gray' }}>Seats ⟩</h4>
-      <h4 style={{ color: currentPath === '/services' ? '#304296' : 'gray' }}>Services ⟩</h4>
-      <h4 style={{ color: currentPath === '/payment' ? '#304296' : 'gray' }}>Payment ⟩</h4>
+      {/* Progress Indicator for Mobile */}
+      <div className={styles.progressIndicator}>
+        Step {currentStepIndex + 1}/{steps.length}
+      </div>
+
+      {/* Navigation Steps */}
+      {steps.map((step, index) => {
+        const status = getStepStatus(index);
+        const icon =
+          status === 'done' ? (
+            <i className="fo-icon icon-fo-tick-round" />
+          ) : (
+            step.icone
+          );
+
+        return (
+          <div
+            key={step.path}
+            className={`${styles.step} ${styles[status as keyof typeof styles]}`}
+            >
+            {icon}
+            <span className={styles.stepLabel}>{step.label}</span>
+          </div>
+        );
+      })}
     </div>
   );
-}
+};
 
 export default InHead;
+
+
+css -------------------------------------------------------------------------------
+
 
 .activeBar {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
   border: 15px solid #e6e7e1;
-  padding: 12px 30px 5px 30px;
+  padding: 12px 30px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
-export const activeBar: string;
+.activeBar .step {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
 
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
 
-  {inHead}
-          {mainContent}
+.activeBar .stepLabel {
+  margin-left: 8px;
 
+  @media (max-width: 768px) {
+    display: inline;
+  }
 
-inHead={<InHead />}
+  @media (min-width: 481px) and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.activeBar .progressIndicator {
+  display: none;
+
+  @media (max-width: 480px) {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #304296;
+  }
+}
+
+.activeBar i {
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
+
+.activeBar .done {
+  color: #28a745;
+}
+
+.activeBar .done i {
+  color: #28a745;
+}
+
+.activeBar .current {
+  color: #304296;
+}
+
+.activeBar .upcoming {
+  color: gray;
+}
+
