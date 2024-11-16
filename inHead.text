@@ -18,39 +18,46 @@ const InHead = () => {
 
   const currentStepIndex = steps.findIndex((step:any) => step.path === currentPath);
 
-  const getStepStatus = (index: number) => {
-    if (index < currentStepIndex) return 'done';
-    if (index === currentStepIndex) return 'current';
-    return 'upcoming';
-  };
-
   return (
     <div className={styles.activeBar}>
-      {/* Progress Indicator for Mobile */}
-      <div className={styles.progressIndicator}>
-        Step {currentStepIndex + 1}/{steps.length}
+      <div className={styles.mobileView}>
+        {steps[currentStepIndex] && (
+          <div className={`${styles.step} ${styles.current}`}>
+            {steps[currentStepIndex].icone}
+            <span className={styles.stepLabel}>{steps[currentStepIndex].label}</span>
+          </div>
+        )}
+        <div className={styles.progressIndicator}>
+          Step {currentStepIndex + 1}/{steps.length}
+        </div>
       </div>
 
-      {/* Navigation Steps */}
-      {steps.map((step, index) => {
-        const status = getStepStatus(index);
-        const icon =
-          status === 'done' ? (
-            <i className="fo-icon icon-fo-tick-round" />
-          ) : (
-            step.icone
-          );
+      <div className={styles.desktopView}>
+        {steps.map((step, index) => {
+          const status =
+            index < currentStepIndex
+              ? 'done'
+              : index === currentStepIndex
+              ? 'current'
+              : 'upcoming';
 
-        return (
-          <div
-            key={step.path}
-            className={`${styles.step} ${styles[status as keyof typeof styles]}`}
-            >
-            {icon}
-            <span className={styles.stepLabel}>{step.label}</span>
-          </div>
-        );
-      })}
+          const icon =
+            status === 'done' ? (
+              <i className="fo-icon icon-fo-tick-round" />
+            ) : (
+              step.icone
+            );
+
+          return (
+            <div
+              key={step.path}
+              className={`${styles.step} ${styles[status as keyof typeof styles]}`}>
+              {icon}
+              <span className={styles.stepLabel}>{step.label}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -58,81 +65,82 @@ const InHead = () => {
 export default InHead;
 
 
+
 css -------------------------------------------------------------------------------
 
 
 .activeBar {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 10px;
   border: 15px solid #e6e7e1;
   padding: 12px 30px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 
-.activeBar .step {
-  display: flex;
+/* Mobile View: Show Only Active Step */
+.mobileView {
+  display: none; /* Hidden by default */
+  text-align: center;
   align-items: center;
-  margin-right: 15px;
-
-  @media (max-width: 768px) {
-    margin-right: 0;
-    margin-bottom: 10px;
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-
-.activeBar .stepLabel {
-  margin-left: 8px;
-
-  @media (max-width: 768px) {
-    display: inline;
-  }
-
-  @media (min-width: 481px) and (max-width: 768px) {
-    display: none;
-  }
-}
-
-.activeBar .progressIndicator {
-  display: none;
 
   @media (max-width: 480px) {
-    display: block;
+    display: flex; /* Visible only on mobile */
+    flex-direction: row; /* Arrange items in a row */
+    justify-content: space-between; /* Add space between elements */
+    align-items: center; /* Vertically align items */
     width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #304296;
+    padding: 0 10px; /* Add some padding */
   }
 }
 
-.activeBar i {
-  font-size: 1.2rem;
-  margin-right: 8px;
+.mobileView .step {
+  display: flex;
+  align-items: center;
 }
 
-.activeBar .done {
-  color: #28a745;
-}
-
-.activeBar .done i {
-  color: #28a745;
-}
-
-.activeBar .current {
+.mobileView .progressIndicator {
+  font-size: 0.9rem;
+  font-weight: bold;
   color: #304296;
 }
 
-.activeBar .upcoming {
+/* Desktop/Tablet View: Show All Steps */
+.desktopView {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  @media (max-width: 480px) {
+    display: none; /* Hidden on mobile */
+  }
+}
+
+/* Individual steps */
+.step {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.stepLabel {
+  margin-left: 8px;
+}
+
+/* Status Styles */
+.done {
+  color: #28a745;
+}
+
+.current {
+  color: #304296;
+}
+
+.upcoming {
   color: gray;
 }
 
+/* Icon Styling */
+i {
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
