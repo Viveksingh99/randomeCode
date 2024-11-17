@@ -1,0 +1,24 @@
+ const addonByPax = typeof addData !== 'undefined' && find(addData.paxAddon, (x: any) => x.paxKey === pax.paxKey);
+const additionalServices = addonByPax && addonByPax.addons ? addonByPax.addons : {};
+const serviceEntries = Object.entries(additionalServices)
+  .filter(([key, value]) => value !== null && key !== 'otherFees')
+  .map(([key]) => {
+    const isNoServices = /^Infant\d+$/.test(addonByPax.paxKey);
+    return isNoServices ? 'No Services' : key;
+  });
+const uniqueServices = Array.from(new Set(serviceEntries));
+const filteredKeys = uniqueServices.map((serviceKey:any) => {
+  const iconClass = iconMap[serviceKey as ServiceKey] || iconMap.largeCabinBag;
+  return (
+    <div key={serviceKey}>
+      <p>
+        <span>
+          <i
+            className={`${styles.foIcon} ${iconClass} ${styles.roundIcon}`}
+          />
+        </span>
+        {serviceKey}
+      </p>
+    </div>
+  );
+});
