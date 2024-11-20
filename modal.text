@@ -1,0 +1,131 @@
+ <BundelModalCom
+        selectedFlights={selectedFlights}
+        paxKey={currentActiveKey}
+        currentBundleItem={currentBundleItem}
+        dispatch={dispatch}
+        />
+
+-------------------------------------------------------------------------------------------------------------------------------------
+import {
+  isEmpty,
+  get,
+  find,
+  some,
+  List,
+} from 'lodash';
+import { removeServiceBySegment, selectService } from '../../redux/addon.redux';
+import { formatCurrency } from '../../helpers/utilities';
+import { Button } from 'react-bootstrap';
+import styles from './styles.scss';
+
+
+const BundelModalCom = ({dispatch, currentBundleItem, paxKey, selectedFlights, selectedBundleList, exchangeRate, selectedCurrencyCode}: any) => {
+  const isMatchingBundle = (bundles: List<any> | null | undefined, segmentKey: string, flightKey: string, paxKey: string) => {
+    if (!Array.isArray(bundles)) return false;
+    return some(bundles, (bundle:any) => {
+      return bundle &&
+        bundle.segmentKey !== undefined &&
+        bundle.flightKey !== undefined &&
+        bundle.segmentKey === segmentKey &&
+        bundle.flightKey === flightKey &&
+        bundle.paxKey === paxKey;
+    });
+  };
+
+  const flights = selectedFlights && selectedFlights.flights || [];
+  const currentFlight = find(flights, (flight:any) => flight.flightKey === (currentBundleItem && currentBundleItem.flightKey));
+  const { flightDirection = '' } = currentFlight || {};
+  const isOutbound = flightDirection === 1
+  const segmentKey = currentBundleItem && get(currentBundleItem, 'addOnAvailInfo[0].segmentKey', undefined);
+  const price = currentBundleItem && get(currentBundleItem, 'addOnAvailInfo[0].priceInfo.unitPrice', 0)
+  const currency = currentBundleItem && get(currentBundleItem, 'addOnAvailInfo[0].priceInfo.currency', 0)
+  const handleAddFlyOnePriority = () => {
+    if (!isEmpty(currentBundleItem) &&
+      !isEmpty(currentBundleItem.addOnAvailInfo)) {
+      dispatch(selectService(
+        currentBundleItem.addOnAvailInfo[0],
+        currentBundleItem.name,
+        'bundles',
+        currentBundleItem.flightKey,
+        isOutbound,
+        paxKey,
+      ));
+    }
+  };
+
+  const removeFlyOnePriority = () => {
+    if (!isEmpty(currentBundleItem) &&
+      !isEmpty(currentBundleItem.addOnAvailInfo)) {
+      dispatch(removeServiceBySegment(
+        'bundles',
+        segmentKey,
+        price,
+        paxKey,
+      ));
+    }
+  };
+  const isSelected = isMatchingBundle(selectedBundleList, segmentKey, currentBundleItem.flightKey, paxKey);
+  return (
+    <>
+      <div className="container">
+        <div className="row baggages-row">
+          <div className="col-lg-3 first-box"> <img src="/static/images/Imagemodal.png" alt="" className="img-fluid" /> </div>
+          <div className="col-lg-6 second-box">
+            <h2>PACK MORE AND SAVE <span className="heading-divide">ON YOUR JOURNEY</span></h2>
+            <h3>Enjoy a ONE-TIME 25% discount!</h3>
+            <ul>
+              <li><img src="/static/images/checkmodal.svg" alt="" /> <span className="bag-item-check-text">Large cabin bag up to 10kg</span> </li>
+              <li><img src="/static/images/checkmodal.svg" alt="" /> <span className="bag-item-check-text">Checked-in bag up to 20kg</span> </li>
+            </ul>
+          </div>
+          <div className="col-lg-3 third-box">
+            <span className="discount-btn">25% Discount</span>
+            <img src="/static/images/tenmodal.svg" alt="" />
+            <ul className="text-or-btn">
+              <li className="from-text"> From </li>
+              <li className="price-text">
+                {
+                  formatCurrency(
+                    price,
+                    currency,
+                    exchangeRate,
+                    selectedCurrencyCode,
+                  )
+                }
+              </li>
+              <li>
+                {isSelected ?
+                  <Button
+                    type="button"
+                    className={` addons_icon ${styles.btnSelected}`}
+                    style={{ width: '86%', padding: "4px 0px",border:'none'  }}
+                    variant="primary"
+                    onClick={() => {
+                      removeFlyOnePriority()
+                    }}
+                  >
+                    <i className={`${styles.foIcon} ${styles.iconFoTick}`} /> &nbsp;
+                    selected
+                  </Button> :
+                  <Button
+                    type="button"
+                    className={`addons_icon`}
+                    style={{ width: '86%', padding: "4px 0px" }}
+                    variant="primary"
+                    onClick={() => {
+                      handleAddFlyOnePriority()
+                    }}
+                  >
+                    Add Now
+                  </Button>}
+              </li>
+              <li className="thanks-text">No Thanks</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default BundelModalCom;
