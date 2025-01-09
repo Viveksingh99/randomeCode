@@ -1,0 +1,278 @@
+import React from "react";
+import "./styles.css";
+
+export default function App() {
+  const flightSchedule = [
+    {
+      direction: 1,
+      year: "2025",
+      currency: "EUR",
+      month: [
+        {
+          month: "1",
+          days: [
+            {
+              price: "55",
+              date: "25",
+              isLowestPrice: false,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "26",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "27",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "28",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "29",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "30",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "31",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+          ],
+        },
+        {
+          month: "2",
+          days: [
+            {
+              price: "55",
+              date: "1",
+              isLowestPrice: false,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "2",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "3",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "4",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      direction: 2,
+      year: "2025",
+      currency: "EUR",
+      month: [
+        {
+          month: "1",
+          days: [
+            {
+              price: "55",
+              date: "28",
+              isLowestPrice: false,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "55",
+              date: "29",
+              isLowestPrice: false,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "30",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "31",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+          ],
+        },
+        {
+          month: "2",
+          days: [
+            {
+              price: "50",
+              date: "1",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "55",
+              date: "2",
+              isLowestPrice: false,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "3",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "4",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "5",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "50",
+              date: "6",
+              isLowestPrice: true,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+            {
+              price: "55",
+              date: "7",
+              isLowestPrice: false,
+              isFlightAvailable: true,
+              isSoldOut: false,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const formatDate = (dateStr, monthNum, year) => {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const date = new Date(`${year}-${monthNum}-${dateStr}`);
+    const options = { weekday: "short", day: "numeric", month: "short" };
+    return date.toLocaleDateString("en-US", options);
+  };
+
+  // const formatDate = (dateStr, monthNum, year) => {
+  //   const date = moment(`${year}-${monthNum}-${dateStr}`, "YYYY-MM-DD");
+  //   return date.format("ddd DD, MMM");
+  // };
+
+  return (
+    <>
+      <div>
+        {/* Render for direction 1 */}
+        <div>
+          <h3>Direction 1</h3>
+          <div className="button-container">
+            {flightSchedule
+              .filter((schedule) => schedule.direction === 1)
+              .map((schedule, index) =>
+                schedule.month.map((month) =>
+                  month.days.map((day) => (
+                    <button
+                      key={index + month.month + day.date}
+                      className="flight-button"
+                    >
+                      <div>
+                        {formatDate(day.date, month.month, schedule.year)}
+                      </div>
+                      <div>
+                        {day.price === "0" ? "No flights" : `€ ${day.price}`}
+                      </div>
+                    </button>
+                  ))
+                )
+              )}
+          </div>
+        </div>
+
+        {/* Render for direction 2 */}
+        <div>
+          <h3>Direction 2</h3>
+          <div className="button-container">
+            {flightSchedule
+              .filter((schedule) => schedule.direction === 2)
+              .map((schedule, index) =>
+                schedule.month.map((month) =>
+                  month.days.map((day) => (
+                    <button
+                      key={index + month.month + day.date}
+                      className="flight-button"
+                    >
+                      <div>
+                        {formatDate(day.date, month.month, schedule.year)}
+                      </div>
+                      <div>
+                        {day.price === "0" ? "No flights" : `€ ${day.price}`}
+                      </div>
+                    </button>
+                  ))
+                )
+              )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
