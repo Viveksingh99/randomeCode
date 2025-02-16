@@ -1,0 +1,316 @@
+"use client";
+import React, { useState } from "react";
+import { Form } from "react-bootstrap";
+import serialize from "form-serialize";
+import { redirect } from "next/navigation";
+import { get, map } from "lodash";
+import moment from "moment";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import { sendPassengerData } from "@/lib/apiServices";
+import { setShowPageLoader } from "@/lib/componentSlice";
+import { transformPaxData } from "@/utils/utilsFunction";
+import { setPaxDetails } from "@/lib/paxSlice";
+import { PassengerDetailsForm } from "@/components/PassengerDetailsContent/PassengerDetails";
+import { ContactDetails } from "@/components/ContactDetails/ContactDetails";
+import ErrorModal from "@/components/Common/ErrorModal ";
+
+export interface MonthMap {
+  [key: number]: string;
+}
+
+const PassengerDetails: React.FC = () => {
+  const [validated, setValidated] = useState(false);
+  const [dateError, setDateError] = useState({});
+  const [searchError, setSearchError] = useState<any>(null);
+
+  // State for ContactDetails
+  const [contactFormData, setContactFormData] = useState({
+    email: "",
+    cnfrmEmail: "",
+    phoneNo: "",
+    mobileCode: "",
+  });
+
+  const [emailError, setEmailError] = useState("");
+
+  const { PaxData } = useAppSelector((state) => state?.pax?.paxDetails) || {};
+  const dispatch = useAppDispatch();
+  const isAllSegmentsOperatedBy5FOrOE = useAppSelector(
+    (state) => state?.component?.isAllSegmentsOperatedBy5FOrOE
+  );
+  const userData = useAppSelector((state) => state?.auth?.userData);
+
+  const handleContactChange = (e: React.ChangeEvent<HTMLElement>) => {
+    let { value, id } = e.target as HTMLInputElement | HTMLSelectElement;
+    if (id === "phoneNo") {
+      value = value?.replace(/[^0-9]/g, "");
+    }
+
+    setContactFormData({
+      ...contactFormData,
+      [id]: value,
+    });
+
+    if (id === "email" || id === "cnfrmEmail") {
+      if (id === "email" && contactFormData.cnfrmEmail !== "" && value !== contactFormData.cnfrmEmail) {
+        setEmailError("Emails do not match");
+      } else if (id === "cnfrmEmail" && value !== contactFormData.email) {
+        setEmailError("Emails do not match");
+      } else {
+        setEmailError("");
+      }
+    }
+  };
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (contactFormData.email !== contactFormData.cnfrmEmail) {
+      setEmailError("Emails do not match");
+      return;
+    }
+
+    try {
+      const form = event.currentTarget;
+      const { passenger: passengerInfo, billingInfo: billingDetails } =
+        serialize(form, { hash: true }) || {};
+
+      const formatDate = async (date: string | undefined) => {
+        return Boolean(date)
+          ? moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")
+          : "";
+      };
+
+      const passengersInfo = await Promise.all(
+        map(passengerInfo, async (passenger: any, index: any) => {
+          const {
+            lastName,
+            dateOfBirth,
+            passportExpDate,
+            passportIssuedDate,
+            gender,
+            ...rest
+          } = passenger;
+          const formattedDateOfBirth = await formatDate(dateOfBirth);
+          const formattedPassportExpDate = await formatDate(passportExpDate);
+          const formattedPassportIssuedDate = await formatDate(
+            passportIssuedDate
+          );
+
+          const passengerKey = isAllSegmentsOperatedBy5FOrOE
+            ? index.includes("Infant")
+              ? `${index}`
+              : null
+            : `${index}`;
+          setDateError((prev) => {
+            if (passengerKey === null) {
+              return prev;
+            } else if (
+              isAllSegmentsOperatedBy5FOrOE &&
+              index.includes("Infant")
+            ) {
+              return {
+                ...prev,
+                [passengerKey]: {
+                  dobErr: formattedDateOfBirth === "",
+                },
+              };
+            } else {
+              return {
+                ...prev,
+                [passengerKey]: {
+                  dobErr: formattedDateOfBirth === "",
+                  passIssueErr: formattedPassportExpDate === "",
+                  passExpErr: formattedPassportIssuedDate === "",
+                },
+              };
+            }
+          });
+          return {
+            surName: lastName,
+            dateOfBirth: formattedDateOfBirth,
+            passportExpDate: formattedPassportExpDate,
+            passportIssuedDate: formattedPassportIssuedDate,
+            title: gender === "female" ? "Mrs" : "Mr",
+            passengerKey: index,
+            paxType: index?.replace(/[0-9]/g, ""),
+            gender,
+            ...rest,
+          };
+        })
+      );
+
+      const ISendPassengerDataRequest = {
+        token: "",
+        paxInfoId: get(userData, "paxInfoID", 0),
+        passengersInfo,
+        billingInfo: {
+          mobileNo:
+            get(billingDetails, "mobileCode", "") +
+            " " +
+            get(billingDetails, "phoneNo", ""),
+          ...(typeof billingDetails === "object" && billingDetails !== null
+            ? billingDetails
+            : {}),
+        },
+      };
+
+      if (form.checkValidity()) {
+        dispatch(setShowPageLoader(true));
+        sendPassengerData(ISendPassengerDataRequest).then(async (res) => {
+          if (res?.data?.result?.isSuccess) {
+            await dispatch(
+              setPaxDetails(transformPaxData(PaxData, passengersInfo))
+            );
+            redirect("/Booking/BaggagePage");
+          } else {
+            setSearchError(res?.data?.result?.msgs);
+            dispatch(setShowPageLoader(false));
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setValidated(true);
+    }
+  };
+
+  return (
+    <>
+      <Form
+        as="form"
+        noValidate
+        validated={validated}
+        id="passengerForm"
+        onSubmit={(ev: any) => handleSubmit(ev)}
+      >
+        <PassengerDetailsForm
+          setDateError={setDateError}
+          dateError={dateError}
+        />
+        <ContactDetails
+          formData={contactFormData}
+          handleChange={handleContactChange}
+          emailError={emailError}
+        />
+        <button
+          type="submit"
+          id="passengerFormSubmitButton"
+          className="hidden"
+        />
+      </Form>
+      <ErrorModal show={searchError} onHide={() => setSearchError(null)} />
+    </>
+  );
+};
+
+export default PassengerDetails;
+
+
+============================================================================================================================
+
+
+import React from "react";
+import { Container, Row, Form, Col, Button } from "react-bootstrap";
+import { BsFillQuestionCircleFill, BsCheckLg } from "react-icons/bs";
+import "./Contactdetails.scss";
+import mobileCodes from "@/utils/mobileCode";
+import { map } from "lodash";
+
+export const ContactDetails = ({ formData, handleChange, emailError }) => {
+  return (
+    <Container>
+      <div className="Contactdetailsmaindiv">
+        <Row className="mt-4">
+          <Col sm="12" className="mb-0">
+            <h3 className="pageheading">Contact details</h3>
+            <p className="prgwicon">
+              <BsFillQuestionCircleFill className="iconsvg" /> Please complete
+              your contact details
+            </p>
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <Col sm="12">
+            <Form.Control
+              id="email"
+              autoComplete="email"
+              aria-label="Email"
+              className="inputlogin"
+              placeholder="Email"
+              name="billingInfo[email]"
+              required
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Col sm="12">
+            <Form.Control
+              id="cnfrmEmail"
+              aria-label="ConfirmEmail"
+              className="inputlogin"
+              placeholder="Confirm Email"
+              name="cnfrmEmail"
+              type="email"
+              required
+              value={formData.cnfrmEmail}
+              onChange={handleChange}
+              isInvalid={emailError !== ""}
+            />
+            {emailError && <Form.Control.Feedback type="invalid">{emailError}</Form.Control.Feedback>}
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Col sm="3" xs="4" className="colmr">
+            <Form.Select
+              id="mobileCode"
+              aria-label="Country Code"
+              className="cntrycode"
+              name="billingInfo[mobileCode]"
+              required
+              value={formData.mobileCode}
+              onChange={handleChange}
+            >
+              <option disabled value="">
+                Country code
+              </option>
+              {map(mobileCodes, (item) => (
+                <option value={item?.dial_code} key={item?.code}>
+                  {item?.name} ({item?.dial_code})
+                </option>
+              ))}
+            </Form.Select>
+          </Col>
+          <Col sm="9" xs="8" className="colml">
+            <Form.Control
+              id="phoneNo"
+              type="text"
+              className="inputlogin"
+              placeholder="Phone Number"
+              name="billingInfo[phoneNo]"
+              required
+              value={formData.phoneNo}
+              onChange={handleChange}
+              maxLength={10}
+            />
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <Col className="d-grid gap-2">
+            <Button variant="secondary" size="lg" className="btnitnrysms">
+              Itinerary by SMS € 5 <BsCheckLg />
+            </Button>
+          </Col>
+        </Row>
+      </div>
+    </Container>
+  );
+};
+
