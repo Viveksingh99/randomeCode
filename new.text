@@ -1,0 +1,4694 @@
+Hii vivek
+
+NODE_ENV=production
+API_ENV=development
+PROD_INTERNAL_PATH="https://www.flyone.eu"
+CURRENT_PATH="http://localhost:3000"
+AUTH_COOKIE_DOMAIN="localhost"
+PROD_BASE_PATH="https://api2.flyone.eu"
+STAGING_BASE_PATH="https://flyone-cert-api.goquo.net"
+DEV_BASE_PATH="https://flyone-cert-api.goquo.net"
+PROD_BASE_PATH_SEARCH="https://api2.flyone.eu"
+STAGING_BASE_PATH_SEARCH="https://flyone-cert-searchapi.goquo.net"
+DEV_BASE_PATH_SEARCH="https://flyone-cert-searchapi.goquo.net"
+API_LOCAL_BASE_PATH="http://localhost:3000"
+NEXT_PUBLIC_GOOGLE_ANALYTICS="AW-10841162465"
+NEXT_PUBLIC_GOOGLE_ADS="AW-10841162465"
+GG_MAP_API_KEY="AIzaSyC39-YyP8zA-TtAS66VwqnLy_b4TTu2t_Y"
+PROD_BUILD_ID="v1.2.42"
+BUILD_ID="v4.0.77"
+STAGING_BUILD_ID="v4.6.58"
+PAYMENT_GATEWAY="ALPHA"
+PORT=3000
+ENCKEY="YTRQWE574RTGFVHG^&%"
+APIKey="M0io3N-Cwt5o7*Tyst4P*B3ue"
+
+
+{
+  "name": "enginev2ui",
+  "version": "0.0.1",
+  "description": "FlyOne Client App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development nodemon -w next/server.js next/server.js",
+    "build": "npm run tsm && next build",
+    "start": "node next/server.js",
+    "tsm": "npx tsm pages-scss && npx tsm components",
+    "prod": "next build && node ./next/server.js",
+    "next": "next start"
+  },
+  "author": "GoQuo India",
+  "license": "MIT",
+  "dependencies": {
+    "@types/cleave.js": "^1.4.0",
+    "@types/form-serialize": "^0.7.1",
+    "@types/google-map-react": "^2.1.3",
+    "@types/googlepay": "^0.4.0",
+    "@types/lodash": "^4.14.136",
+    "@types/payment": "^2.1.3",
+    "@types/react-dates": "^17.1.5",
+    "@types/react-facebook-login": "^4.1.1",
+    "@types/react-select": "^3.0.2",
+    "@types/react-slick": "^0.23.4",
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "cleave.js": "^1.5.3",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "dotenv-webpack": "^1.7.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^4.1.0",
+    "form-serialize": "^0.7.2",
+    "google-map-react": "^1.1.7",
+    "helmet": "^5.1.0",
+    "http-headers-validation": "0.0.1",
+    "i18next": "^17.0.16",
+    "i18next-browser-languagedetector": "^3.0.3",
+    "i18next-http-backend": "^2.6.2",
+    "i18next-xhr-backend": "^3.1.2",
+    "js-cookie": "^2.2.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "next": "^9.0.3",
+    "next-enginev2ui-css": "^4.0.0",
+    "next-i18next": "^1.1.0",
+    "next-routes": "^1.4.2",
+    "node-sass": "^4.14.1",
+    "nookies": "^2.3.2",
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth": "^2.0.0",
+    "payment": "^2.4.6",
+    "permissions-policy": "^0.6.0",
+    "public-ip": "^4.0.0",
+    "query-string": "^6.13.8",
+    "react": "^16.9.0",
+    "react-app-polyfill": "^1.0.4",
+    "react-bootstrap": "^1.0.0-beta.12",
+    "react-content-loader": "^5.0.4",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dates": "^20.2.5",
+    "react-dom": "^16.9.0",
+    "react-facebook-pixel": "^1.0.4",
+    "react-google-charts": "^3.0.15",
+    "react-i18next": "^10.12.5",
+    "react-moment-proptypes": "^1.6.0",
+    "react-qr-code": "^2.0.12",
+    "react-redux": "^7.1.0",
+    "react-scroll": "^1.7.14",
+    "react-select": "^3.0.4",
+    "react-slick": "^0.24.0",
+    "react-spinners": "^0.5.12",
+    "recharts": "^1.3.3",
+    "redux": "^4.0.4",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "url-loader": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/js-cookie": "^2.2.2",
+    "@types/node": "^12.7.12",
+    "@types/query-string": "^6.3.0",
+    "@types/react": "^16.8.23",
+    "@types/react-bootstrap": "^0.32.19",
+    "@types/react-custom-scrollbars": "^4.0.5",
+    "@types/react-redux": "^7.1.1",
+    "@types/react-scroll": "^1.5.4",
+    "@types/recharts": "^1.8.29",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "concurrently": "^4.1.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-typescript": "^4.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.2",
+    "nodemon": "^3.1.11",
+    "prettier": "^1.18.2",
+    "typed-scss-modules": "0.0.10",
+    "typescript": "^3.5.3"
+  }
+}
+
+# How to Add a New Payment Method - Complete Guide
+
+## Overview
+This guide shows how to add a new payment method (e.g., "Stripe", "PayPal", "Apple Pay") to your FlyOne payment system.
+
+## Step 1: Add Payment Method ID to Constants
+
+**File:** `constants/common.ts`
+
+```typescript
+export const PAYMENT_METHOD_IDS = {
+  ALPHA_CARD: 13,
+  CARD: 14,
+  QIWI: 258,
+  HOLD: 49,
+  PAYNOW: 51,
+  GPAY: 260,
+  VOUCHER: 24,
+  WALLET: 261,
+  SAVED_CARDS: 262,
+  FARE_LOCK_ZERO: 264,
+  BPAY: 263,
+  UNIONPAY_CARD: 268,
+  MAIB_BANK: 269,
+  AEB_BANK: 270,
+  INVALID_PAYMENT: 0,
+  BPC_ECOM_BANK: 271,
+  // ADD YOUR NEW PAYMENT METHOD HERE
+  STRIPE: 272,  // Example: New payment method ID
+  PAYPAL: 273,  // Example: Another payment method
+};
+```
+
+**Important:** Get unique ID numbers from your backend/payment gateway integration team.
+
+---
+
+## Step 2: Update Redux Payment State
+
+**File:** `redux/payment.redux.ts`
+
+Add handling for your new payment method in the reducer's switch case:
+
+```typescript
+// Around line 370 - Add to the switch case
+case PAYMENT_METHOD_IDS.CARD:
+case PAYMENT_METHOD_IDS.ALPHA_CARD:
+case PAYMENT_METHOD_IDS.UNIONPAY_CARD:
+case PAYMENT_METHOD_IDS.MAIB_BANK:
+case PAYMENT_METHOD_IDS.AEB_BANK:
+case PAYMENT_METHOD_IDS.BPC_ECOM_BANK:
+case PAYMENT_METHOD_IDS.STRIPE:        // ADD HERE
+case PAYMENT_METHOD_IDS.PAYPAL:        // ADD HERE
+  // Handle card-based payment
+  // Set billing form state, validate card details, etc.
+  break;
+
+case PAYMENT_METHOD_IDS.SAVED_CARDS:
+case PAYMENT_METHOD_IDS.QIWI:
+case PAYMENT_METHOD_IDS.PAYNOW:
+case PAYMENT_METHOD_IDS.HOLD:
+case PAYMENT_METHOD_IDS.GPAY:
+case PAYMENT_METHOD_IDS.STRIPE:        // ADD HERE if needed
+case PAYMENT_METHOD_IDS.PAYPAL:        // ADD HERE if needed
+  // Handle other payment types
+  break;
+```
+
+---
+
+## Step 3: Create Payment UI Component
+
+**Create new file:** `components/PaymentContent/stripe.tsx` (or `paypal.tsx`)
+
+```typescript
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Form } from 'react-bootstrap';
+import styles from './styles.scss';
+
+interface StripePaymentProps {
+  onSubmit: (data: any) => void;
+  isLoading?: boolean;
+}
+
+const StripePaymentComponent: React.FC<StripePaymentProps> = ({ 
+  onSubmit, 
+  isLoading = false 
+}) => {
+  const { t } = useTranslation();
+  const [cardToken, setCardToken] = useState('');
+  const [cardError, setCardError] = useState('');
+
+  const handleStripeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Validate card token
+      if (!cardToken) {
+        setCardError(t('Payment.lblCardTokenRequired'));
+        return;
+      }
+
+      // Call parent submit handler
+      onSubmit({
+        paymentMethodId: PAYMENT_METHOD_IDS.STRIPE,
+        stripeToken: cardToken,
+        // Add other required fields
+      });
+    } catch (error) {
+      setCardError(error.message);
+    }
+  };
+
+  return (
+    <Form onSubmit={handleStripeSubmit}>
+      <div className={styles.paymentFormGroup}>
+        <h4>{t('Payment.lblStripePayment')}</h4>
+        
+        {cardError && (
+          <div className="alert alert-danger" role="alert">
+            {cardError}
+          </div>
+        )}
+
+        {/* Stripe Element will be mounted here */}
+        <div id="stripe-element" />
+        
+        <button 
+          type="submit" 
+          disabled={isLoading}
+          className="btn btn-primary"
+        >
+          {isLoading ? t('Common.lblProcessing') : t('Common.lblPay')}
+        </button>
+      </div>
+    </Form>
+  );
+};
+
+export default StripePaymentComponent;
+```
+
+---
+
+## Step 4: Update PaymentContent Component
+
+**File:** `components/PaymentContent/index.tsx`
+
+Add import and conditional rendering:
+
+```typescript
+import StripePaymentComponent from './stripe';
+import PayPalPaymentComponent from './paypal';
+
+// In the mainContent function or render method:
+{payTypeId === PAYMENT_METHOD_IDS.STRIPE && (
+  <StripePaymentComponent 
+    onSubmit={handleStripePayment}
+    isLoading={isShowLoader}
+  />
+)}
+
+{payTypeId === PAYMENT_METHOD_IDS.PAYPAL && (
+  <PayPalPaymentComponent 
+    onSubmit={handlePayPalPayment}
+    isLoading={isShowLoader}
+  />
+)}
+```
+
+---
+
+## Step 5: Update Payment Strategy Files
+
+Add your payment method to all payment strategy files (these determine how different payment methods flow through the system).
+
+**Files to update:**
+- `Service/PaymentStrategy/PaymentNormal.ts`
+- `Service/PaymentStrategy/PaymentCheckIn.ts`
+- `Service/PaymentStrategy/PaymentMMB.ts`
+- `Service/PaymentStrategy/PaymentBaggageManagement.ts`
+- `Service/PaymentStrategy/PaymentSeatManagement.ts`
+- `Service/PaymentStrategy/PaymentFarelock.ts`
+- `Service/PaymentStrategy/PaymentServiceManagement.ts`
+- `Service/PaymentStrategy/PaymentVoucher.ts`
+- `Service/PaymentStrategy/DuePayment.ts`
+
+**Example update for PaymentNormal.ts:**
+
+```typescript
+// Add to the BookPNR flow (for immediate payment methods)
+if (
+  isBookPNRAllow
+  && (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.ALPHA_CARD))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.CARD))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))        // ADD
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.PAYPAL))        // ADD
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.WALLET)))
+) {
+  dispatch(BookPNR(
+    paymentObject.obj, paymentObject.paymentId, FLOW_TYPE_STRING.AIRLINE_FLIGHT,
+  ));
+}
+
+// Or add to PayNow flow (for redirect-based payment methods)
+else if (
+  includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.CARD))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))        // ADD
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.PAYNOW)))
+{
+  dispatch(PayNow(paymentObject.obj, FLOW_TYPE_STRING.AIRLINE_FLIGHT));
+}
+```
+
+---
+
+## Step 6: Update PaymentContent Logic for Payment Method Selection
+
+**File:** `components/PaymentContent/index.tsx` (useEffect for payment group handling)
+
+Add logic to handle when your payment method is available:
+
+```typescript
+useEffect(() => {
+  setPayGroup(paymentGroup);
+  const { paymentGroups: pg } = paymentGroup;
+  
+  // Check if Stripe is available
+  const stripeAvail = pg && find(pg, (x: any) => 
+    x.groupName === 'Stripe' || x.groupName === 'Stripe Payment'
+  );
+  
+  // Check if PayPal is available
+  const paypalAvail = pg && find(pg, (x: any) => 
+    x.groupName === 'PayPal' || x.groupName === 'PayPal Payment'
+  );
+
+  // Set appropriate default payment method
+  if (!isEmpty(stripeAvail)) {
+    setPayTypeId(PAYMENT_METHOD_IDS.STRIPE);
+    setCurrentTab('stripe_payment');  // Your tab name
+  } else if (!isEmpty(paypalAvail)) {
+    setPayTypeId(PAYMENT_METHOD_IDS.PAYPAL);
+    setCurrentTab('paypal_payment');  // Your tab name
+  }
+}, [paymentGroup]);
+```
+
+---
+
+## Step 7: Update Payment Types Component
+
+**File:** `components/PaymentContent/paymentTypes.tsx`
+
+Add UI tabs/buttons for your new payment methods:
+
+```typescript
+// Add to tabs or payment method list
+{paymentGroup?.paymentGroups?.map((group: any) => (
+  <div key={group.groupName}>
+    {group.groupName === 'Stripe' && (
+      <Tab eventKey="stripe_payment" title="Stripe">
+        <StripePaymentComponent {...props} />
+      </Tab>
+    )}
+    
+    {group.groupName === 'PayPal' && (
+      <Tab eventKey="paypal_payment" title="PayPal">
+        <PayPalPaymentComponent {...props} />
+      </Tab>
+    )}
+  </div>
+))}
+```
+
+---
+
+## Step 8: Add Billing Details Validation
+
+**File:** `components/PaymentContent/billingDetails.tsx`
+
+Ensure billing details form works with your payment method:
+
+```typescript
+// Add validation for your payment method
+const isStripeOrPayPal = payTypeId === PAYMENT_METHOD_IDS.STRIPE 
+  || payTypeId === PAYMENT_METHOD_IDS.PAYPAL;
+
+// Validate required fields
+if (isStripeOrPayPal) {
+  if (!billingEmail || !billingPhone || !billingAddress) {
+    showError('Please fill all billing details');
+    return false;
+  }
+}
+```
+
+---
+
+## Step 9: Backend Integration
+
+**Key Endpoints to Update:**
+
+1. **Payment Gateway Endpoint**: Make API call to process payment
+```typescript
+// In redux/payment.redux.ts or Service
+const processStripePayment = (paymentData: any) => {
+  return fetch('/api/payment/stripe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ...paymentData,
+      paymentMethodId: PAYMENT_METHOD_IDS.STRIPE,
+      amount: totalAmount,
+      currency: currencyCode,
+    }),
+  });
+};
+```
+
+2. **Payment Methods Endpoint**: Backend should return available payment methods
+```json
+{
+  "paymentGroups": [
+    {
+      "groupName": "Stripe",
+      "payments": [
+        {
+          "paymentTypeID": 272,
+          "paymentTypeName": "Stripe Card Payment",
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "groupName": "PayPal",
+      "payments": [
+        {
+          "paymentTypeID": 273,
+          "paymentTypeName": "PayPal",
+          "isActive": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## Step 10: Add Translation Keys
+
+**File:** `locales/en/translation.json` (and other language files)
+
+```json
+{
+  "Payment": {
+    "lblStripePayment": "Pay with Stripe",
+    "lblPayPalPayment": "Pay with PayPal",
+    "lblCardTokenRequired": "Card token is required",
+    "lblStripeError": "Stripe payment failed",
+    "lblPayPalError": "PayPal payment failed"
+  }
+}
+```
+
+---
+
+## Summary of Files to Modify
+
+| File | Purpose |
+|------|---------|
+| `constants/common.ts` | Add payment method ID constant |
+| `redux/payment.redux.ts` | Add reducer handling |
+| `components/PaymentContent/index.tsx` | Add component rendering |
+| `components/PaymentContent/paymentTypes.tsx` | Add UI tabs |
+| `components/PaymentContent/billingDetails.tsx` | Add validation |
+| `Service/PaymentStrategy/*.ts` | Add to all payment strategies |
+| `locales/*/translation.json` | Add translation keys |
+| Backend API | Add payment processing endpoint |
+
+---
+
+## Example: Complete Stripe Integration
+
+### Full Example Flow:
+
+1. **User selects Stripe** from payment methods list
+2. **PaymentContent detects** `payTypeId === PAYMENT_METHOD_IDS.STRIPE`
+3. **Renders StripePaymentComponent**
+4. **User enters card details** (Stripe handles this securely)
+5. **Form submitted** with stripe token
+6. **Redux action dispatches** payment processing
+7. **Payment strategy routes** to `BookPNR` or `PayNow`
+8. **Backend processes payment** with Stripe API
+9. **Booking confirmed** or error shown
+
+---
+
+## Testing Checklist
+
+- [ ] Payment method appears in payment type selection
+- [ ] UI renders correctly for new payment method
+- [ ] Billing details validation works
+- [ ] Payment gateway API call succeeds
+- [ ] Payment confirmation received
+- [ ] Booking status updated correctly
+- [ ] Error handling works for failed payments
+- [ ] Works across all workflows (Normal, CheckIn, Fare Lock, etc.)
+- [ ] Mobile responsive
+- [ ] Multiple language support
+
+---
+
+## Common Issues & Solutions
+
+**Issue:** Payment method doesn't appear in selection
+- **Solution:** Ensure backend returns it in paymentGroups API response
+
+**Issue:** Form validation fails
+- **Solution:** Check billingDetails validation logic for your payment method
+
+**Issue:** Payment processes but booking doesn't confirm
+- **Solution:** Verify payment strategy routing is correct in PaymentNormal.ts
+
+**Issue:** Works on desktop but not mobile
+- **Solution:** Check component CSS and ensure responsive design
+
+
+
+# Payment Method Flow Architecture
+
+## Visual Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         PAYMENT PAGE                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  1. Payment Method Selection                                         │
+│     ├─ Radio buttons for available payment methods                  │
+│     ├─ Data source: Backend API → paymentGroups                     │
+│     └─ Triggers: setPayTypeId(PAYMENT_METHOD_IDS.YOUR_PAYMENT)      │
+│                                                                      │
+│  2. Dynamic Form Rendering                                          │
+│     ├─ IF payTypeId === PAYMENT_METHOD_IDS.STRIPE                   │
+│     │  └─→ Render <StripePaymentComponent />                        │
+│     ├─ IF payTypeId === PAYMENT_METHOD_IDS.PAYPAL                   │
+│     │  └─→ Render <PayPalPaymentComponent />                        │
+│     └─ IF payTypeId === PAYMENT_METHOD_IDS.CARD                     │
+│        └─→ Render <CreditCardComponent />                           │
+│                                                                      │
+│  3. Billing Details Capture                                         │
+│     ├─ Email validation                                             │
+│     ├─ Phone/Mobile Code validation                                 │
+│     └─ Address validation (for some payment methods)                │
+│                                                                      │
+│  4. Form Submission                                                  │
+│     ├─ Click "Complete Payment" button                              │
+│     ├─ Validate all fields                                          │
+│     └─ Call handlePaymentSubmit()                                   │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PAYMENT STRATEGY SELECTION                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  Service/IPaymentComponent.ts checks:                               │
+│  - Current workflow (SEARCH_FLIGHT, CHECK_IN, FARE_LOCK, etc)      │
+│  - Selects appropriate PaymentStrategy class                        │
+│                                                                      │
+│  PaymentStrategy Classes:                                           │
+│  ├─ PaymentNormal          → Normal flight booking                  │
+│  ├─ PaymentCheckIn         → Check-in flow                          │
+│  ├─ PaymentFarelock        → Fare lock payment                      │
+│  ├─ PaymentMMB             → Manage booking                         │
+│  ├─ PaymentBaggageManagement                                        │
+│  ├─ PaymentSeatManagement                                           │
+│  ├─ PaymentServiceManagement                                        │
+│  ├─ PaymentVoucher         → Voucher purchase                       │
+│  └─ DuePayment             → Due payment settlement                 │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│               PAYMENT ROUTING LOGIC                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  CATEGORY 1: Immediate Booking (BookPNR)                            │
+│  ├─ ALPHA_CARD (13)                                                │
+│  ├─ CARD (14)                                                      │
+│  ├─ UNIONPAY_CARD (268)                                            │
+│  ├─ MAIB_BANK (269)                                                │
+│  ├─ AEB_BANK (270)                                                 │
+│  ├─ WALLET (261)                                                   │
+│  ├─ SAVED_CARDS (262)                                              │
+│  ├─ VOUCHER (24)                                                   │
+│  ├─ BPC_ECOM_BANK (271)                                            │
+│  ├─ BPAY (263)                                                     │
+│  ├─ FARE_LOCK_ZERO (264)                                           │
+│  └─ YOUR_NEW_METHOD (272) ← ADD HERE                               │
+│                                                                      │
+│     Action: dispatch(BookPNR(paymentObject, paymentId, flowType))  │
+│     Result: Booking created immediately after payment processing   │
+│                                                                      │
+│  ─────────────────────────────────────────────────────────────────  │
+│                                                                      │
+│  CATEGORY 2: Redirect Payment (PayNow)                              │
+│  ├─ QIWI (258)                                                     │
+│  ├─ PAYNOW (51)                                                    │
+│  ├─ HOLD (49)                                                      │
+│  ├─ GPAY (260)                                                     │
+│  └─ YOUR_NEW_METHOD (272) ← ADD HERE (if redirect-based)           │
+│                                                                      │
+│     Action: dispatch(PayNow(paymentObject, flowType))              │
+│     Result: Redirect to external payment gateway, return later     │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                   PAYMENT PROCESSING                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  BookPNR Flow:                                                      │
+│  1. API Call: POST /api/payment/book-pnr                            │
+│  2. Backend validates payment with gateway                          │
+│  3. Payment captured/authorized                                     │
+│  4. Booking created in reservation system                           │
+│  5. PNR generated                                                   │
+│  6. Confirmation sent to Redux                                      │
+│  7. User redirected to confirmation page                            │
+│                                                                      │
+│  PayNow Flow:                                                       │
+│  1. API Call: POST /api/payment/initiate                            │
+│  2. Backend returns redirect URL                                    │
+│  3. User redirected to payment gateway (Stripe, PayPal, etc)       │
+│  4. User completes payment on external site                        │
+│  5. Payment gateway redirects back with status                     │
+│  6. Callback verification with backend                             │
+│  7. If successful, booking created                                 │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                  BOOKING CONFIRMATION                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  Success Path:                                                      │
+│  ├─ Store PNR, booking reference in Redux                          │
+│  ├─ Dispatch BOOK_PNR_SUCCESS action                               │
+│  ├─ Update user profile/loyalty points                             │
+│  ├─ Send confirmation email                                        │
+│  └─ Navigate to /ThanksContent page                                 │
+│                                                                      │
+│  Failure Path:                                                      │
+│  ├─ Dispatch BOOK_PNR_FAILED action                                │
+│  ├─ Display error message                                          │
+│  ├─ Option to retry payment                                        │
+│  └─ Store paymentRetry = true in Redux                             │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Payment Method Decision Tree
+
+```
+START: User on Payment Page
+│
+├─ STEP 1: Backend API Returns Payment Methods
+│  │
+│  └─ Check: Which payment methods available?
+│     ├─ Credit Cards available?
+│     ├─ Wallet available?
+│     ├─ Stripe available?
+│     ├─ PayPal available?
+│     └─ Other methods available?
+│
+├─ STEP 2: Initialize Payment Method
+│  │
+│  └─ IF only ONE method available
+│     └─ Auto-select it (setPayTypeId)
+│
+├─ STEP 3: User Selects Payment Method
+│  │
+│  └─ Trigger: onChange event on radio button
+│     └─ Action: setPayTypeId(PAYMENT_METHOD_IDS.SELECTED)
+│
+├─ STEP 4: Conditional Component Rendering
+│  │
+│  ├─ IF payTypeId === PAYMENT_METHOD_IDS.CARD
+│  │  └─ Render <CreditCardComponent />
+│  │
+│  ├─ IF payTypeId === PAYMENT_METHOD_IDS.STRIPE
+│  │  └─ Render <StripePaymentComponent />
+│  │
+│  ├─ IF payTypeId === PAYMENT_METHOD_IDS.PAYPAL
+│  │  └─ Render <PayPalPaymentComponent />
+│  │
+│  ├─ IF payTypeId === PAYMENT_METHOD_IDS.WALLET
+│  │  └─ Render <WalletPaymentComponent />
+│  │
+│  └─ ...others
+│
+├─ STEP 5: User Fills Form & Submits
+│  │
+│  └─ Validations:
+│     ├─ Card details valid?
+│     ├─ Billing email valid?
+│     ├─ Phone number valid?
+│     └─ Amount sufficient?
+│
+├─ STEP 6: Determine Payment Processing Flow
+│  │
+│  ├─ IF payment method in BookPNR category
+│  │  └─ dispatch(BookPNR(...))
+│  │     └─ Direct payment processing
+│  │
+│  └─ IF payment method in PayNow category
+│     └─ dispatch(PayNow(...))
+│        └─ Redirect to payment gateway
+│
+├─ STEP 7: Backend Processes Payment
+│  │
+│  └─ Call payment gateway API
+│     ├─ Transaction successful?
+│     │  ├─ Create booking
+│     │  ├─ Generate PNR
+│     │  └─ Return success
+│     │
+│     └─ Transaction failed?
+│        ├─ Store error
+│        ├─ Set paymentRetry = true
+│        └─ Return error
+│
+└─ END: Show Result
+   ├─ Success: Navigate to Thanks page
+   └─ Failure: Show error, allow retry
+```
+
+---
+
+## State Management Flow
+
+```typescript
+// 1. INITIAL STATE
+{
+  payment: {
+    paymentGroup: null,              // Loaded from backend
+    PaxData: [],                     // Passenger data
+    paymentRetry: false,             // Is this a retry?
+    isPNRFailed: false,              // PNR creation failed?
+    SelectPayment: null,             // Selected payment ID
+    selectedPayErr: {},              // Error from payment
+  },
+  workflow: {
+    actionState: 1,                  // SEARCH_FLIGHT
+  },
+  totalAmount: {
+    totalPrice: 500,                 // Total booking amount
+    currencyCode: 'EUR',             // Currency
+    walletChosen: false,             // Wallet selected?
+    walletAmountApplied: 0,          // Amount from wallet
+  }
+}
+
+// 2. USER SELECTS PAYMENT METHOD
+dispatch(setPayTypeId(PAYMENT_METHOD_IDS.STRIPE))
+// State updated with selected payment method ID
+
+// 3. FORM SUBMITTED
+dispatch(fetchPayment({
+  paymentId: PAYMENT_METHOD_IDS.STRIPE,
+  amount: 500,
+  currency: 'EUR',
+  ...formData
+}))
+
+// 4. PAYMENT STRATEGY SELECTED
+// Based on workflow.actionState, right PaymentStrategy is chosen
+// E.g., if actionState === WORKFLOW.SEARCH_FLIGHT
+// → Use PaymentNormal strategy
+
+// 5. PAYMENT ROUTED
+// PaymentNormal checks if STRIPE is in:
+// - BookPNR methods? → dispatch(BookPNR(...))
+// - PayNow methods? → dispatch(PayNow(...))
+
+// 6. API CALL MADE
+// POST /api/payment/book-pnr or POST /api/payment/initiate
+
+// 7. RESPONSE RECEIVED
+dispatch({
+  type: BOOK_PNR_SUCCESS,
+  payload: {
+    reservationId: 'RES123',
+    pnr: 'AB1234',
+    bookingReference: '1234567890'
+  }
+})
+
+// 8. FINAL STATE
+{
+  ...state,
+  payment: {
+    ...state.payment,
+    ReservationID: 'RES123',
+    PNRdetails: {pnr: 'AB1234'},
+    isBooKPNRSuccess: true,
+  }
+}
+```
+
+---
+
+## Adding Your Payment Method to This Flow
+
+### Step 1: Define the Category
+- **Immediate (BookPNR)**: Stripe, PayPal (Card), Apple Pay
+  - Captures payment immediately
+  - Creates booking right away
+  
+- **Redirect (PayNow)**: PayPal (Express), Alipay, WeChat Pay
+  - Redirects to external gateway
+  - Must return with status
+
+### Step 2: Add to Constants
+```typescript
+PAYMENT_METHOD_IDS.YOUR_PAYMENT = 272  // Unique ID
+```
+
+### Step 3: Add to Correct Includes() Check
+```typescript
+// If Immediate method (BookPNR):
+if (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.YOUR_PAYMENT))) {
+  dispatch(BookPNR(...))
+}
+
+// If Redirect method (PayNow):
+else if (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.YOUR_PAYMENT))) {
+  dispatch(PayNow(...))
+}
+```
+
+### Step 4: Update All 9 Payment Strategy Files
+- Find & Replace is faster than manual edits
+
+### Step 5: Create Component & Wire UI
+- Component handles form rendering
+- PaymentContent handles routing to component
+
+---
+
+## Debugging Checklist
+
+If payment method isn't working:
+
+1. **Method not appearing in list?**
+   - [ ] Backend returning it in paymentGroups? 
+   - [ ] Check API response
+   
+2. **Method appears but form wrong?**
+   - [ ] Component rendering? Check conditional render
+   - [ ] Component exists? Check import
+   
+3. **Form submits but fails?**
+   - [ ] Payment strategy routing correct?
+   - [ ] Correct includes() check?
+   - [ ] Check Redux dispatch
+   
+4. **Payment processes but booking fails?**
+   - [ ] Backend handling payment correctly?
+   - [ ] Booking creation working?
+   - [ ] Check Redux BOOK_PNR_SUCCESS handler
+   
+5. **Works in one workflow but not another?**
+   - [ ] Missing from a PaymentStrategy file?
+   - [ ] Check all 9 files updated
+
+---
+
+## Key Files Reference
+
+| File | Purpose | What to Change |
+|------|---------|-----------------|
+| `constants/common.ts` | Define ID | Add `YOUR_PAYMENT: 272` |
+| `components/PaymentContent/your_payment.tsx` | UI Form | Create new component |
+| `components/PaymentContent/index.tsx` | Routing | Add conditional render |
+| `Service/PaymentStrategy/Payment*.ts` | Logic (9 files) | Add to includes() checks |
+| `redux/payment.redux.ts` | State | Add reducer case (if needed) |
+| `locales/*/translation.json` | i18n | Add translation keys |
+| Backend API | Processing | Implement payment endpoint |
+
+
+
+
+# Quick Checklist: Adding a New Payment Method
+
+## Step-by-Step Implementation Checklist
+
+### 📋 Phase 1: Configuration (Constants)
+- [ ] Open `constants/common.ts`
+- [ ] Add new payment method ID to `PAYMENT_METHOD_IDS` object
+  ```typescript
+  YOUR_PAYMENT: 272,
+  ```
+- [ ] Get unique ID from backend/gateway team
+
+### 📋 Phase 2: Create UI Component
+- [ ] Create new file: `components/PaymentContent/your_payment.tsx`
+- [ ] Implement React component with:
+  - Form validation
+  - Error handling
+  - Submit handler
+  - i18n translations
+- [ ] Import in `components/PaymentContent/index.tsx`
+
+### 📋 Phase 3: Update PaymentContent
+- [ ] Update `components/PaymentContent/index.tsx`:
+  - [ ] Import new payment component
+  - [ ] Add conditional rendering for `payTypeId`
+  - [ ] Add payment method to available options
+- [ ] Update `components/PaymentContent/paymentTypes.tsx`:
+  - [ ] Add radio button/tab for new payment method
+  - [ ] Handle selection and tab switching
+
+### 📋 Phase 4: Update All Payment Strategies
+Update each file's payment routing (9 files total):
+
+- [ ] `Service/PaymentStrategy/PaymentNormal.ts`
+  - [ ] Add to BookPNR includes() check
+  - [ ] Add to PayNow includes() check (if redirect-based)
+- [ ] `Service/PaymentStrategy/PaymentCheckIn.ts`
+  - [ ] Add to BookPNR includes() check
+  - [ ] Add to PayNow includes() check
+- [ ] `Service/PaymentStrategy/PaymentMMB.ts`
+  - [ ] Add to appropriate includes() check
+- [ ] `Service/PaymentStrategy/PaymentBaggageManagement.ts`
+  - [ ] Add to appropriate includes() check
+- [ ] `Service/PaymentStrategy/PaymentSeatManagement.ts`
+  - [ ] Add to appropriate includes() check
+- [ ] `Service/PaymentStrategy/PaymentFarelock.ts`
+  - [ ] Add to appropriate includes() check
+- [ ] `Service/PaymentStrategy/PaymentServiceManagement.ts`
+  - [ ] Add to appropriate includes() check
+- [ ] `Service/PaymentStrategy/PaymentVoucher.ts`
+  - [ ] Add to appropriate includes() check
+- [ ] `Service/PaymentStrategy/DuePayment.ts`
+  - [ ] Add to appropriate includes() check
+
+### 📋 Phase 5: Payment Validation
+- [ ] Update `components/PaymentContent/billingDetails.tsx`:
+  - [ ] Add billing validation for your payment method
+  - [ ] Ensure required fields are checked
+- [ ] Update `redux/payment.redux.ts` (if special handling needed):
+  - [ ] Add reducer case for your payment method
+  - [ ] Set required flags/states
+
+### 📋 Phase 6: Translations
+- [ ] Update `locales/en/translation.json`
+- [ ] Update `locales/de/translation.json`
+- [ ] Update `locales/fr/translation.json`
+- [ ] Update `locales/it/translation.json`
+- [ ] Update `locales/ro/translation.json`
+- [ ] Update `locales/ru/translation.json`
+- [ ] Update `locales/am/translation.json`
+
+Add at minimum:
+```json
+"Payment": {
+  "lbl[YourPaymentName]": "Display Name",
+  "lbl[YourPaymentName]Error": "Error message",
+  ...
+}
+```
+
+### 📋 Phase 7: Backend Integration
+- [ ] Create backend API endpoint: `/api/payment/[your-payment]/process`
+- [ ] Return payment methods in `/api/payment/methods` response
+- [ ] Ensure paymentGroups includes your payment:
+  ```json
+  {
+    "groupName": "Your Payment Name",
+    "payments": [
+      {
+        "paymentTypeID": 272,
+        "paymentTypeName": "Display Name"
+      }
+    ]
+  }
+  ```
+- [ ] Test with actual payment gateway
+- [ ] Handle success/error responses
+
+### 📋 Phase 8: Testing
+- [ ] **Functionality Tests**:
+  - [ ] Payment method appears in selection list
+  - [ ] Clicking payment method switches to correct form
+  - [ ] Form validates input correctly
+  - [ ] Submit button works
+  - [ ] API call succeeds
+  - [ ] Booking is created
+  - [ ] PNR is generated
+
+- [ ] **UI/UX Tests**:
+  - [ ] Desktop responsive design ✓
+  - [ ] Mobile responsive design ✓
+  - [ ] Tablet responsive design ✓
+  - [ ] Error messages display correctly
+  - [ ] Loading states show properly
+  - [ ] Form reset after payment
+
+- [ ] **Workflow Tests**:
+  - [ ] Works in Normal Flight Booking
+  - [ ] Works in Check-in Flow
+  - [ ] Works in Fare Lock Flow
+  - [ ] Works in MMB (Manage Booking)
+  - [ ] Works in Baggage Management
+  - [ ] Works in Seat Management
+  - [ ] Works in Service Management
+  - [ ] Works in Voucher Purchase
+  - [ ] Works in Due Payment
+
+- [ ] **Internationalization Tests**:
+  - [ ] All 7 languages display correctly
+  - [ ] No missing translation keys
+  - [ ] RTL languages (Arabic, Hebrew) display properly
+
+- [ ] **Security Tests**:
+  - [ ] Sensitive data not logged
+  - [ ] HTTPS enforced
+  - [ ] CSRF protection active
+  - [ ] PCI compliance maintained
+
+- [ ] **Integration Tests**:
+  - [ ] Works with wallet payments
+  - [ ] Works with vouchers
+  - [ ] Works with promos
+  - [ ] Works with saved cards
+  - [ ] Works with add-ons
+
+### 📋 Phase 9: Documentation
+- [ ] Update README.md (if needed)
+- [ ] Add JSDoc comments to new components
+- [ ] Document payment flow in code
+- [ ] Add any special configuration notes
+
+### 📋 Phase 10: Code Quality
+- [ ] Run TypeScript compiler (no errors)
+- [ ] Run linter (ESLint)
+- [ ] Remove console.log statements
+- [ ] Test error handling
+- [ ] Check for memory leaks
+- [ ] Optimize bundle size
+
+---
+
+## File Count Summary
+
+| Category | Count |
+|----------|-------|
+| Files to MODIFY | 6 |
+| Files to CREATE | 1 (component) |
+| Payment Strategy Files | 9 |
+| Translation Files | 7 |
+| **TOTAL** | **23** |
+
+---
+
+## Time Estimate
+
+- Phase 1 (Config): 5 minutes
+- Phase 2 (Component): 30-45 minutes
+- Phase 3 (PaymentContent): 15 minutes
+- Phase 4 (Strategies): 20-30 minutes
+- Phase 5 (Validation): 10 minutes
+- Phase 6 (i18n): 15 minutes
+- Phase 7 (Backend): 30-60 minutes (depends on gateway)
+- Phase 8 (Testing): 1-2 hours
+- Phase 9 (Docs): 15 minutes
+- Phase 10 (QA): 30 minutes
+
+**TOTAL: 3-5 hours** (depending on payment gateway complexity)
+
+---
+
+## Common Pitfalls ⚠️
+
+❌ **Mistake**: Forgetting to add payment method ID to ALL Payment Strategy files
+✅ **Fix**: Use Find & Replace to update all 9 files at once
+
+❌ **Mistake**: Payment method appears but payment fails
+✅ **Fix**: Check backend returns it in paymentGroups API response
+
+❌ **Mistake**: Works on desktop but not mobile
+✅ **Fix**: Test responsive design and CSS media queries
+
+❌ **Mistake**: Missing translations
+✅ **Fix**: Search for translation key usage to find all needed keys
+
+❌ **Mistake**: Form validation doesn't work for new payment type
+✅ **Fix**: Add specific validation in billingDetails component
+
+❌ **Mistake**: Payment processes but booking doesn't confirm
+✅ **Fix**: Verify payment strategy routing (BookPNR vs PayNow)
+
+---
+
+## Quick Reference: Code Changes
+
+### Add to EVERY Payment Strategy File:
+```typescript
+// In includes() check for IMMEDIATE PAYMENTS:
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.YOUR_PAYMENT))
+
+// In includes() check for REDIRECT PAYMENTS:
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.YOUR_PAYMENT))
+```
+
+### Add to PaymentContent Component:
+```typescript
+import YourPaymentComponent from './your_payment';
+
+// In render:
+{payTypeId === PAYMENT_METHOD_IDS.YOUR_PAYMENT && (
+  <YourPaymentComponent {...props} />
+)}
+```
+
+### Add to Constants:
+```typescript
+YOUR_PAYMENT: 272,  // Get unique ID from backend
+```
+
+---
+
+## Verification Commands
+
+```bash
+# Check for TypeScript errors
+npm run type-check
+
+# Check for linting errors
+npm run lint
+
+# Search for missing payment method references
+grep -r "PAYMENT_METHOD_IDS\." --include="*.ts" --include="*.tsx" | grep -v YOUR_PAYMENT
+
+# Search for missing translations
+grep -r "lblYourPayment" locales/
+
+# Build to check for any compilation errors
+npm run build
+```
+
+---
+
+## When to Ask for Help
+
+If you're stuck on:
+
+1. **Payment Gateway Integration**: Consult payment provider's documentation
+2. **Redux/State Management**: Check existing payment method examples
+3. **UI/Styling**: Review existing payment component styles
+4. **Backend API**: Coordinate with backend team on endpoint design
+5. **Translations**: Contact translation/localization team
+
+---
+
+## Deployment Checklist
+
+Before deploying to production:
+
+- [ ] All tests pass
+- [ ] No console errors/warnings
+- [ ] Backend endpoints are live
+- [ ] Environment variables configured
+- [ ] Payment gateway credentials set
+- [ ] Error handling tested
+- [ ] Fallback/rollback plan ready
+- [ ] Team notified of changes
+- [ ] Performance metrics acceptable
+- [ ] Security review completed
+
+
+
+// ============================================================================
+// HOW TO ADD A NEW PAYMENT METHOD - CODE EXAMPLES
+// ============================================================================
+
+/**
+ * EXAMPLE: Adding "Stripe" Payment Method
+ * Payment ID: 272
+ * 
+ * This file shows exact code changes needed in each file
+ */
+
+// ============================================================================
+// 1. constants/common.ts - ADD PAYMENT METHOD ID
+// ============================================================================
+
+export const PAYMENT_METHOD_IDS = {
+  ALPHA_CARD: 13,
+  CARD: 14,
+  QIWI: 258,
+  HOLD: 49,
+  PAYNOW: 51,
+  GPAY: 260,
+  VOUCHER: 24,
+  WALLET: 261,
+  SAVED_CARDS: 262,
+  FARE_LOCK_ZERO: 264,
+  BPAY: 263,
+  UNIONPAY_CARD: 268,
+  MAIB_BANK: 269,
+  AEB_BANK: 270,
+  INVALID_PAYMENT: 0,
+  BPC_ECOM_BANK: 271,
+  // NEW PAYMENT METHODS
+  STRIPE: 272,                  // ← ADD THIS LINE
+  PAYPAL: 273,                  // ← ADD THIS LINE
+};
+
+// ============================================================================
+// 2. components/PaymentContent/stripe.tsx - CREATE NEW COMPONENT
+// ============================================================================
+
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Form, Button, Alert } from 'react-bootstrap';
+import { PAYMENT_METHOD_IDS } from '../../constants/common';
+import styles from './styles.scss';
+
+interface StripePaymentProps {
+  totalAmount: number;
+  currencyCode: string;
+  billingInfo: any;
+  onSubmit: (paymentData: any) => void;
+  isLoading?: boolean;
+}
+
+const StripePaymentComponent: React.FC<StripePaymentProps> = ({
+  totalAmount,
+  currencyCode,
+  billingInfo,
+  onSubmit,
+  isLoading = false,
+}) => {
+  const { t } = useTranslation();
+  const [cardToken, setCardToken] = useState('');
+  const [cardError, setCardError] = useState('');
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvc: '',
+  });
+
+  // Initialize Stripe.js
+  useEffect(() => {
+    // Load Stripe library
+    // This is a placeholder - use actual Stripe integration
+    const script = document.createElement('script');
+    script.src = 'https://js.stripe.com/v3/';
+    document.body.appendChild(script);
+  }, []);
+
+  const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCardDetails(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate card details
+    if (!cardDetails.cardNumber || !cardDetails.expiryDate || !cardDetails.cvc) {
+      setCardError(t('Payment.lblAllCardFieldsRequired'));
+      return;
+    }
+
+    try {
+      // In production: Use Stripe.js tokenize the card
+      // const { token, error } = await stripe.createToken(cardElement);
+      // For this example, we'll assume token is created
+      const token = 'tok_stripe_example_' + Date.now();
+
+      const paymentData = {
+        paymentMethodId: PAYMENT_METHOD_IDS.STRIPE,
+        stripeToken: token,
+        amount: totalAmount,
+        currency: currencyCode,
+        cardLast4: cardDetails.cardNumber.slice(-4),
+        email: billingInfo.email,
+        phone: billingInfo.phoneNo,
+        billingAddress: billingInfo.address,
+      };
+
+      onSubmit(paymentData);
+    } catch (error: any) {
+      setCardError(error.message || t('Payment.lblStripeError'));
+    }
+  };
+
+  return (
+    <div className={styles.paymentMethodWrapper}>
+      <h4>{t('Payment.lblStripePayment')}</h4>
+
+      {cardError && (
+        <Alert variant="danger" onClose={() => setCardError('')} dismissible>
+          {cardError}
+        </Alert>
+      )}
+
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>{t('Payment.lblCardNumber')}</Form.Label>
+          <Form.Control
+            type="text"
+            name="cardNumber"
+            placeholder="4242 4242 4242 4242"
+            value={cardDetails.cardNumber}
+            onChange={handleCardChange}
+            required
+          />
+        </Form.Group>
+
+        <div className="row">
+          <div className="col-md-6">
+            <Form.Group>
+              <Form.Label>{t('Payment.lblExpiryDate')}</Form.Label>
+              <Form.Control
+                type="text"
+                name="expiryDate"
+                placeholder="MM/YY"
+                value={cardDetails.expiryDate}
+                onChange={handleCardChange}
+                required
+              />
+            </Form.Group>
+          </div>
+          <div className="col-md-6">
+            <Form.Group>
+              <Form.Label>{t('Payment.lblCVC')}</Form.Label>
+              <Form.Control
+                type="text"
+                name="cvc"
+                placeholder="123"
+                value={cardDetails.cvc}
+                onChange={handleCardChange}
+                required
+              />
+            </Form.Group>
+          </div>
+        </div>
+
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={isLoading}
+          className="w-100 mt-3"
+        >
+          {isLoading ? t('Common.lblProcessing') : t('Common.lblPay')} {totalAmount} {currencyCode}
+        </Button>
+      </Form>
+    </div>
+  );
+};
+
+export default StripePaymentComponent;
+
+// ============================================================================
+// 3. components/PaymentContent/index.tsx - UPDATE IMPORTS & RENDERING
+// ============================================================================
+
+// ADD IMPORTS at the top
+import StripePaymentComponent from './stripe';
+import PayPalPaymentComponent from './paypal';
+
+// INSIDE mainContent function or render, add:
+{payTypeId === PAYMENT_METHOD_IDS.STRIPE && (
+  <StripePaymentComponent
+    totalAmount={totalPrice}
+    currencyCode={currencyCode}
+    billingInfo={billingInfo}
+    onSubmit={handleStripePayment}
+    isLoading={isShowLoader}
+  />
+)}
+
+{payTypeId === PAYMENT_METHOD_IDS.PAYPAL && (
+  <PayPalPaymentComponent
+    totalAmount={totalPrice}
+    currencyCode={currencyCode}
+    billingInfo={billingInfo}
+    onSubmit={handlePayPalPayment}
+    isLoading={isShowLoader}
+  />
+)}
+
+// ============================================================================
+// 4. components/PaymentContent/paymentTypes.tsx - ADD TABS
+// ============================================================================
+
+// In the payment method rendering loop:
+
+{paymentGroup?.paymentGroups?.map((group: any) => {
+  // STRIPE
+  if (group.groupName === 'Stripe') {
+    return (
+      <div key={group.groupName} className={styles.paymentMethod}>
+        <input
+          type="radio"
+          id="stripe_radio"
+          name="payment_method"
+          value={PAYMENT_METHOD_IDS.STRIPE}
+          checked={payTypeId === PAYMENT_METHOD_IDS.STRIPE}
+          onChange={() => {
+            setPayTypeId(PAYMENT_METHOD_IDS.STRIPE);
+            setCurrentTab('stripe_payment');
+          }}
+        />
+        <label htmlFor="stripe_radio">
+          {t('Payment.lblStripePayment')}
+        </label>
+      </div>
+    );
+  }
+
+  // PAYPAL
+  if (group.groupName === 'PayPal') {
+    return (
+      <div key={group.groupName} className={styles.paymentMethod}>
+        <input
+          type="radio"
+          id="paypal_radio"
+          name="payment_method"
+          value={PAYMENT_METHOD_IDS.PAYPAL}
+          checked={payTypeId === PAYMENT_METHOD_IDS.PAYPAL}
+          onChange={() => {
+            setPayTypeId(PAYMENT_METHOD_IDS.PAYPAL);
+            setCurrentTab('paypal_payment');
+          }}
+        />
+        <label htmlFor="paypal_radio">
+          {t('Payment.lblPayPalPayment')}
+        </label>
+      </div>
+    );
+  }
+
+  return null;
+})}
+
+// ============================================================================
+// 5. Service/PaymentStrategy/PaymentNormal.ts - UPDATE PAYMENT ROUTING
+// ============================================================================
+
+// FIND THIS CODE (around line 60-90):
+if (paymentObject.portalType === WORKFLOW_TYPE.B2B) {
+  if (
+    isBookPNRAllow
+    && (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.ALPHA_CARD))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.UNIONPAY_CARD))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.MAIB_BANK))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.AEB_BANK))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.WALLET))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.SAVED_CARDS))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.FARE_LOCK_ZERO))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.BPC_ECOM_BANK))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.VOUCHER))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.BPAY)))
+  ) {
+
+// CHANGE TO:
+if (paymentObject.portalType === WORKFLOW_TYPE.B2B) {
+  if (
+    isBookPNRAllow
+    && (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.ALPHA_CARD))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.UNIONPAY_CARD))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.MAIB_BANK))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.AEB_BANK))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.WALLET))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.SAVED_CARDS))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.FARE_LOCK_ZERO))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.BPC_ECOM_BANK))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.VOUCHER))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.BPAY))
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))    // ← ADD
+    || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.PAYPAL)))   // ← ADD
+  ) {
+
+// ============================================================================
+// 6. Service/PaymentStrategy/PaymentNormal.ts - UPDATE PAYNOW ROUTING
+// ============================================================================
+
+// FIND THIS CODE (around line 92-97):
+} else if (
+  includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.QIWI))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.PAYNOW))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.HOLD))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.GPAY))
+) {
+
+// CHANGE TO:
+} else if (
+  includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.QIWI))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.PAYNOW))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.HOLD))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.GPAY))
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))    // ← ADD
+  || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.PAYPAL))    // ← ADD
+) {
+
+// ============================================================================
+// 7. UPDATE ALL PaymentStrategy FILES
+// ============================================================================
+
+/**
+ * Do the same updates in all these files:
+ * - Service/PaymentStrategy/PaymentCheckIn.ts
+ * - Service/PaymentStrategy/PaymentMMB.ts
+ * - Service/PaymentStrategy/PaymentBaggageManagement.ts
+ * - Service/PaymentStrategy/PaymentSeatManagement.ts
+ * - Service/PaymentStrategy/PaymentFarelock.ts
+ * - Service/PaymentStrategy/PaymentServiceManagement.ts
+ * - Service/PaymentStrategy/PaymentVoucher.ts
+ * - Service/PaymentStrategy/DuePayment.ts
+ * 
+ * Just add your payment method IDs to the same lines as shown above
+ */
+
+// ============================================================================
+// 8. locales/en/translation.json - ADD TRANSLATION KEYS
+// ============================================================================
+
+{
+  "Payment": {
+    "lblStripePayment": "Pay with Stripe",
+    "lblPayPalPayment": "Pay with PayPal",
+    "lblCardNumber": "Card Number",
+    "lblExpiryDate": "Expiry Date (MM/YY)",
+    "lblCVC": "Security Code (CVC)",
+    "lblAllCardFieldsRequired": "Please fill in all card fields",
+    "lblStripeError": "Stripe payment processing failed. Please try again.",
+    "lblPayPalError": "PayPal payment processing failed. Please try again.",
+    "lblCardTokenRequired": "Card token is required"
+  },
+  "Common": {
+    "lblProcessing": "Processing...",
+    "lblPay": "Pay"
+  }
+}
+
+// ============================================================================
+// 9. redux/payment.redux.ts - UPDATE REDUCER (if needed)
+// ============================================================================
+
+// If you need special handling, add to the payment reducer switch case:
+
+case PAYMENT_METHOD_IDS.STRIPE:
+case PAYMENT_METHOD_IDS.PAYPAL:
+  // Handle card-based payments
+  return {
+    ...state,
+    selectedPaymentMethod: action.payload,
+    isCvvRequired: true,  // Example: requires CVC
+    billingFormRequired: true,
+  };
+
+// ============================================================================
+// 10. BACKEND API - Payment Processing
+// ============================================================================
+
+/**
+ * Backend should implement endpoint to handle payment:
+ * 
+ * POST /api/payment/process
+ * 
+ * Request body:
+ * {
+ *   paymentMethodId: 272,  // PAYMENT_METHOD_IDS.STRIPE
+ *   amount: 500,
+ *   currency: "EUR",
+ *   stripeToken: "tok_stripe_...",
+ *   email: "user@example.com",
+ *   billingAddress: {...}
+ * }
+ * 
+ * Response:
+ * {
+ *   success: true,
+ *   reservationId: "RES123",
+ *   pnr: "AB1234",
+ *   bookingReference: "1234567890"
+ * }
+ */
+
+// ============================================================================
+// SUMMARY OF CHANGES
+// ============================================================================
+
+/**
+ * FILES TO MODIFY:
+ * 
+ * 1. constants/common.ts
+ *    - Add STRIPE: 272 and PAYPAL: 273
+ * 
+ * 2. CREATE NEW: components/PaymentContent/stripe.tsx
+ *    - Complete UI component
+ * 
+ * 3. CREATE NEW: components/PaymentContent/paypal.tsx
+ *    - Complete UI component
+ * 
+ * 4. components/PaymentContent/index.tsx
+ *    - Import new components
+ *    - Add rendering logic
+ * 
+ * 5. components/PaymentContent/paymentTypes.tsx
+ *    - Add payment method radio buttons/tabs
+ * 
+ * 6-13. Service/PaymentStrategy/Payment*.ts (8 files)
+ *       - Add payment IDs to includes() checks
+ * 
+ * 14. locales/en/translation.json
+ *     - Add translation keys
+ * 
+ * 15. Backend API
+ *     - Add payment processing endpoint
+ * 
+ * TOTAL: ~15 changes across ~12 files
+ * 
+ * TESTING:
+ * - Payment method appears in selection
+ * - Form validates correctly
+ * - Payment processes without errors
+ * - Booking confirms successfully
+ * - Works on mobile/desktop
+ */
+
+
+
+
+# ⚡ QUICK REFERENCE CARD - Add Payment Method in 5 Steps
+
+## 🎯 30-Second Overview
+
+**Goal:** Add a new payment method (Stripe, PayPal, etc)
+**Time:** 3-5 hours total
+**Files:** 23 files (mostly simple 1-line changes)
+**Difficulty:** Medium (mostly copy-paste after understanding flow)
+
+---
+
+## 🚀 5 Core Steps
+
+### STEP 1: Add ID (2 minutes)
+```typescript
+// File: constants/common.ts
+export const PAYMENT_METHOD_IDS = {
+  STRIPE: 272,  // ← ADD THIS
+};
+```
+
+### STEP 2: Create Component (30 minutes)
+```typescript
+// File: components/PaymentContent/stripe.tsx
+// Create React component with form validation
+// See NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts for full code
+```
+
+### STEP 3: Wire in PaymentContent (10 minutes)
+```typescript
+// File: components/PaymentContent/index.tsx
+import StripePaymentComponent from './stripe';
+
+{payTypeId === PAYMENT_METHOD_IDS.STRIPE && (
+  <StripePaymentComponent {...props} />
+)}
+```
+
+### STEP 4: Update All 9 Strategies (20 minutes)
+```typescript
+// Find & Replace in these 9 files:
+// Service/PaymentStrategy/Payment*.ts
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))
+```
+
+### STEP 5: Add Translations (10 minutes)
+```json
+// File: locales/en/translation.json
+"Payment": {
+  "lblStripePayment": "Pay with Stripe"
+}
+```
+
+---
+
+## 📁 File Count Breakdown
+
+| Category | Count |
+|----------|-------|
+| Create new | 1 |
+| Modify constants | 1 |
+| Modify components | 3 |
+| Modify strategies | 9 |
+| Modify translations | 7 |
+| Modify redux | 0-1 |
+| **TOTAL** | **~22** |
+
+---
+
+## ⏱️ Time Breakdown
+
+| Task | Time |
+|------|------|
+| Reading docs | 30 min |
+| Add ID + Component | 40 min |
+| Wire integration | 15 min |
+| Update strategies | 20 min |
+| Add translations | 15 min |
+| Backend API | 30-60 min |
+| Testing | 60-120 min |
+| **TOTAL** | **3-5 hours** |
+
+---
+
+## 📊 Payment Method Categories
+
+### ✅ Immediate Payment (BookPNR)
+Payment happens on your page → Booking created immediately
+- Stripe ✓
+- Credit Cards ✓
+- Wallet ✓
+- Saved Cards ✓
+
+### 🔄 Redirect Payment (PayNow)  
+User goes to external gateway → User returns → Booking created
+- PayPal Express ✓
+- Alipay ✓
+- WeChat Pay ✓
+- Google Pay ✓
+
+---
+
+## 🔍 9 PaymentStrategy Files to Update
+
+```
+1. PaymentNormal.ts .................. Main flow
+2. PaymentCheckIn.ts ................ Check-in flow
+3. PaymentMMB.ts .................... Manage booking
+4. PaymentBaggageManagement.ts ...... Baggage add-ons
+5. PaymentSeatManagement.ts ........ Seat add-ons
+6. PaymentFarelock.ts .............. Fare lock
+7. PaymentServiceManagement.ts ..... Service add-ons
+8. PaymentVoucher.ts ............... Voucher purchase
+9. DuePayment.ts ................... Due payment
+```
+
+Each: Add this line twice (BookPNR + PayNow sections)
+```typescript
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))
+```
+
+---
+
+## 🌍 7 Translation Files to Update
+
+```
+1. locales/en/translation.json (English)
+2. locales/de/translation.json (German)
+3. locales/fr/translation.json (French)
+4. locales/it/translation.json (Italian)
+5. locales/ro/translation.json (Romanian)
+6. locales/ru/translation.json (Russian)
+7. locales/am/translation.json (Amharic)
+```
+
+Add to each: `"lblStripePayment": "Pay with Stripe"`
+
+---
+
+## 🧪 Must-Test Scenarios
+
+- [ ] Payment method appears in list
+- [ ] Can select payment method
+- [ ] Form shows when selected
+- [ ] Form validates input
+- [ ] Can submit form
+- [ ] Payment processes
+- [ ] Booking created with PNR
+- [ ] Works on mobile
+- [ ] All 7 languages display correctly
+- [ ] Works in all 9 workflows
+
+---
+
+## 🎓 Documentation Files Created
+
+| File | Use Case |
+|------|----------|
+| **README_PAYMENT_METHODS.md** | 📍 You are here - Quick index |
+| **IMPLEMENTATION_SUMMARY.md** | 15-min overview |
+| **ADD_NEW_PAYMENT_METHOD_GUIDE.md** | Step-by-step guide |
+| **NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts** | Copy-paste code |
+| **PAYMENT_METHOD_CHECKLIST.md** | Task tracking |
+| **PAYMENT_FLOW_ARCHITECTURE.md** | Architecture & diagrams |
+| **VISUAL_IMPLEMENTATION_GUIDE.md** | Quick visual reference |
+
+---
+
+## 🚨 Red Flags
+
+| Problem | Solution |
+|---------|----------|
+| Method not appearing | Check backend returns it |
+| Form not rendering | Check conditional render logic |
+| Payment fails | Check payment strategy routing |
+| Works in booking only | Check all 9 strategy files |
+| Wrong language text | Check translation files |
+
+---
+
+## ✅ Final Checklist
+
+- [ ] ID added to constants
+- [ ] Component created & tested locally
+- [ ] PaymentContent imports & renders
+- [ ] All 9 PaymentStrategy files updated
+- [ ] All 7 translation files updated
+- [ ] Backend API implemented
+- [ ] Works in all 9 workflows
+- [ ] Mobile responsive
+- [ ] All translations correct
+- [ ] Error handling works
+- [ ] Ready to deploy!
+
+---
+
+## 🎯 Where to Start
+
+**Choose your path:**
+
+👤 **I'm a developer** → Read: CODE_EXAMPLES + VISUAL_GUIDE
+📊 **I'm a PM** → Read: CHECKLIST + SUMMARY
+🏗️ **I need architecture** → Read: FLOW_ARCHITECTURE
+📚 **Give me everything** → Read: STEP_BY_STEP_GUIDE
+
+---
+
+## 💡 Pro Tips
+
+1. **Use Find & Replace** for updating 9 strategy files
+2. **Copy working payment** (like CARD) as template
+3. **Test early** - don't wait until the end
+4. **Check backend** first - no method = no payment
+5. **Track progress** - 23 files is a lot!
+
+---
+
+## 📞 Quick Help
+
+**Issue:** "I don't understand the payment flow"
+→ Read: PAYMENT_FLOW_ARCHITECTURE.md
+
+**Issue:** "Where do I add the code?"
+→ Read: VISUAL_IMPLEMENTATION_GUIDE.md
+
+**Issue:** "Give me exact code to copy"
+→ Read: NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts
+
+**Issue:** "How do I track my progress?"
+→ Read: PAYMENT_METHOD_CHECKLIST.md
+
+---
+
+## 🎉 Success = 
+
+✅ Payment method selectable
+✅ Form working & validating
+✅ Payment processing
+✅ Booking created
+✅ PNR generated
+✅ Works everywhere
+✅ Deployed to production
+
+---
+
+## 📖 Full Documentation Index
+
+```
+START HERE → README_PAYMENT_METHODS.md
+    ↓
+Choose your path:
+    ├─ Quick overview? → IMPLEMENTATION_SUMMARY.md
+    ├─ Step-by-step? → ADD_NEW_PAYMENT_METHOD_GUIDE.md
+    ├─ Code examples? → NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts
+    ├─ Task tracking? → PAYMENT_METHOD_CHECKLIST.md
+    ├─ Architecture? → PAYMENT_FLOW_ARCHITECTURE.md
+    └─ Quick ref? → VISUAL_IMPLEMENTATION_GUIDE.md
+```
+
+---
+
+## 🚀 Let's Go!
+
+1. Pick a starting guide from above
+2. Read for 15-30 minutes
+3. Start coding!
+4. Reference guides as needed
+5. Track with CHECKLIST.md
+6. Test thoroughly
+7. Deploy with confidence
+
+**You got this! 💪**
+
+---
+
+**Questions?** Check the detailed guides above - they cover everything!
+
+Good luck! 🎯
+
+
+
+
+
+# 🎯 How to Add a New Payment Method - Complete Documentation Index
+
+## 📚 All Documentation Files
+
+Created 6 comprehensive guides to help you add new payment methods to your FlyOne payment system:
+
+---
+
+## 1️⃣ **START HERE** - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
+**Best for:** Quick overview & getting started
+
+Contains:
+- TL;DR Quick Start (5 minutes read)
+- Impact analysis (which files affected)
+- Payment flow quick reference
+- File structure overview
+- Testing scenarios checklist
+- Common issues & solutions
+
+**Read time:** 15 minutes
+
+---
+
+## 2️⃣ **DETAILED GUIDE** - [ADD_NEW_PAYMENT_METHOD_GUIDE.md](ADD_NEW_PAYMENT_METHOD_GUIDE.md)
+**Best for:** Step-by-step implementation with explanations
+
+Contains:
+- 10 detailed implementation steps
+- Code snippets for each step
+- Redux integration guide
+- Payment strategy updates
+- Backend requirements
+- Troubleshooting guide
+- Complete checklist
+
+**Read time:** 30 minutes
+
+---
+
+## 3️⃣ **CODE EXAMPLES** - [NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts](NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts)
+**Best for:** Copy-paste ready implementations
+
+Contains:
+- Complete Stripe component example
+- Exact code for each file
+- Before/after comparisons
+- All 9 PaymentStrategy file updates
+- Redux reducer changes
+- Backend API specifications
+- Translation examples
+
+**Read time:** 20 minutes (but use as reference)
+
+---
+
+## 4️⃣ **CHECKLIST** - [PAYMENT_METHOD_CHECKLIST.md](PAYMENT_METHOD_CHECKLIST.md)
+**Best for:** Task tracking & project management
+
+Contains:
+- Phase-by-phase breakdown (10 phases)
+- All 23 files to update
+- Time estimates per phase
+- Testing matrix (20+ test cases)
+- Common pitfalls & fixes
+- Verification commands
+- Deployment checklist
+
+**Read time:** 25 minutes
+
+---
+
+## 5️⃣ **ARCHITECTURE** - [PAYMENT_FLOW_ARCHITECTURE.md](PAYMENT_FLOW_ARCHITECTURE.md)
+**Best for:** Understanding the system architecture
+
+Contains:
+- Visual flow diagrams
+- Payment method decision tree
+- State management flow
+- Payment routing logic
+- 2 payment categories (Immediate vs Redirect)
+- State shape examples
+- Debugging checklist
+
+**Read time:** 20 minutes
+
+---
+
+## 6️⃣ **VISUAL GUIDE** - [VISUAL_IMPLEMENTATION_GUIDE.md](VISUAL_IMPLEMENTATION_GUIDE.md)
+**Best for:** Quick visual reference during implementation
+
+Contains:
+- Project file structure
+- Implementation timeline
+- Code change templates
+- Payment categories explained
+- Common patterns
+- Decision matrix
+- Verification checklist per phase
+- Red flags & solutions
+- Performance impact analysis
+- Rollback procedures
+
+**Read time:** 15 minutes
+
+---
+
+## 🎓 How to Use These Guides
+
+### Scenario 1: "I want to add Stripe payment"
+1. **Start:** IMPLEMENTATION_SUMMARY.md (5 min overview)
+2. **Do:** NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts (copy code)
+3. **Track:** PAYMENT_METHOD_CHECKLIST.md (mark tasks)
+4. **Reference:** VISUAL_IMPLEMENTATION_GUIDE.md (when stuck)
+5. **Understand:** PAYMENT_FLOW_ARCHITECTURE.md (if issues)
+
+### Scenario 2: "I want to understand the payment system first"
+1. **Start:** PAYMENT_FLOW_ARCHITECTURE.md (understand flow)
+2. **Learn:** ADD_NEW_PAYMENT_METHOD_GUIDE.md (detailed steps)
+3. **Do:** NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts (implement)
+4. **Track:** PAYMENT_METHOD_CHECKLIST.md (complete tasks)
+
+### Scenario 3: "I'm implementing right now and need help"
+1. **Check:** VISUAL_IMPLEMENTATION_GUIDE.md (templates & patterns)
+2. **Reference:** NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts (exact code)
+3. **Debug:** PAYMENT_FLOW_ARCHITECTURE.md (flow issues)
+4. **Fix:** ADD_NEW_PAYMENT_METHOD_GUIDE.md (troubleshooting)
+
+### Scenario 4: "I'm managing this project"
+1. **Plan:** PAYMENT_METHOD_CHECKLIST.md (timeline & tasks)
+2. **Overview:** IMPLEMENTATION_SUMMARY.md (scope & impact)
+3. **Track:** PAYMENT_METHOD_CHECKLIST.md (progress)
+4. **Deploy:** VISUAL_IMPLEMENTATION_GUIDE.md (deployment section)
+
+---
+
+## 📊 Document Breakdown
+
+| Document | Length | Best Use | Format |
+|----------|--------|----------|--------|
+| IMPLEMENTATION_SUMMARY.md | 4 pages | Overview | Markdown |
+| ADD_NEW_PAYMENT_METHOD_GUIDE.md | 6 pages | Step-by-step | Markdown |
+| NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts | 5 pages | Code reference | TypeScript |
+| PAYMENT_METHOD_CHECKLIST.md | 7 pages | Project tracking | Markdown |
+| PAYMENT_FLOW_ARCHITECTURE.md | 5 pages | Architecture | Markdown + Diagrams |
+| VISUAL_IMPLEMENTATION_GUIDE.md | 6 pages | Quick reference | Markdown + Templates |
+
+**Total Documentation:** ~33 pages equivalent
+
+---
+
+## 🔑 Key Concepts Explained
+
+### Payment Method ID
+**What:** Unique number identifying the payment method
+**Example:** `STRIPE: 272`, `PAYPAL: 273`
+**Location:** `constants/common.ts`
+**Backend:** Must match backend ID
+
+### Payment Category
+**Immediate (BookPNR):** Payment processed on page, instant booking
+**Redirect (PayNow):** User redirected to external gateway
+**Decision:** Check if payment happens on your site or elsewhere
+
+### Payment Strategy
+**What:** Class that determines payment flow based on workflow
+**Examples:** PaymentNormal, PaymentCheckIn, PaymentFarelock
+**Location:** `Service/PaymentStrategy/`
+**Why:** Each booking flow (normal, check-in, etc) needs its own routing
+
+### Redux Action
+**What:** Dispatched to start payment processing
+**Options:** `BookPNR()` or `PayNow()`
+**Decision:** Based on payment category
+
+### Workflow
+**What:** Current user journey (booking, check-in, etc)
+**Examples:** SEARCH_FLIGHT, CHECK_IN, FARE_LOCK
+**Location:** `constants/common.ts`
+**Why:** Different workflows use different payment flows
+
+---
+
+## 🚀 The 5-Minute Quick Start
+
+### If you already know what you're doing:
+
+1. **Add ID** to `constants/common.ts`
+   ```typescript
+   STRIPE: 272,
+   ```
+
+2. **Create component** at `components/PaymentContent/stripe.tsx`
+
+3. **Update PaymentContent** - import and render component
+
+4. **Update 9 files** - add to PaymentStrategy files
+   ```typescript
+   || includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))
+   ```
+
+5. **Add translations** to all `locales/*/translation.json`
+
+6. **Test and deploy** using CHECKLIST.md
+
+---
+
+## ❓ FAQ
+
+**Q: Which guide should I read first?**
+A: IMPLEMENTATION_SUMMARY.md for a 15-minute overview
+
+**Q: I'm a developer, what do I need?**
+A: NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts + VISUAL_IMPLEMENTATION_GUIDE.md
+
+**Q: I'm a project manager, what do I need?**
+A: PAYMENT_METHOD_CHECKLIST.md for timeline and tracking
+
+**Q: How long will this take?**
+A: 3-5 hours depending on payment gateway complexity
+
+**Q: What's the most important file?**
+A: VISUAL_IMPLEMENTATION_GUIDE.md (most referenced during coding)
+
+**Q: What if I get stuck?**
+A: Check "Red Flags & Solutions" in VISUAL_IMPLEMENTATION_GUIDE.md
+
+**Q: How many files do I need to modify?**
+A: 23 files total (but most are simple one-line changes)
+
+**Q: Is this for all payment methods?**
+A: Yes! Works for Stripe, PayPal, Apple Pay, etc.
+
+---
+
+## 📋 Files Modified Summary
+
+```
+Core Payment Files (6):
+├─ constants/common.ts
+├─ components/PaymentContent/index.tsx
+├─ components/PaymentContent/paymentTypes.tsx
+├─ components/PaymentContent/[NEW] stripe.tsx
+├─ components/PaymentContent/billingDetails.tsx (if needed)
+└─ redux/payment.redux.ts (if needed)
+
+Payment Strategy Files (9):
+├─ Service/PaymentStrategy/PaymentNormal.ts
+├─ Service/PaymentStrategy/PaymentCheckIn.ts
+├─ Service/PaymentStrategy/PaymentMMB.ts
+├─ Service/PaymentStrategy/PaymentBaggageManagement.ts
+├─ Service/PaymentStrategy/PaymentSeatManagement.ts
+├─ Service/PaymentStrategy/PaymentFarelock.ts
+├─ Service/PaymentStrategy/PaymentServiceManagement.ts
+├─ Service/PaymentStrategy/PaymentVoucher.ts
+└─ Service/PaymentStrategy/DuePayment.ts
+
+Translation Files (7):
+├─ locales/en/translation.json
+├─ locales/de/translation.json
+├─ locales/fr/translation.json
+├─ locales/it/translation.json
+├─ locales/ro/translation.json
+├─ locales/ru/translation.json
+└─ locales/am/translation.json
+
+Backend:
+└─ API endpoints for payment processing
+```
+
+---
+
+## 🎯 Success Criteria
+
+After implementation, your payment method should:
+
+✅ Appear in payment method selection
+✅ Have working form with validation
+✅ Process payment successfully
+✅ Create booking with PNR
+✅ Work across all 9 workflows
+✅ Display correctly on mobile
+✅ Show correct translations (7 languages)
+✅ Handle errors gracefully
+✅ Have < 1% failure rate
+
+---
+
+## 📞 Need Help?
+
+### Check these sections first:
+
+1. **Payment method not appearing?**
+   → PAYMENT_FLOW_ARCHITECTURE.md "Debugging Checklist"
+
+2. **Form validation issues?**
+   → ADD_NEW_PAYMENT_METHOD_GUIDE.md Step 4
+
+3. **Integration failing?**
+   → VISUAL_IMPLEMENTATION_GUIDE.md "Red Flags & Solutions"
+
+4. **Don't know what to do next?**
+   → PAYMENT_METHOD_CHECKLIST.md (follow phase by phase)
+
+5. **Need code examples?**
+   → NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts
+
+---
+
+## 🏁 Next Steps
+
+1. **Read** IMPLEMENTATION_SUMMARY.md (15 min)
+2. **Choose** your payment method type (Immediate or Redirect)
+3. **Follow** PAYMENT_METHOD_CHECKLIST.md phase by phase
+4. **Reference** NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts as needed
+5. **Debug** using VISUAL_IMPLEMENTATION_GUIDE.md if stuck
+6. **Test** using PAYMENT_METHOD_CHECKLIST.md testing section
+7. **Deploy** following checklist in same file
+
+---
+
+## 📞 Document Maintenance
+
+These guides cover:
+- ✅ Adding new payment methods
+- ✅ Payment strategy routing
+- ✅ Component architecture
+- ✅ Redux state management
+- ✅ i18n translations
+- ✅ Testing & debugging
+- ✅ Deployment procedures
+- ✅ Common issues & solutions
+
+---
+
+**Let's build something great! 🚀**
+
+Start with **IMPLEMENTATION_SUMMARY.md** and follow the guides above.
+
+Good luck! 💪
+
+---
+
+## Quick Links
+
+- [Overview & Getting Started](IMPLEMENTATION_SUMMARY.md)
+- [Step-by-Step Guide](ADD_NEW_PAYMENT_METHOD_GUIDE.md)
+- [Code Examples](NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts)
+- [Project Checklist](PAYMENT_METHOD_CHECKLIST.md)
+- [Architecture & Flow](PAYMENT_FLOW_ARCHITECTURE.md)
+- [Visual Reference](VISUAL_IMPLEMENTATION_GUIDE.md)
+
+
+
+
+# Visual Implementation Guide
+
+## File Modification Overview
+
+```
+PROJECT ROOT
+│
+├─ constants/
+│  └─ common.ts .......................... ADD ID (1 line)
+│
+├─ components/PaymentContent/
+│  ├─ index.tsx .......................... ADD Import + Render (5 lines)
+│  ├─ paymentTypes.tsx ................... ADD Radio Button (8 lines)
+│  ├─ billingDetails.tsx ................ UPDATE Validation (if needed)
+│  ├─ [NEW] stripe.tsx .................. CREATE Component (full)
+│  └─ styles.scss ....................... ADD Styles (if needed)
+│
+├─ redux/
+│  └─ payment.redux.ts .................. UPDATE Reducer (if needed)
+│
+├─ Service/PaymentStrategy/
+│  ├─ PaymentNormal.ts .................. UPDATE 2 includes() checks
+│  ├─ PaymentCheckIn.ts ................. UPDATE 2 includes() checks
+│  ├─ PaymentMMB.ts ..................... UPDATE 2 includes() checks
+│  ├─ PaymentBaggageManagement.ts ....... UPDATE 2 includes() checks
+│  ├─ PaymentSeatManagement.ts ......... UPDATE 2 includes() checks
+│  ├─ PaymentFarelock.ts ............... UPDATE 2 includes() checks
+│  ├─ PaymentServiceManagement.ts ...... UPDATE 2 includes() checks
+│  ├─ PaymentVoucher.ts ................ UPDATE 2 includes() checks
+│  └─ DuePayment.ts .................... UPDATE 2 includes() checks
+│
+├─ locales/
+│  ├─ en/translation.json .............. ADD Keys
+│  ├─ de/translation.json .............. ADD Keys
+│  ├─ fr/translation.json .............. ADD Keys
+│  ├─ it/translation.json .............. ADD Keys
+│  ├─ ro/translation.json .............. ADD Keys
+│  ├─ ru/translation.json .............. ADD Keys
+│  └─ am/translation.json .............. ADD Keys
+│
+└─ [Backend API] ........................ IMPLEMENT Endpoints
+   ├─ /api/payment/methods ........... Return available methods
+   ├─ /api/payment/stripe ........... Process Stripe payment
+   └─ /api/payment/callback ........ Handle gateway callback
+```
+
+---
+
+## Implementation Timeline
+
+```
+Day 1 - Setup (2 hours)
+├─ 09:00-09:15 .... Review this documentation
+├─ 09:15-09:20 .... Add ID to constants/common.ts
+├─ 09:20-10:00 .... Create stripe.tsx component
+└─ 10:00-11:00 ... Backend team implements /api/payment/stripe
+
+Day 1 - Integration (3 hours)
+├─ 11:00-11:15 ... Update components/PaymentContent/index.tsx
+├─ 11:15-11:30 ... Update components/PaymentContent/paymentTypes.tsx
+├─ 11:30-12:00 ... Add to all 9 PaymentStrategy files
+└─ 12:00-13:00 .. Lunch
+
+Day 2 - Configuration (1 hour)
+├─ 14:00-14:30 .. Add translations to all 7 locales
+└─ 14:30-15:00 .. Update billingDetails validation (if needed)
+
+Day 2 - Testing (2.5 hours)
+├─ 15:00-15:30 .. Local development testing
+├─ 15:30-16:00 .. Integration with backend
+├─ 16:00-16:30 .. Test all 9 workflows
+├─ 16:30-17:00 .. Test on mobile/tablet
+└─ 17:00-17:30 .. Final checks & bug fixes
+
+Total Time: ~8.5 hours
+(Can be done in 1-2 days depending on backend readiness)
+```
+
+---
+
+## Code Change Templates
+
+### Template 1: Add to constants/common.ts
+```typescript
+export const PAYMENT_METHOD_IDS = {
+  // ... existing IDs ...
+  STRIPE: 272,  // ← ADD THIS LINE (get unique ID from backend)
+};
+```
+
+### Template 2: Add to components/PaymentContent/index.tsx
+```typescript
+// Step 1: Add import at top
+import StripePaymentComponent from './stripe';
+
+// Step 2: Add in render/return (inside mainContent function)
+{payTypeId === PAYMENT_METHOD_IDS.STRIPE && (
+  <StripePaymentComponent 
+    {...requiredProps}
+  />
+)}
+```
+
+### Template 3: Add to PaymentStrategy files
+```typescript
+// Find this line in each PaymentStrategy file:
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.BPAY)))
+
+// Add BEFORE the closing parenthesis:
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))
+
+// Result:
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.BPAY))
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE)))
+```
+
+### Template 4: Add to translation files
+```json
+"Payment": {
+  // ... existing keys ...
+  "lblStripePayment": "Pay with Stripe",
+  "lblStripeCardNumber": "Card Number",
+  "lblStripeExpiryDate": "Expiry Date",
+  "lblStripeCVC": "Security Code",
+  "lblStripeError": "Stripe payment failed"
+}
+```
+
+---
+
+## Payment Method Categories
+
+### Category A: Direct Payment (BookPNR)
+**Characteristics:**
+- Payment processed immediately on page
+- No redirect needed
+- User stays on website
+- Instant booking confirmation
+
+**Examples:**
+- Credit Cards
+- Debit Cards
+- Wallet
+- Stripe
+- Some PayPal integrations
+
+**Code Flow:**
+```
+Form Submitted
+    ↓
+Tokenize card
+    ↓
+Send to backend: POST /api/payment/book-pnr
+    ↓
+Backend captures payment
+    ↓
+Backend creates booking
+    ↓
+Return PNR & confirmation
+```
+
+**Add To:**
+```typescript
+if (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE)))
+  dispatch(BookPNR(...))  // ← Direct booking
+```
+
+---
+
+### Category B: Redirect Payment (PayNow)
+**Characteristics:**
+- User redirected to external gateway
+- Payment processed elsewhere
+- User returns to site after payment
+- Async booking confirmation
+
+**Examples:**
+- PayPal Express
+- Alipay
+- WeChat Pay
+- Google Pay (if web redirect)
+
+**Code Flow:**
+```
+Form Submitted
+    ↓
+Send to backend: POST /api/payment/initiate
+    ↓
+Backend returns redirect URL
+    ↓
+Redirect user to payment gateway
+    ↓
+User completes payment externally
+    ↓
+Gateway redirects back to site
+    ↓
+Verify payment callback
+    ↓
+Create booking if valid
+```
+
+**Add To:**
+```typescript
+else if (includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE)))
+  dispatch(PayNow(...))  // ← Redirect to gateway
+```
+
+---
+
+## Common Implementation Patterns
+
+### Pattern 1: Simple Form Payment (Like Stripe)
+```typescript
+<Form onSubmit={handleSubmit}>
+  <Input name="cardNumber" />
+  <Input name="expiryDate" />
+  <Input name="cvc" />
+  <Button>Pay ${amount}</Button>
+</Form>
+```
+✓ Add to: **BookPNR** category
+✓ Files: Constants + Component + 9 Strategies
+
+---
+
+### Pattern 2: Button-Based Payment (Like PayPal)
+```typescript
+<Button onClick={handlePayPalClick}>
+  Pay with PayPal
+</Button>
+// Redirects user to PayPal
+```
+✓ Add to: **PayNow** category
+✓ Files: Constants + Component + 9 Strategies
+
+---
+
+### Pattern 3: Token-Based Payment (Like Google Pay)
+```typescript
+<Script load GooglePayScript />
+<GooglePayButton 
+  onSuccess={handleToken}
+  amount={totalAmount}
+/>
+```
+✓ Add to: **BookPNR** category (usually)
+✓ Files: Constants + Component + 9 Strategies
+
+---
+
+## Decision Matrix
+
+```
+Choose Category:
+
+Question: Does payment happen immediately on the page?
+  ├─ YES → Use BookPNR (Direct Payment)
+  │  Examples: Stripe, PayPal Checkout, Apple Pay
+  │
+  └─ NO → Use PayNow (Redirect Payment)
+     Examples: PayPal Express, Alipay, WeChat
+
+Question: Do you need redirect capability?
+  ├─ NO → Use BookPNR
+  │
+  └─ YES → Use PayNow
+
+Question: Is this a hosted payment form?
+  ├─ YES (Stripe.com, PayPal.com) → Use PayNow
+  │
+  └─ NO (Form on our site) → Use BookPNR
+```
+
+---
+
+## Verification Checklist by Phase
+
+### ✅ Phase 1: Core Setup
+```
+□ ID added to constants/common.ts
+□ Component file created (stripe.tsx)
+□ Component imports in PaymentContent/index.tsx
+□ Component renders in PaymentContent (conditional)
+□ Component compiles without errors
+```
+
+### ✅ Phase 2: Integration
+```
+□ PaymentNormal.ts updated (2 places)
+□ PaymentCheckIn.ts updated (2 places)
+□ PaymentMMB.ts updated (2 places)
+□ PaymentBaggageManagement.ts updated
+□ PaymentSeatManagement.ts updated
+□ PaymentFarelock.ts updated
+□ PaymentServiceManagement.ts updated
+□ PaymentVoucher.ts updated
+□ DuePayment.ts updated
+□ All files compile without errors
+```
+
+### ✅ Phase 3: Configuration
+```
+□ Translation keys added to all 7 locales
+□ No console errors about missing translations
+□ Billing validation works for new method
+□ Redux reducer updated (if needed)
+□ TypeScript types correct
+```
+
+### ✅ Phase 4: Testing
+```
+□ Payment method appears in selection
+□ Can select payment method
+□ Form renders correctly
+□ Form validation works
+□ Can submit form
+□ API call made successfully
+□ Works in normal booking flow
+□ Works in check-in flow
+□ Works in fare lock flow
+□ Works on mobile
+□ All 7 languages show correct text
+```
+
+---
+
+## Red Flags & Solutions
+
+### 🚩 Payment method doesn't appear
+```
+Checklist:
+□ Backend API returns it in paymentGroups? 
+  └─ Check API response in Network tab
+□ Component imports correctly?
+  └─ Check for typos in import statement
+□ Conditional render checks correct ID?
+  └─ Verify PAYMENT_METHOD_IDS.STRIPE matches
+```
+
+### 🚩 Form doesn't render when selected
+```
+Checklist:
+□ Component exists and imports?
+□ Conditional render has correct ID?
+□ Component has default export?
+□ Props passed correctly?
+└─ Add console.log to verify render
+```
+
+### 🚩 Form submits but fails payment
+```
+Checklist:
+□ API endpoint implemented on backend?
+□ Payment strategy routing correct?
+  └─ BookPNR or PayNow dispatch?
+□ Backend handling the payment ID?
+□ Payment gateway integration ready?
+□ API returns success response?
+```
+
+### 🚩 Works in normal flow but not check-in
+```
+Checklist:
+□ Updated PaymentCheckIn.ts?
+□ Updated all 9 PaymentStrategy files?
+□ Each file has your payment ID in includes()?
+└─ Use Find to search all files
+```
+
+---
+
+## Before & After Code Comparison
+
+### BEFORE: Without Stripe
+```typescript
+// Components available:
+├─ CreditCardComponent
+├─ WalletComponent  
+├─ QiwiComponent
+└─ PayNowComponent
+// NO Stripe option ❌
+```
+
+### AFTER: With Stripe
+```typescript
+// Components available:
+├─ CreditCardComponent
+├─ WalletComponent
+├─ StripeComponent    ← NEW!
+├─ QiwiComponent
+└─ PayNowComponent
+// Stripe available ✓
+```
+
+---
+
+## Performance Impact
+
+**File Size Impact:**
+- New component: ~5-10 KB
+- Code changes: ~2 KB (spread across files)
+- Translations: ~1 KB per language
+- **Total: ~20-25 KB** (negligible)
+
+**Runtime Impact:**
+- No performance impact unless payment method used
+- Lazy loading possible for large components
+
+**Build Time:**
+- Minimal impact
+- ~1-2 seconds additional
+
+---
+
+## Rollback Plan
+
+If something goes wrong:
+
+### Option 1: Quick Disable
+```typescript
+// In components/PaymentContent/paymentTypes.tsx
+// Comment out the payment method rendering
+/* {payTypeId === PAYMENT_METHOD_IDS.STRIPE && ...} */
+// Deploy immediately
+```
+
+### Option 2: Feature Flag
+```typescript
+// In components/PaymentContent/paymentTypes.tsx
+if (process.env.REACT_APP_ENABLE_STRIPE === 'true') {
+  // Show Stripe payment
+}
+// Toggle with environment variable
+```
+
+### Option 3: Full Rollback
+```bash
+git revert <commit-hash>
+git push
+deploy()
+```
+
+---
+
+## Success Metrics
+
+After deployment, monitor:
+
+```
+✓ Payment success rate > 95%
+✓ Avg response time < 3 seconds
+✓ Error rate < 1%
+✓ User feedback positive
+✓ No spike in support tickets
+✓ PNR generation success rate 100%
+✓ Booking confirmation emails sent correctly
+```
+
+If any metric fails, activate rollback plan.
+
+---
+
+## Quick Links in This Project
+
+```
+📄 ADD_NEW_PAYMENT_METHOD_GUIDE.md
+   ↳ Complete step-by-step guide
+
+📄 NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts
+   ↳ Copy-paste ready code examples
+
+📄 PAYMENT_METHOD_CHECKLIST.md
+   ↳ Task checklist & timelines
+
+📄 PAYMENT_FLOW_ARCHITECTURE.md
+   ↳ Architecture & flow diagrams
+
+📄 IMPLEMENTATION_SUMMARY.md
+   ↳ Overview & resources
+
+📄 VISUAL_IMPLEMENTATION_GUIDE.md (this file)
+   ↳ Visual reference & templates
+```
+
+---
+
+**You're ready to implement! Good luck! 🚀**
+
+
+
+
+# Implementation Summary: Adding New Payment Methods
+
+## 📚 Documentation Created
+
+I've created 4 comprehensive guides to help you add new payment methods:
+
+### 1. **ADD_NEW_PAYMENT_METHOD_GUIDE.md** ✅
+Complete step-by-step guide covering:
+- Where to add payment method ID
+- How to create payment components
+- Redux state management
+- Payment strategy integration
+- Translation setup
+- Backend integration requirements
+- Common issues & solutions
+
+**Start here if you want:** A guided walkthrough with explanations
+
+### 2. **NEW_PAYMENT_METHOD_CODE_EXAMPLES.ts** ✅
+Actual code examples showing:
+- Exact code to add to constants
+- Full Stripe component example
+- How to update PaymentContent
+- Payment strategy updates
+- Redux reducer changes
+- All 9 PaymentStrategy files
+
+**Start here if you want:** Copy-paste ready code examples
+
+### 3. **PAYMENT_METHOD_CHECKLIST.md** ✅
+Detailed checklist with:
+- Phase-by-phase implementation steps
+- File count (23 files to update)
+- Time estimates (3-5 hours total)
+- Common pitfalls and fixes
+- Verification commands
+- Deployment checklist
+- Testing matrix
+
+**Start here if you want:** A task-based checklist to track progress
+
+### 4. **PAYMENT_FLOW_ARCHITECTURE.md** ✅
+Visual diagrams showing:
+- Complete payment flow architecture
+- Payment method decision tree
+- State management flow
+- Payment routing logic
+- Category determination (Immediate vs Redirect)
+- Debugging checklist
+
+**Start here if you want:** To understand the architecture before coding
+
+---
+
+## 🎯 Quick Start (TL;DR)
+
+To add a new payment method like "Stripe":
+
+### 1. Constants (2 minutes)
+```typescript
+// constants/common.ts
+export const PAYMENT_METHOD_IDS = {
+  STRIPE: 272,  // ← Add this
+};
+```
+
+### 2. Create Component (30 minutes)
+```typescript
+// components/PaymentContent/stripe.tsx
+// Create a React component with form validation
+```
+
+### 3. Update PaymentContent (10 minutes)
+```typescript
+// components/PaymentContent/index.tsx
+import StripePaymentComponent from './stripe';
+
+{payTypeId === PAYMENT_METHOD_IDS.STRIPE && (
+  <StripePaymentComponent {...props} />
+)}
+```
+
+### 4. Update All 9 Payment Strategies (20 minutes)
+```typescript
+// In each Service/PaymentStrategy/Payment*.ts file
+|| includes(paymentObject.paymentId, toString(PAYMENT_METHOD_IDS.STRIPE))
+```
+
+### 5. Add Translations (10 minutes)
+```json
+// locales/en/translation.json
+{
+  "Payment": {
+    "lblStripePayment": "Pay with Stripe"
+  }
+}
+```
+
+### 6. Implement Backend (30-60 minutes)
+```
+POST /api/payment/stripe
+Request: { paymentToken, amount, currency, email, ... }
+Response: { success, reservationId, pnr, ... }
+```
+
+### 7. Test (1-2 hours)
+- Test in all 9 workflows
+- Test on mobile/desktop
+- Test error cases
+- Test all translations
+
+---
+
+## 📊 Impact Analysis
+
+### Files to Update: **23 total**
+
+```
+Core Files:
+├─ constants/common.ts (1 change)
+├─ components/PaymentContent/index.tsx (1 change)
+├─ components/PaymentContent/paymentTypes.tsx (1 change)
+├─ components/PaymentContent/billingDetails.tsx (1 change - if needed)
+├─ redux/payment.redux.ts (1 change - if needed)
+└─ [NEW] components/PaymentContent/stripe.tsx (create)
+
+Payment Strategy Files (UPDATE EACH):
+├─ Service/PaymentStrategy/PaymentNormal.ts
+├─ Service/PaymentStrategy/PaymentCheckIn.ts
+├─ Service/PaymentStrategy/PaymentMMB.ts
+├─ Service/PaymentStrategy/PaymentBaggageManagement.ts
+├─ Service/PaymentStrategy/PaymentSeatManagement.ts
+├─ Service/PaymentStrategy/PaymentFarelock.ts
+├─ Service/PaymentStrategy/PaymentServiceManagement.ts
+├─ Service/PaymentStrategy/PaymentVoucher.ts
+└─ Service/PaymentStrategy/DuePayment.ts (9 files)
+
+Translation Files (UPDATE EACH):
+├─ locales/en/translation.json
+├─ locales/de/translation.json
+├─ locales/fr/translation.json
+├─ locales/it/translation.json
+├─ locales/ro/translation.json
+├─ locales/ru/translation.json
+└─ locales/am/translation.json (7 files)
+```
+
+---
+
+## 🔄 Payment Flow Quick Reference
+
+### Immediate Payment Methods (BookPNR)
+Used when payment is captured immediately on the page:
+- Credit/Debit Cards
+- Wallet payments
+- Stripe
+- Vouchers
+- Saved cards
+
+**How it works:**
+1. User fills form on page
+2. Form submitted → API validates payment
+3. Payment successful → Booking created immediately
+4. User redirected to confirmation page
+
+### Redirect Payment Methods (PayNow)
+Used when user must go to external gateway:
+- PayPal Express
+- Alipay
+- WeChat Pay
+- Apple Pay (sometimes)
+- Google Pay
+
+**How it works:**
+1. User submits form → API generates redirect URL
+2. Redirected to payment gateway (Stripe, PayPal, etc.)
+3. User completes payment on external site
+4. Redirected back with payment confirmation
+5. Backend verifies payment
+6. If successful, booking created
+7. User redirected to confirmation page
+
+**Decide which category for your payment method!**
+
+---
+
+## 🎨 Component Structure
+
+```
+PaymentContent/
+├── index.tsx                    ← Main component (orchestrator)
+│   ├── Imports all sub-components
+│   ├── Handles payment method selection
+│   └── Routes to correct payment component
+│
+├── paymentTypes.tsx             ← Payment method selection UI
+│   └── Radio buttons/tabs for available methods
+│
+├── billingDetails.tsx           ← Billing address form
+│   └── Validates email, phone, address
+│
+├── creditcard.tsx               ← Credit card form
+├── googlePayButton.tsx          ← Google Pay button
+├── paymentTypes.tsx             ← Tab navigation
+│
+├── stripe.tsx                   ← YOUR NEW COMPONENT
+├── paypal.tsx                   ← YOUR NEW COMPONENT
+│
+├── contactDetails.tsx           ← Contact info
+├── passengerDetails.tsx         ← Passenger info
+├── residenceDetailsForm.tsx     ← Residence address
+├── promoApply.tsx               ← Promo code entry
+├── voucherHistory.tsx           ← Voucher history
+│
+└── styles.scss                  ← Component styles
+```
+
+---
+
+## 🔐 Security Considerations
+
+When adding new payment method:
+
+✅ **DO:**
+- [ ] Use HTTPS only
+- [ ] Never store full card details
+- [ ] Tokenize sensitive data
+- [ ] Validate server-side (not just client)
+- [ ] Use CSRF protection
+- [ ] Log transactions (not sensitive data)
+- [ ] Use secure redirects
+- [ ] Implement rate limiting
+- [ ] Sanitize user input
+
+❌ **DON'T:**
+- [ ] Log card numbers, CVV, tokens to console
+- [ ] Store sensitive data in Redux state
+- [ ] Trust client-side validation only
+- [ ] Hardcode API keys in frontend
+- [ ] Use HTTP (always use HTTPS)
+- [ ] Skip PCI compliance checks
+- [ ] Redirect to untrusted URLs
+
+---
+
+## 📝 Backend Expectations
+
+Your backend should:
+
+1. **Provide payment methods endpoint:**
+```json
+GET /api/payment/methods
+Response: {
+  "paymentGroups": [
+    {
+      "groupName": "Stripe",
+      "payments": [{
+        "paymentTypeID": 272,
+        "paymentTypeName": "Stripe Card Payment"
+      }]
+    }
+  ]
+}
+```
+
+2. **Process payment endpoint:**
+```json
+POST /api/payment/process
+Request: {
+  "paymentMethodId": 272,
+  "amount": 500,
+  "currency": "EUR",
+  "stripeToken": "...",
+  ...
+}
+Response: {
+  "success": true,
+  "reservationId": "RES123",
+  "pnr": "AB1234"
+}
+```
+
+3. **Handle payment callbacks:**
+```
+Receive confirmation from payment gateway
+Verify authenticity
+Update booking status
+Return success/failure
+```
+
+---
+
+## 🧪 Testing Scenarios
+
+### Payment Method Selection ✓
+- [ ] Payment method appears in list
+- [ ] Can be selected/deselected
+- [ ] Form switches when selected
+- [ ] Only selected payment form visible
+
+### Form Validation ✓
+- [ ] Required fields enforced
+- [ ] Email format validated
+- [ ] Phone number validated
+- [ ] Error messages display
+- [ ] Can't submit invalid form
+
+### Payment Processing ✓
+- [ ] Form submits successfully
+- [ ] API call made with correct data
+- [ ] Loading state shows
+- [ ] Awaits response
+- [ ] Success redirects to thanks page
+
+### Error Handling ✓
+- [ ] Network error handled
+- [ ] Payment decline handled
+- [ ] Invalid token handled
+- [ ] Timeout handled
+- [ ] User can retry
+
+### Integration ✓
+- [ ] Works in normal booking flow
+- [ ] Works in check-in flow
+- [ ] Works in fare lock flow
+- [ ] Works in MMB flow
+- [ ] Works with add-ons
+- [ ] Works with wallet
+- [ ] Works with vouchers
+
+### Localization ✓
+- [ ] All 7 languages load correctly
+- [ ] No missing translation keys
+- [ ] RTL layouts render properly
+- [ ] Currency displays correctly
+
+### Responsive Design ✓
+- [ ] Mobile (320px) - looks good
+- [ ] Tablet (768px) - looks good
+- [ ] Desktop (1200px) - looks good
+- [ ] All input fields accessible
+- [ ] Buttons easily clickable
+
+---
+
+## 🚀 Deployment Steps
+
+1. **Development**
+   - Implement all code changes
+   - Run local tests
+   - Deploy to staging
+
+2. **Staging**
+   - Full integration testing
+   - Load testing
+   - Security audit
+   - Backend testing
+
+3. **Pre-Production**
+   - Real payment gateway testing (sandbox)
+   - Error scenario testing
+   - Rollback plan ready
+
+4. **Production**
+   - Feature flag enabled
+   - Monitor payment success rate
+   - Watch error logs
+   - Have support on standby
+   - Be ready to rollback
+
+---
+
+## 📞 Support Resources
+
+### If you need help with:
+
+**Payment Gateway Integration**
+→ Check payment provider's API docs (Stripe, PayPal, etc.)
+
+**Redux/State Management**
+→ Look at existing payment methods (CARD, QIWI, GPAY)
+
+**UI Component Development**
+→ Check components/PaymentContent/creditcard.tsx for example
+
+**Payment Strategy Routing**
+→ Review Service/PaymentStrategy/PaymentNormal.ts structure
+
+**Backend Integration**
+→ Coordinate with your backend team on API design
+
+**Testing**
+→ Use React Testing Library examples in project
+
+**i18n/Translations**
+→ Check existing locales/ files for pattern
+
+---
+
+## 📋 Final Checklist Before Deployment
+
+- [ ] All 9 PaymentStrategy files updated
+- [ ] All 7 translation files updated
+- [ ] Component created and tested
+- [ ] PaymentContent properly routing component
+- [ ] Redux state handling correct (if needed)
+- [ ] Backend API implemented and tested
+- [ ] Payment gateway integration complete
+- [ ] Error handling implemented
+- [ ] All workflows tested (9 different flows)
+- [ ] Mobile responsive verified
+- [ ] Security audit passed
+- [ ] Load testing passed
+- [ ] Team trained on new payment method
+- [ ] Monitoring/alerts configured
+- [ ] Rollback plan documented
+- [ ] Documentation updated
+
+---
+
+## 🎓 Learning Resources
+
+**In Your Codebase:**
+- Review existing payment methods (Stripe, PayPal GPAY)
+- Check payment component structure
+- Study Redux payment reducer
+- Analyze Payment strategy files
+
+**External Resources:**
+- Payment gateway documentation (Stripe, PayPal)
+- React documentation
+- Redux documentation
+- i18next documentation
+
+---
+
+**Questions? Check the 4 guides above in this folder!**
+
+Happy coding! 🚀
+
+
+
+
+
+import React, { useState, useEffect, Fragment, useLayoutEffect } from 'react';
+import { BounceLoader } from 'react-spinners';
+import { connect, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import {
+  Form, Tab, Nav, Row, Col, Spinner, Alert,
+} from 'react-bootstrap';
+import {
+  map, isNull, isEmpty, find, filter,
+} from 'lodash';
+import CreditCard from './creditcard';
+import VoucherHistory from './voucherHistory';
+import GooglePay, { onPaymentAuthorized } from './googlePayButton';
+import { resetVoucher, applyWallet } from '../../redux/payment.redux';
+import { walletActions } from '../../redux/price.redux';
+import {
+  PAYMENT_METHOD_IDS, VOUCHER_STATUS, DEFAULT_CURRENCY_CODE, WORKFLOW,
+  WORKFLOW_TYPE,
+} from '../../constants/common';
+import { IAppState } from '../../redux/initialState';
+import { formatCurrency } from '../../helpers/utilities';
+import styles from './styles.scss';
+import { getCountryCode } from '../../redux/workflow.redux';
+import useIPAddress from '../../hooks/useIpAddress';
+
+const Payment = require('payment');
+
+function PaymentTypes(props: any) {
+  const {
+    PaymentList, VoucherZeroPay, paymentForm,
+    setPayTypeId, payTypeId, dispatch, isLoggedIn,
+    setAddonError, setAddonErrorMsg, paymentInfo,
+    exchangeRate, selectedCurrencyCode, PromoDetails,
+    isAmountBeyondWallet, canQiwiShow, selectedAddon,
+    isVoucherApplying, currentTab, setCurrentTab,
+    isFetchingPayments, totalAmount, setSelVoucherCode, isFareLockZeroPay,
+    setIsWalletFullyPayable, setIsCardIdValid, actionState,
+    setIsVoucherPayMtdAvail, setIsCvvValid, setIsSavdCardCvvValid,
+    isSavdCardCvvValid, isProfileExist, portalType, userData,
+  } = props;
+  const [cardType, setCardType] = useState('');
+  const [cardID, setCardID] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardHolder, setCardHolder] = useState('');
+  const [cardFName, setCardFName] = useState('');
+  const [cardLName, setCardLName] = useState('');
+  const [cardExpiryMonth, setCardExpiryMonth] = useState('');
+  const [cardExpiryYear, setCardExpiryYear] = useState('');
+  const [cardCVV, setCardCVV] = useState('');
+
+  const ipAddress = useIPAddress();
+  useLayoutEffect(() => {
+    if (ipAddress) {
+      dispatch(
+        // getCountryCode('103.197.151.255')
+        getCountryCode(ipAddress)
+      )
+    }
+  }, [ipAddress])
+  const countryCode = useSelector((state: IAppState) => state.workflow.countryCode)
+
+  let accountInfo: any;
+  let paymentMethods: any;
+  let voucherHistory: any;
+  const [selectdCurrency, setSelectdCurrency] = useState(selectedCurrencyCode);
+  if (portalType === WORKFLOW_TYPE.B2C && !isEmpty(paymentInfo)) {
+    ({ accountInfo, paymentMethods, voucherHistory } = paymentInfo);
+  }
+  
+  // const { accountInfo, paymentMethods, voucherHistory } = paymentInfo;
+  /* const creditCardPaymentMethodID = PaymentList.paymentGroups && find(
+    paymentGroups, x => x.groupName === 'Credit/Debit Card'); */
+  const { t } = useTranslation();
+  const [cardPaymentId, setCardPaymentId] = useState(0);
+  const [paymentGroups, setPaymentGroups] = useState([]);
+  const [syncPaymentGroup, setSyncPaymentGroup] = useState(true);
+  const [creditCards, setCreditCards] = useState([]);
+  const [alphacreditCards, setalphaCreditCards] = useState([]);
+  const [unionPaycreditCards, setunionPayCreditCards] = useState([]);
+  const [maibBankcreditCards, setmaibBankCreditCards] = useState([]);
+  const [aebBankCreditCards, setaebBankCreditCards] = useState([]);
+  const [isCreditCardAvail, setisCreditCardAvail] = useState(false);
+  const [isZeroFareLockPayAvail, setIsZeroFareLockPayAvail] = useState(false);
+  const [isQiwiAvail, setisQiwiAvail] = useState(false);
+  const [isCreditFileAvail, setisCreditFileAvail] = useState(false);
+  const [isPayNowAvail, setisPayNowAvail] = useState(false);
+  const [isSavedCardAvail, setisSavedCardvail] = useState(false);
+  const [isVoucherPayAvail, setisVoucherPayAvail] = useState(false);
+  const [isBPayAvail, setIsBPayavail] = useState(false);
+  const [activeCard, setActiveCard] = useState(null);
+  // const [, setCCardNumber] = useState('');
+  const [makeChangeValue, setMakeChangeValue] = useState(payTypeId);
+  const [availableAmt, setAvailableAmt] = useState('0');
+  const [savedCardCVV, setSavedCardCVV] = useState('');
+  const [ccAvailPayMethodId, setccAvailPayMethodId] = useState(0);
+  const [profileExist, setProfileExist] = useState(true);
+  const [isDummyPaymentAvail] = useState(true); // Dummy payment field
+  const [dummyPaymentField, setDummyPaymentField] = useState(''); // Store dummy field value
+  const [dummyCardName, setDummyCardName] = useState(''); // Store card name
+
+  // const { status: voucherStatus } = PromoDetails;
+
+  useEffect(() => {
+    if (portalType === WORKFLOW_TYPE.B2C) {
+      const validity = localStorage.getItem('userValidity');
+      if (isProfileExist === false || validity === 'false') {
+        setProfileExist(false);
+      } else {
+        setProfileExist(true);
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (
+      selectedCurrencyCode !== DEFAULT_CURRENCY_CODE
+      && (
+        currentTab === 'qiwi_payment'
+        || currentTab === 'b2b_wallet_payment'
+        || payTypeId === PAYMENT_METHOD_IDS.QIWI
+        || payTypeId === PAYMENT_METHOD_IDS.PAYNOW
+        || payTypeId === PAYMENT_METHOD_IDS.BPAY
+      )) {
+      if (isCreditCardAvail || isQiwiAvail) {
+        setCurrentTab('new_card');
+      } else {
+        setCurrentTab('b2b_wallet_payment');
+      }
+      setPayTypeId(0);
+      setMakeChangeValue('');
+    }
+    setSelectdCurrency(selectedCurrencyCode || DEFAULT_CURRENCY_CODE);
+    if (selectedCurrencyCode !== DEFAULT_CURRENCY_CODE) {
+      dispatch(walletActions(false)).then(() => {
+        dispatch(resetVoucher());
+      });
+    }
+  }, [selectedCurrencyCode]);
+  useEffect(() => {
+    // if ((payTypeId === PAYMENT_METHOD_IDS.WALLET || payTypeId === PAYMENT_METHOD_IDS.SAVED_CARDS)
+    // && voucherStatus === VOUCHER_STATUS.AVAILABLE) {
+    //   dispatch(resetVoucher());
+    // }
+    setMakeChangeValue(payTypeId);
+  }, [payTypeId]);
+  const isAddNameAdded = selectedAddon.addNameLater !== 'undefined'
+  && selectedAddon.addNameLater.length > 0;
+  const isSMSAdded = selectedAddon.smsItinerary !== 'undefined' && selectedAddon.smsItinerary.length > 0;
+  const isFarelockAdded = selectedAddon.fareLock !== 'undefined' && selectedAddon.fareLock.length > 0;
+  const { walletChosen } = totalAmount;
+  const [walletActive, setWalletActive] = useState(walletChosen);
+  const AmtCanRedeemByWallet = isLoggedIn && !isEmpty(accountInfo) && accountInfo.amount !== 0
+    ? totalAmount.totalPrice - accountInfo.amount : 0;
+  const [isWalletFullyRedeemable, setIsWalletFullyRedeemable] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn && !isEmpty(accountInfo) && accountInfo.amount !== 0) {
+      // if (totalAmount.totalPrice > accountInfo.amount && walletActive) {
+      //   setWalletActive(!walletActive);
+      //   dispatch(walletActions(!walletActive));
+      //   setPayTypeId(0);
+      // }
+      if (walletActive) {
+        dispatch(walletActions(walletActive));
+      }
+    }
+  }, [totalAmount.totalPrice]);
+  useEffect(() => {
+    setWalletActive(walletChosen);
+    if (walletChosen) {
+      const isPayableByWallet = AmtCanRedeemByWallet <= 0;
+      setIsWalletFullyRedeemable(isPayableByWallet);
+      setIsWalletFullyPayable(isPayableByWallet);
+    } else {
+      setIsWalletFullyRedeemable(false);
+      setIsWalletFullyPayable(false);
+    }
+  }, [walletChosen]);
+  useEffect(() => {
+    if (walletChosen && !isEmpty(PromoDetails)
+    && PromoDetails.status !== VOUCHER_STATUS.AVAILABLE) {
+      dispatch(walletActions(false));
+      const isPayableByWallet = AmtCanRedeemByWallet <= 0;
+      setIsWalletFullyRedeemable(isPayableByWallet);
+    }
+  }, [PromoDetails]);
+  useEffect(() => {
+    if (walletChosen) {
+      dispatch(walletActions(false));
+    }
+  }, [isAddNameAdded, isSMSAdded]);
+  useEffect(() => {
+    if (!isNull(PaymentList.paymentGroups) && !isEmpty(PaymentList.paymentGroups)) {
+      setSyncPaymentGroup(true);
+      const { paymentGroups: pg } = PaymentList;
+    //  const pg = (() => {
+    //     const groups = defaultTo(get(PaymentList, "paymentGroups"), []);
+
+    //     return some(groups, { groupName: "Credit/Debit Card" })
+    //       ? filter(groups, g => g && g.groupName !== "All Cards: exc. Russian")
+    //       : groups;
+    //   })();
+
+      // @ts-ignore
+      setPaymentGroups(pg);
+      const creditCardPaymentMethodID = pg && find(pg, (x: any) => x.groupName === 'Credit/Debit Card');
+      const alphacreditCardPaymentMethodID = pg && find(pg, (x: any) => x.groupName === 'Credit or Debit Card');
+      const unionPaycreditCardPaymentMethodID = pg && find(pg, (x: any) => x.groupName === 'UnionPay');
+      const maibBankcreditCardPaymentMethodID = pg && find(pg, (x: any) => x.groupName === 'All Cards: exc. Russian');
+      const aebBankCreditCardPaymentMethodID = pg && find(pg, (x: any) => x.groupName === 'AEB Bank');
+      const getQiwiAvail = pg && find(pg, (x: any) => x.groupName === 'Qiwi');
+      const getMypayAvail = pg && find(pg, (x: any) => x.groupName === 'Credit File');
+      const getPayNowAvail = pg && find(pg, (x: any) => x.groupName === 'Pay Now');
+      const getSavedCardAvail = pg && find(pg, (x: any) => x.groupName === 'Saved Cards');
+      const getVoucherAvail = pg && find(pg, (x: any) => x.groupName === 'VoucherPayment');
+      const getZeroFLPayAvail = pg && find(pg, (x: any) => x.groupName === 'FareLockZeroPayment');
+      const getBPayAvail = pg && find(pg, (x: any) => x.groupName === 'BPay');
+      setisCreditCardAvail(!isEmpty(creditCardPaymentMethodID)
+      || !isEmpty(alphacreditCardPaymentMethodID)
+      || !isEmpty(unionPaycreditCardPaymentMethodID)
+      || !isEmpty(maibBankcreditCardPaymentMethodID)
+      || !isEmpty(aebBankCreditCardPaymentMethodID));
+      setisQiwiAvail(!isEmpty(getQiwiAvail));
+      setisCreditFileAvail(!isEmpty(getMypayAvail));
+      let availcardsCount = 0;
+      if (!isEmpty(creditCardPaymentMethodID)) {
+        const [cardPaymentt] = creditCardPaymentMethodID.payments;
+        setCardPaymentId(cardPaymentt.paymentTypeID);
+        setCreditCards(!isEmpty(cardPaymentt.cards) ? cardPaymentt.cards : []);
+        availcardsCount += 1;
+      }
+      if (!isEmpty(alphacreditCardPaymentMethodID)) {
+        const [alphacardPaymentt] = alphacreditCardPaymentMethodID.payments;
+        setCardPaymentId(alphacardPaymentt.paymentTypeID);
+        setalphaCreditCards(!isEmpty(alphacardPaymentt.cards) ? alphacardPaymentt.cards : []);
+        availcardsCount += 1;
+      }
+      if (!isEmpty(unionPaycreditCardPaymentMethodID)) {
+        const [unionPaycardPaymentt] = unionPaycreditCardPaymentMethodID.payments;
+        setCardPaymentId(unionPaycardPaymentt.paymentTypeID);
+        setunionPayCreditCards(!isEmpty(unionPaycardPaymentt.cards) ? unionPaycardPaymentt.cards : []);
+        availcardsCount += 1;
+      }
+      if (!isEmpty(maibBankcreditCardPaymentMethodID)) {
+        const [maibBankcardPaymentt] = maibBankcreditCardPaymentMethodID.payments;
+        setCardPaymentId(maibBankcardPaymentt.paymentTypeID);
+        setmaibBankCreditCards(!isEmpty(maibBankcardPaymentt.cards) ? maibBankcardPaymentt.cards : []);
+        availcardsCount += 1;
+      }
+      if (!isEmpty(aebBankCreditCardPaymentMethodID)) {
+        const [aebBankcardPaymentt] = aebBankCreditCardPaymentMethodID.payments;
+        setCardPaymentId(aebBankcardPaymentt.paymentTypeID);
+        setaebBankCreditCards(!isEmpty(aebBankcardPaymentt.cards) ? aebBankcardPaymentt.cards : []);
+        availcardsCount += 1;
+      }
+      if (availcardsCount === 1) {
+        if (!isEmpty(alphacreditCardPaymentMethodID)) {
+          const [cardPaymentt] = alphacreditCardPaymentMethodID.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setccAvailPayMethodId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(creditCardPaymentMethodID)) {
+          const [cardPaymentt] = creditCardPaymentMethodID.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setccAvailPayMethodId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(unionPaycreditCardPaymentMethodID)) {
+          const [cardPaymentt] = unionPaycreditCardPaymentMethodID.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setccAvailPayMethodId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(maibBankcreditCardPaymentMethodID)) {
+          const [cardPaymentt] = maibBankcreditCardPaymentMethodID.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setccAvailPayMethodId(cardPaymentt.paymentTypeID);
+          }
+        } else if (!isEmpty(aebBankCreditCardPaymentMethodID)) {
+          const [cardPaymentt] = aebBankCreditCardPaymentMethodID.payments;
+          if (!isEmpty(cardPaymentt)) {
+            setccAvailPayMethodId(cardPaymentt.paymentTypeID);
+          }
+        }
+      }
+      setisPayNowAvail(!isEmpty(getPayNowAvail));
+      setisSavedCardvail(!isEmpty(getSavedCardAvail));
+      setIsZeroFareLockPayAvail(!isEmpty(getZeroFLPayAvail));
+      setIsBPayavail(!isEmpty(getBPayAvail));
+      setSyncPaymentGroup(false);
+      setisVoucherPayAvail(!isEmpty(getVoucherAvail));
+      setIsVoucherPayMtdAvail(!isEmpty(getVoucherAvail));
+    }
+  }, [PaymentList]);
+  useEffect(() => {
+    if (portalType === WORKFLOW_TYPE.B2B && isLoggedIn) {
+      const { availableAmount, defaultCurrency } = userData;
+      setAvailableAmt(
+        formatCurrency(
+          availableAmount,
+          defaultCurrency,
+          0,
+          '',
+        ),
+      );
+    }
+  }, []);
+  // const showMIRLogo = selectedCurrencyCode === CURRENCY_SETTING.RUB_CURRENCY;
+  const cardData = [
+    { name: 'visa', ccName: 'Visa', show: true },
+    { name: 'mastercard', ccName: 'Master', show: true },
+    { name: 'mir', ccName: 'MIR', show: true },
+  ];
+
+  const getnetCardData = [
+    { name: 'visa', ccName: 'Visa', show: true },
+    { name: 'visapay', ccName: 'VisaPay', show: true },
+    { name: 'mastercard', ccName: 'Master', show: true },
+    { name: 'maestro', ccName: 'Maestro', show: true },
+    { name: 'jcb', ccName: 'JCB', show: false },
+    { name: 'dinersclub', ccName: 'DinersClub', show: false },
+    { name: 'discover', ccName: 'Discover', show: false },
+    { name: 'amex', ccName: 'AmericanExpress', show: false },
+  ];
+
+  const unionPaycardData = [
+    { name: 'unionpay', ccName: 'UnionPay', show: true },
+  ];
+
+  const maibCardData = [
+    { name: 'visa', ccName: 'Visa', show: true },
+    { name: 'visapay', ccName: 'VisaPay', show: true },
+    { name: 'mastercard', ccName: 'Master', show: true },
+    { name: 'maestro', ccName: 'Maestro', show: true },
+  ];
+
+  const aebCardData = [
+    { name: 'visa', ccName: 'Visa', show: true },
+    { name: 'visapay', ccName: 'VisaPay', show: true },
+    { name: 'mastercard', ccName: 'Master', show: true },
+    { name: 'maestro', ccName: 'Maestro', show: true },
+    { name: 'arca', ccName: 'arca', show: true },
+  ];
+
+  const BindCards = (getPayList: any, actvCard: any) => {
+    const { cards, name } = getPayList;
+    let PayLabel: any = [];
+    if (!isNull(cards)) {
+      if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.ALPHA_CARD) {
+        PayLabel.push(
+          <span style={{marginTop:`${countryCode === 'MD' ? '20px':''}`}}>
+            {t('PaymentPage.lblAlphaCardType')}
+          </span>,
+        );
+        PayLabel.push(<br />);
+        PayLabel.push(map(cardData, (card: any) => (
+          card.show ? (
+            <span key={card.name} className={!isNull(actvCard) && actvCard === card.name ? 'active' : ''}>
+              {countryCode !== 'MD' ?<img src={`/static/images/cc-${card.name}-icon.svg`} alt={card.cardName} />:''}
+            </span>
+          ) : <Fragment />
+        )));
+        PayLabel.push(countryCode !== 'MD' ?<span>(RUB)</span>:'');
+      } else if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.UNIONPAY_CARD) {
+        PayLabel.push(
+          <span>
+            {t('PaymentPage.lblUnionPayCardType')}
+          </span>,
+        );
+        PayLabel.push(<br />);
+        PayLabel.push(map(unionPaycardData, (card: any) => (
+          card.show ? (
+            <span key={card.name} className={!isNull(actvCard) && actvCard === card.name ? 'active' : ''}>
+              <img src={`/static/images/cc-${card.name}-icon.svg`} alt={card.cardName} />
+            </span>
+          ) : <Fragment />
+        )));
+        // PayLabel.push(<span>(RUB)</span>);
+      } else if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.MAIB_BANK) {
+        PayLabel.push(
+          <span>
+            {t('PaymentPage.lblMAIBBank')}
+          </span>,
+        );
+        PayLabel.push(<br />);
+        PayLabel.push(map(maibCardData, (card: any) => (
+          card.show ? (
+            <span key={card.name} className={!isNull(actvCard) && actvCard === card.name ? 'active' : ''}>
+              <img src={`/static/images/cc-${card.name}-icon.svg`} alt={card.cardName} />
+            </span>
+          ) : <Fragment />
+        )));
+      } else if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.AEB_BANK) {
+        PayLabel.push(
+          <span>
+            {t('PaymentPage.lblAEBBank')}
+          </span>,
+        );
+        PayLabel.push(<br />);
+        PayLabel.push(map(aebCardData, (card: any) => (
+          card.show ? (
+            <span key={card.name} className={!isNull(actvCard) && actvCard === card.name ? 'active' : ''}>
+              <img src={`/static/images/cc-${card.name}-icon.svg`} alt={card.cardName} />
+            </span>
+          ) : <Fragment />
+        )));
+      } else {
+        PayLabel.push(
+          <span>
+            {t('PaymentPage.lblGetNetCardType')}
+          </span>,
+        );
+        PayLabel.push(<br />);
+        PayLabel.push(map(getnetCardData, (card: any) => (
+          card.show ? (
+            <span key={card.name} className={!isNull(actvCard) && actvCard === card.name ? 'active' : ''}>
+              <img src={`/static/images/cc-${card.name}-icon.svg`} alt={card.cardName} />
+            </span>
+          ) : <Fragment />
+        )));
+      }
+    } else if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.QIWI) {
+      PayLabel.push(
+        <span key={PAYMENT_METHOD_IDS.QIWI} className={payTypeId === PAYMENT_METHOD_IDS.QIWI ? 'active' : ''}>
+          <img src="/static/images/F1-Icon-42-Qiwi.svg" alt="QIWI" />
+        </span>,
+      );
+    } else if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.PAYNOW) {
+      PayLabel.push(
+        <div>
+          <p>
+          {t('Header.lblavlbal')}
+            <span>{availableAmt}</span>
+          </p>
+        </div>,
+      );
+    } else if (getPayList.paymentTypeID === PAYMENT_METHOD_IDS.BPAY) {
+      PayLabel.push(
+        <span className={payTypeId === PAYMENT_METHOD_IDS.BPAY ? 'active' : ''}>
+          <img src="/static/images/F1-Icon-BPay.svg" alt="BPay" />
+        </span>,
+      );
+    } else {
+      PayLabel = name;
+    }
+    return PayLabel;
+  };
+  const renderPaymentType = () => {
+    if (VoucherZeroPay) return <Fragment />;
+    let paymentBody = <Fragment />;
+    switch (payTypeId) {
+      case PAYMENT_METHOD_IDS.HOLD:
+        paymentBody = (
+          <Fragment>
+            <Form.Control autoComplete="off" type="hidden" value={payTypeId.toString()} name="cardInfo[paymentId]" />
+          </Fragment>
+        );
+        break;
+      case PAYMENT_METHOD_IDS.CARD:
+      case PAYMENT_METHOD_IDS.ALPHA_CARD:
+      case PAYMENT_METHOD_IDS.UNIONPAY_CARD:
+      case PAYMENT_METHOD_IDS.MAIB_BANK:
+      case PAYMENT_METHOD_IDS.AEB_BANK:
+        paymentBody = isCreditCardAvail ? (
+          <Fragment>
+            <CreditCard
+              cardData={creditCards}
+              paymentId={cardPaymentId}
+            // cCardNo={setCCardNumber}
+              active={setActiveCard}
+              cardType={cardType}
+              setCardType={setCardType}
+              cardID={cardID}
+              setCardID={setCardID}
+              cardNumber={cardNumber}
+              setCardNumber={setCardNumber}
+              cardHolder={cardHolder}
+              setCardHolder={setCardHolder}
+              cardFName={cardFName}
+              setCardFName={setCardFName}
+              cardLName={cardLName}
+              setCardLName={setCardLName}
+              cardExpiryMonth={cardExpiryMonth}
+              setCardExpiryMonth={setCardExpiryMonth}
+              cardExpiryYear={cardExpiryYear}
+              setCardExpiryYear={setCardExpiryYear}
+              cardCVV={cardCVV}
+              setCardCVV={setCardCVV}
+              isLoggedIn={isLoggedIn}
+              isProfile={false}
+              isVoucher={false}
+              setIsCardIdValid={setIsCardIdValid}
+              setIsCvvValid={setIsCvvValid}
+              payTypeId={payTypeId}
+              alphacardData={alphacreditCards}
+              unionPayCardData={unionPaycreditCards}
+              maibBankCardData={maibBankcreditCards}
+              aebBankCardData={aebBankCreditCards}
+            />
+            <Form.Control autoComplete="off" type="hidden" value={payTypeId.toString()} name="cardInfo[paymentId][8]" />
+          </Fragment>
+        ) : <Fragment />;
+        break;
+      case PAYMENT_METHOD_IDS.FARE_LOCK_ZERO:
+        paymentBody = <Form.Control autoComplete="off" type="hidden" value={payTypeId.toString()} name="cardInfo[paymentId]" />;
+        break;
+      case PAYMENT_METHOD_IDS.GPAY: {
+        const { googlePayClient } = window;
+        paymentBody = (
+          <Fragment>
+            <GooglePay
+              paymentForm={paymentForm}
+              gPayClient={googlePayClient}
+              setAddonError={setAddonError}
+              setAddonErrorMsg={setAddonErrorMsg}
+            />
+          </Fragment>
+        );
+      }
+        break;
+      case PAYMENT_METHOD_IDS.QIWI:
+        paymentBody = (
+          <Fragment>
+            <Row>
+              <Col md={{ offset: 1 }} lg={{ offset: 1 }} xl={{ offset: 1 }}>
+                <h4 className="mb-20">{t('PaymentPage.lblQiwiPaymentTitle')}</h4>
+                {t('PaymentPage.lblQiwiPaymentDescription')}
+              </Col>
+            </Row>
+            <Form.Control autoComplete="off" type="hidden" value={payTypeId.toString()} name="cardInfo[paymentId][0]" />
+          </Fragment>
+        );
+        break;
+      case PAYMENT_METHOD_IDS.BPAY:
+        paymentBody = <Form.Control autoComplete="off" type="hidden" value={payTypeId.toString()} name="cardInfo[paymentId][7]" />;
+        break;
+      case 999: // DUMMY PAYMENT METHOD
+        paymentBody = (
+          <Fragment>
+            <Row className="mt-4">
+              <Col md={{ offset: 1 }} lg={{ offset: 1 }} xl={{ offset: 1 }}>
+                <h4 className="mb-20">🎁 Dummy Payment Method</h4>
+                <p>This is a demo/dummy payment method for testing.</p>
+                
+                <Form.Group className="mb-3">
+                  <Form.Label>Card Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="e.g., My Test Card"
+                    value={dummyCardName}
+                    onChange={(e: any) => { setDummyCardName((e.target as any).value); }}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Enter Test Reference Number</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="e.g., TEST-12345"
+                    value={dummyPaymentField}
+                    onChange={(e: any) => { setDummyPaymentField((e.target as any).value); }}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Select Test Status</Form.Label>
+                  <Form.Control as="select" defaultValue="success">
+                    <option value="success">✅ Simulate Success</option>
+                    <option value="failed">❌ Simulate Failure</option>
+                    <option value="pending">⏳ Simulate Pending</option>
+                  </Form.Control>
+                </Form.Group>
+
+                <div className="alert alert-info">
+                  <strong>Note:</strong> This is a test payment method. No real transaction will be processed.
+                </div>
+              </Col>
+            </Row>
+            <Form.Control autoComplete="off" type="hidden" value="999" name="cardInfo[paymentId][9]" />
+            <Form.Control autoComplete="off" type="hidden" value={dummyCardName} name="cardInfo[dummyCardName]" />
+            <Form.Control autoComplete="off" type="hidden" value={dummyPaymentField} name="cardInfo[dummyReference]" />
+          </Fragment>
+        );
+        break;
+      default:
+        paymentBody = <Fragment />;
+    }
+    return paymentBody;
+  };
+
+  useEffect(() => {
+    paymentGroups.forEach((child: any) => {
+      const firstPayment = child.payments[0];
+      switch (firstPayment.paymentTypeID) {
+        // case PAYMENT_METHOD_IDS.UNIONPAY_CARD:
+        case PAYMENT_METHOD_IDS.MAIB_BANK:
+        case PAYMENT_METHOD_IDS.AEB_BANK:
+        case PAYMENT_METHOD_IDS.CARD:
+          if (actionState !== WORKFLOW.VOUCHER_PURCHASE) {
+            setMakeChangeValue(firstPayment.paymentTypeID);
+            setPayTypeId(firstPayment.paymentTypeID);
+          }
+          break;
+        default:
+          break;
+      }
+    });
+}, [paymentGroups, actionState]);
+
+  const handlePayType = (getPayType: any) => {
+    setPayTypeId(getPayType.paymentTypeID);
+    // setIsCreditCard(getPayType.paymentTypeID === cardPaymentId);
+    setMakeChangeValue(getPayType.paymentTypeID);
+    if (getPayType.paymentTypeID === PAYMENT_METHOD_IDS.GPAY) {
+      const { google } = window;
+      window.googlePayClient = new google.payments.api.PaymentsClient({
+        environment: 'TEST',
+        paymentDataCallbacks: {
+          onPaymentAuthorized,
+        },
+      });
+    } else if (getPayType.paymentTypeID === PAYMENT_METHOD_IDS.QIWI
+      || getPayType.paymentTypeID === PAYMENT_METHOD_IDS.BPAY) {
+      dispatch(walletActions(false)).then(() => {
+        dispatch(resetVoucher());
+      });
+      // if (!isEmpty(paymentInfo)) {
+      //   // dispatch(applyWallet(false));
+      //   // setWalletActive(false);
+      // }
+    }
+  };
+
+  // const HandleMyPaySelection = (mType: any, mID: number) => {
+  //   setPayTypeId(mID);
+  //   if (mType === 'wallet') {
+  //     setWalletActive(!walletActive);
+  //     dispatch(walletActions(!walletActive));
+  //   }
+  //   if (walletActive) {
+  //     setPayTypeId(0);
+  //   }
+  // };
+  const [selectedSavedCard, selectSavedCard] = useState(0);
+  const handleFlyoneAccountSelection = (mID: any, cardDetails: any = {}) => {
+    switch (mID) {
+      case PAYMENT_METHOD_IDS.WALLET:
+        setPayTypeId(!walletActive ? mID : 0);
+        setWalletActive(!walletActive);
+        dispatch(applyWallet(false));
+        dispatch(walletActions(!walletActive));
+        if (selectedSavedCard !== 0) {
+          selectSavedCard(0);
+        }
+        break;
+      case PAYMENT_METHOD_IDS.SAVED_CARDS: {
+        const { cardId, active } = cardDetails;
+        if (active) {
+          setPayTypeId(0);
+          selectSavedCard(0);
+        } else if (walletActive) {
+          setPayTypeId(mID);
+          selectSavedCard(cardId);
+          // setWalletActive(!walletActive);
+          // dispatch(walletActions(!walletActive));
+        } else {
+          setPayTypeId(mID);
+          selectSavedCard(cardId);
+        }
+        setSavedCardCVV('');
+      }
+        break;
+      default: break;
+    }
+  };
+  
+  console.log(ccAvailPayMethodId)
+  const handleTabSwitch = (selectedKey: any) => {
+    setCurrentTab(selectedKey);
+    switch (selectedKey) {
+      case 'qiwi_payment':
+        setPayTypeId(PAYMENT_METHOD_IDS.QIWI);
+        dispatch(resetVoucher());
+        setMakeChangeValue('');
+        break;
+      case 'b2b_wallet_payment':
+        setPayTypeId(selectdCurrency === DEFAULT_CURRENCY_CODE ? PAYMENT_METHOD_IDS.PAYNOW : 0);
+        dispatch(resetVoucher());
+        setMakeChangeValue('');
+        break;
+      case 'my_payments':
+        if (currentTab !== 'my_payments') {
+          setPayTypeId(0);
+          setMakeChangeValue('');
+        }
+        // dispatch(resetVoucher());
+        break;
+      case 'new_card':
+        // dispatch(resetVoucher());
+        //setMakeChangeValue('');
+        //setPayTypeId(ccAvailPayMethodId);
+        if (portalType === WORKFLOW_TYPE.B2B) {
+          if (walletActive) {
+            setWalletActive(!walletActive);
+            dispatch(walletActions(!walletActive));
+          }
+        }
+        if (selectedSavedCard !== 0) {
+          selectSavedCard(0);
+        }
+        break;
+      default: break;
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      handleTabSwitch('new_card');
+    }
+  }, [isLoggedIn]);
+  useEffect(() => {
+    if (
+      // isWalletFullyRedeemable &&
+      (payTypeId === PAYMENT_METHOD_IDS.QIWI || payTypeId === PAYMENT_METHOD_IDS.BPAY)) {
+      dispatch(walletActions(false));
+    } else if (walletActive) {
+      setCurrentTab('my_payments');
+    }
+  }, [isWalletFullyRedeemable]);
+
+  const renderPAymentRadio = (payments: any) => {
+    switch (payments.paymentTypeID) {
+      case PAYMENT_METHOD_IDS.WALLET:
+      case PAYMENT_METHOD_IDS.VOUCHER:
+        return <Fragment />;
+      case PAYMENT_METHOD_IDS.CARD:
+        return (
+          <li key={`${payments.paymentTypeID}_cardList`}>
+            <span className={`${styles.customRadio2}`}>
+              <Form.Group>
+                <Form.Check
+                  required
+                  type="radio"
+                  name="payMethodType"
+                  {...makeChangeValue === payments.paymentTypeID
+                    ? { checked: true } : null}
+                  onClick={() => handlePayType(payments)}
+                  label={BindCards(payments, activeCard)}
+                  id={`payId_${payments.paymentTypeID}`}
+                />
+                <Form.Control.Feedback type="invalid">{t('PaymentPage.lblChsPaymntMethd')}</Form.Control.Feedback>
+              </Form.Group>
+            </span>
+          </li>
+        );
+      case PAYMENT_METHOD_IDS.ALPHA_CARD:
+        if (actionState !== WORKFLOW.VOUCHER_PURCHASE) {
+          return (
+            <li key={`${payments.paymentTypeID}_cardList`}>
+              <span className={`${styles.customRadio2}`}>
+                <Form.Group>
+                  <Form.Check
+                    required
+                    type="radio"
+                    name="payMethodType"
+                    {...makeChangeValue === payments.paymentTypeID
+                      ? { checked: true } : null}
+                    onClick={() => handlePayType(payments)}
+                    label={BindCards(payments, activeCard)}
+                    id={`payId_${payments.paymentTypeID}`}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t('PaymentPage.lblChsPaymntMethd')}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </span>
+            </li>
+          );
+        }
+        return <></>;
+      case PAYMENT_METHOD_IDS.UNIONPAY_CARD:
+      case PAYMENT_METHOD_IDS.MAIB_BANK:
+      case PAYMENT_METHOD_IDS.AEB_BANK:
+        if (actionState !== WORKFLOW.VOUCHER_PURCHASE) {
+          return (
+            <li key={`${payments.paymentTypeID}_cardList`}>
+              <span className={`${styles.customRadio2}`}>
+                <Form.Group>
+                  <Form.Check
+                    required
+                    type="radio"
+                    name="payMethodType"
+                    {...makeChangeValue === payments.paymentTypeID
+                      ? { checked: true } : null}
+                    onClick={() => handlePayType(payments)}
+                    label={BindCards(payments, activeCard)}
+                    id={`payId_${payments.paymentTypeID}`}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t('PaymentPage.lblChsPaymntMethd')}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </span>
+            </li>
+          );
+        }
+        return <></>;
+      case PAYMENT_METHOD_IDS.QIWI:
+        return isQiwiAvail
+        && (!isEmpty(selectedCurrencyCode) ? selectedCurrencyCode === DEFAULT_CURRENCY_CODE : true)
+        && canQiwiShow ? (
+            <li key={`${payments.paymentTypeID}_cardList`}>
+              <span className={`${styles.customRadio2}`}>
+                <Form.Group>
+                  <Form.Check
+                    required
+                    type="radio"
+                    name="payMethodType"
+                    {...makeChangeValue === payments.paymentTypeID
+                      ? { checked: true } : null}
+                    onClick={() => handlePayType(payments)}
+                    label={BindCards(payments, activeCard)}
+                    id={`payId_${payments.paymentTypeID}`}
+                  />
+                  <Form.Control.Feedback type="invalid">{t('PaymentPage.lblChsPaymntMethd')}</Form.Control.Feedback>
+                </Form.Group>
+              </span>
+            </li>
+          ) : <Fragment />;
+      case PAYMENT_METHOD_IDS.BPAY:
+        return isBPayAvail
+          // && (!isEmpty(selectedCurrencyCode)
+          //   ? selectedCurrencyCode === DEFAULT_CURRENCY_CODE : true
+          // )
+          ? (
+            <li>
+              <span className={`${styles.customRadio2}`}>
+                <Form.Group>
+                  <Form.Check
+                    required
+                    type="radio"
+                    name="payMethodType"
+                    {...makeChangeValue === payments.paymentTypeID
+                      ? { checked: true } : null}
+                    onClick={() => handlePayType(payments)}
+                    label={BindCards(payments, activeCard)}
+                    id={`payId_${payments.paymentTypeID}`}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {t('PaymentPage.lblChsPaymntMethd')}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </span>
+            </li>
+          ) : <Fragment />;
+      default: return <Fragment />;
+    }
+  };
+  if (isEmpty(paymentGroups) && isFetchingPayments) {
+    return (
+      <div className={`${styles.boxBody} d-none`}>
+        <div className="d-flex justify-content-center d-none">
+          <BounceLoader
+            size={60}
+            color="#123abc"
+            loading={isFetchingPayments}
+          />
+        </div>
+      </div>
+    );
+  }
+  if (
+    isEmpty(paymentGroups)
+    && !isCreditCardAvail
+    && !isQiwiAvail
+    && !isCreditFileAvail
+    && !isPayNowAvail
+    && !syncPaymentGroup
+  ) {
+    return (
+      <Fragment>
+        <div className={`${styles.boxBody} `}>
+          <Alert variant="danger">{t('PaymentPage.lblPymntMthdNtAvail')}</Alert>
+        </div>
+      </Fragment>
+    );
+  }
+  if (isFareLockZeroPay && isZeroFareLockPayAvail) {
+    setPayTypeId('264');
+    return (
+      <Fragment>
+        <Form.Control autoComplete="off" type="hidden" value="264" name="cardInfo[paymentId][6]" />
+        <Form.Control autoComplete="off" type="hidden" value="0" name="cardInfo[cardID]" />
+        <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[cardNo]" />
+        <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[cardName]" />
+        <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[expMonth]" />
+        <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[expYear]" />
+        <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[cvv]" />
+      </Fragment>
+    );
+  }
+  if (VoucherZeroPay) {
+    setPayTypeId('24');
+  }
+  const hideFlyAccountTab = false;
+  return (
+    <Fragment>
+      {
+        !VoucherZeroPay 
+          ? (
+            <Tab.Container id="myPayment_tab" onSelect={() => console.log(currentTab)} activeKey={currentTab} defaultActiveKey={isCreditCardAvail || isQiwiAvail ? 'new_card' : 'b2b_wallet_payment'}>
+              <div className={`${styles.boxHeader} ${styles.noPad}`}>
+                <div className="custom-tab">
+                  {
+                    isVoucherApplying || isEmpty(PaymentList)
+                      ? (
+                        <Nav variant="tabs" className={styles.navTabs}>
+                          <Nav.Item>
+                            <Nav.Link eventKey="disabled" disabled>
+                              <Spinner animation="border" variant="primary" />
+                              {t('PaymentPage.lblPaymntLodng')}
+                            </Nav.Link>
+                          </Nav.Item>
+                        </Nav>
+                      )
+                      : (
+                        <Nav variant="tabs" className={styles.navTabs} onSelect={(selectedKey: any) => handleTabSwitch(selectedKey)}>
+                          {
+                            (isCreditCardAvail || isQiwiAvail) && !isWalletFullyRedeemable
+                              ? (
+                                <Nav.Item className={styles.navItem}>
+                                  <Nav.Link eventKey="new_card">{t('PaymentPage.lblNwCrd')}</Nav.Link>
+                                </Nav.Item>
+                              ) : <Fragment />
+                          }
+                          {
+                            isLoggedIn
+                            && (
+                              (isCreditFileAvail && typeof accountInfo !== 'undefined' && accountInfo.amount !== 0)
+                              || (process.env.PAYMENT_GATEWAY === 'ALPHA' ? true : isSavedCardAvail)
+                            )
+                            && portalType !== WORKFLOW_TYPE.B2B
+                            && actionState !== WORKFLOW.FARE_LOCK
+                            && (process.env.PAYMENT_GATEWAY === 'ALPHA' ? !isFarelockAdded : true)
+                            && !hideFlyAccountTab
+                              ? (
+                                <Nav.Item className={styles.navItem}>
+                                  <Nav.Link eventKey="my_payments">{t('PaymentPP.lblFLYONEAct')}</Nav.Link>
+                                </Nav.Item>
+                              )
+                              : <Fragment />
+                          }
+                          {
+                            // && actionState !== WORKFLOW.FARE_LOCK
+                            portalType === WORKFLOW_TYPE.B2B
+                            && isPayNowAvail
+                              ? (
+                                <Nav.Item className={styles.navItem}>
+                                  <Nav.Link eventKey="b2b_wallet_payment">{t('PaymentPage.lblbtob')}</Nav.Link>
+                                </Nav.Item>
+                              ) : <Fragment />
+                          }
+                          {/* {
+                            isQiwiAvail && selectdCurrency === DEFAULT_CURRENCY_CODE && canQiwiShow
+                              ? (
+                                <Nav.Item className={styles.navItem}>
+                                  <Nav.Link eventKey="qiwi_payment">Qiwi Payment</Nav.Link>
+                                </Nav.Item>
+                              )
+                              : ''
+                          } */}
+                        </Nav>
+                      )
+                  }
+                </div>
+              </div>
+              <div className={`${styles.boxBody} ${styles.p25}`}>
+                <Tab.Content>
+                  {
+                    isVoucherApplying
+                      ? <Fragment />
+                      : (
+                      <>
+                      {
+                        currentTab !== 'qiwi_payment' && currentTab !== 'my_payments' && currentTab !== 'b2b_wallet_payment'
+                          ? (
+                            <Tab.Pane key="new_card" eventKey="new_card">
+                              <div className={`${styles.payTypeList}`}>
+                                <ul className={styles.resetList}>
+                                  {
+                                    map(
+                                      paymentGroups,
+                                      (child: any) => renderPAymentRadio(child.payments[0]),
+                                    )
+                                  }
+                                  {/* DUMMY PAYMENT METHOD */}
+                                  {isDummyPaymentAvail && (
+                                    <li key="dummy_payment_list">
+                                      <span className={`${styles.customRadio2}`}>
+                                        <Form.Group>
+                                          <Form.Check
+                                            required
+                                            type="radio"
+                                            name="payMethodType"
+                                            checked={makeChangeValue === 999}
+                                            onChange={() => {
+                                              setPayTypeId(999);
+                                              setMakeChangeValue(999);
+                                            }}
+                                            label="🎁 Dummy Payment Method (Demo)"
+                                            id="payId_dummy_payment"
+                                          />
+                                        </Form.Group>
+                                      </span>
+                                    </li>
+                                  )}
+                                </ul>
+                              </div>
+                              {
+                                renderPaymentType()
+                              }
+                            </Tab.Pane>
+                          )
+                          : <></>
+                      }
+                  <Tab.Pane key="my_payments" eventKey="my_payments">
+                    <Row className={`${styles.payDetails} myPayments`}>
+                      {
+                        isSavedCardAvail
+                          ? (
+                            <Col xs sm md="6" className="d-none">
+                              <div className={styles.boxContent}>
+                                <div className={`${styles.boxBody} svdCardBody`}>
+                                  <div className="svdcardIcons">
+                                    <img src="/static/images/F1-Payment-Icon-56.svg" alt="saved cards" />
+                                  </div>
+                                  <div className="svdcardTitle">
+                                    <h4>{t('PaymentPage.lblMyCards')}</h4>
+                                    {
+                                      isSavedCardAvail
+                                    && !isWalletFullyRedeemable
+                                    && typeof paymentMethods !== 'undefined'
+                                    && !isNull(paymentMethods)
+                                    && paymentMethods.length > 0
+                                        ? map(paymentMethods, (clist: any) => {
+                                          const cardImgLink = filter(
+                                            getnetCardData, { ccName: clist.cardType },
+                                          );
+                                          const {
+                                            accountName, accountNumberID, expirationDate,
+                                            cardType: svdCardType,
+                                          } = clist;
+                                          return (
+                                            <Fragment>
+                                              <Row key={accountNumberID}>
+                                                <Col
+                                                  md="8"
+                                                  xs="8"
+                                                  sm="8"
+                                                  data-name={accountName}
+                                                  data-id={accountNumberID}
+                                                  data-exdate={expirationDate}
+                                                  role="button"
+                                                  tabIndex={0}
+                                                  className={`${styles.dFlex} ${styles.flexAlignCenter} ${styles.mb20} svdCardList pItem ${selectedSavedCard === accountNumberID ? 'active' : ''}`}
+                                                  onClick={() => {
+                                                    handleFlyoneAccountSelection(
+                                                      PAYMENT_METHOD_IDS.SAVED_CARDS,
+                                                      {
+                                                        cardId: accountNumberID,
+                                                        active: selectedSavedCard === accountNumberID,
+                                                      },
+                                                    );
+                                                  }}
+                                                >
+                                                  <div className="svdCardImg">
+                                                    {
+                                                      isEmpty(cardImgLink) ? <></> : <img src={`/static/images/cc-${cardImgLink[0].name}-icon.svg`} alt={cardImgLink[0].name} />
+                                                    }
+                                                  </div>
+                                                  <div className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                                    <h5>{clist.cardType}</h5>
+                                                    <p className={styles.clrGrey}>
+                                                      {clist.accountNumber}
+                                                    </p>
+                                                  </div>
+                                                  <div>
+                                                    <i className={`${styles.foIcon} ${styles.iconRadioUnchecked} svdcheckicon`} />
+                                                  </div>
+                                                </Col>
+                                                {
+                                                  selectedSavedCard === clist.accountNumberID ? (
+                                                <>
+                                                  <Col md="4" xs="4" sm="4">
+                                                    <Form.Control autoComplete="off" type="hidden" value={`${PAYMENT_METHOD_IDS.SAVED_CARDS}`} name="cardInfo[paymentId][1]" />
+                                                    <Form.Control autoComplete="off" type="hidden" value={`${selectedSavedCard}`} name="cardInfo[SavedCardID]" />
+                                                    <Form.Group className={`${styles.formGroup} ${styles.mb0} ${!isSavdCardCvvValid && savedCardCVV.length !== 0 ? 'in-valid' : ''}`}>
+                                                      <Form.Control
+                                                        autoComplete="off"
+                                                        type="password"
+                                                        className={`${styles.formControl}`}
+                                                        placeholder="cvv"
+                                                        value={savedCardCVV}
+                                                        name="cardInfo[cvv]"
+                                                        required
+                                                        maxLength={5}
+                                                        onKeyDown={(ev: any) => Payment.restrictNumeric(ev.target)}
+                                                        onChange={(ev: any) => {
+                                                          const { target } = ev;
+                                                          const validCvv = Payment.fns.validateCardCVC(target.value, svdCardType.toLowerCase());
+                                                          setIsSavdCardCvvValid(validCvv);
+                                                          // Payment.formatCardCVC(target);
+                                                          setSavedCardCVV(target.value);
+                                                        }}
+                                                      />
+                                                    </Form.Group>
+                                                  </Col>
+                                                </>
+                                                  ) : <></>
+                                                }
+                                                {
+                                                  selectedSavedCard === clist.accountNumberID
+                                                && !isSavdCardCvvValid
+                                                && savedCardCVV.length !== 0 ? <Row><Col><div className="invalid-msg">Invalid CVV Number</div></Col></Row> : ''
+                                                }
+                                              </Row>
+                                            </Fragment>
+                                          );
+                                        }) : (
+                                          <div className={`${styles.dFlex} ${styles.flexAlignCenter}`}>
+                                            <div className={`${styles.dFlex} noSvdCrds ${styles.flexColumn}`}>
+                                              {
+                                                !isWalletFullyRedeemable
+                                                  ? <h5>{t('PaymentPP.lblNoAvailCard')}</h5>
+                                                  : <h5>{t('PaymentPage.lblcardnavl')}</h5>
+                                              }
+                                            </div>
+                                          </div>
+                                        )
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+                            </Col>
+                          )
+                          : <Fragment />
+                      }
+                      <Col xs sm md="6">
+                        <div className={styles.boxContent}>
+                          <div className={`${styles.boxBody} VoucherList`}>
+                            {
+                              isCreditFileAvail
+                              // && selectedCurrencyCode === DEFAULT_CURRENCY_CODE
+                              && actionState !== WORKFLOW.FARE_LOCK
+                                ? (
+                                  <Fragment>
+                                    <div className={`${!profileExist && 'd-none'}`}>
+                                      <div
+                                        className={`${styles.dFlex} ${styles.flexAlignCenter} WaltItem pItem Vitem ${walletActive ? 'active' : ''}  ${!isEmpty(accountInfo) && accountInfo.amount === 0 ? 'disabled' : ''} `}
+                                        role="button" id="DivFlyOneAC" 
+                                        tabIndex={0}
+                                        {
+                                        ... typeof accountInfo !== 'undefined'
+                                        && accountInfo.amount !== 0
+                                          ? {
+                                            onClick: () => handleFlyoneAccountSelection(
+                                              PAYMENT_METHOD_IDS.WALLET,
+                                            ),
+                                          }
+                                          : {}
+                                        }
+                                      // {
+                                      // ... typeof accountInfo !== 'undefined'
+                                      // && totalAmount.totalPrice > accountInfo.amount
+                                      //   ? {
+                                      //     disabled: true,
+                                      //   } : {
+                                      //     onClick: () => handleFlyoneAccountSelection(
+                                      //       PAYMENT_METHOD_IDS.WALLET,
+                                      //     ),
+                                      //   }
+                                      // }
+                                      >
+                                        <div className={`${styles.dFlex} ${styles.mr20} vAmnt`}>
+                                          <img src="/static/images/F1-Icon-36-FLYONE-wallet.svg" alt="FLYONE Account" />
+                                        </div>
+                                        <div className={`${styles.dFlex} ${styles.flexColumn}`}>
+                                          <h5>
+                                            {t('PaymentPP.lblFLYONEAct')}
+                                          </h5>
+                                          <p className={styles.clrGrey}>
+                                            {t('PaymentPP.lblAccBalance')}
+                                          :
+                                            {' '}
+                                            {
+                                              typeof accountInfo !== 'undefined'
+                                                ? (
+                                                  <Fragment>
+                                                    {
+                                                      accountInfo.amount === 0 ? '0' : formatCurrency(
+                                                        accountInfo.amount,
+                                                        accountInfo.currencyCode,
+                                                        0,
+                                                        selectedCurrencyCode,
+                                                      )
+                                                    }
+                                                  </Fragment>
+                                                )
+                                                : <>0</>
+                                            }
+                                          </p>
+                                          {
+                                            walletActive ? <i className={`${styles.foIcon} ${styles.iconCheck}`} /> : ''
+                                          }
+                                        </div>
+                                      </div>
+                                      <Fragment>
+                                        {
+                                          typeof accountInfo !== 'undefined' && totalAmount.totalPrice > accountInfo.amount && isCreditFileAvail ? (
+                                            <div>
+                                              <Alert variant="danger">
+                                                {
+                                                  t('PaymentPage.lblInsufcnBalncSplit')
+                                                }
+                                              </Alert>
+                                            </div>
+                                          ) : <></>
+                                        }
+                                      </Fragment>
+                                    </div>
+                                  </Fragment>
+                                )
+                                : ''
+                            }
+                            <div>
+                              {
+                                // (makeChangeValue !== PAYMENT_METHOD_IDS.SAVED_CARDS
+                                // && makeChangeValue !== PAYMENT_METHOD_IDS.WALLET) &&
+                                isVoucherPayAvail
+                                && !isWalletFullyRedeemable
+                                // && selectedCurrencyCode === DEFAULT_CURRENCY_CODE
+                                && actionState !== WORKFLOW.MMB
+                                && actionState !== WORKFLOW.FARE_LOCK
+                                  ? (
+                                    <VoucherHistory
+                                      exchangeRate={exchangeRate}
+                                      selectedCurrencyCode={selectedCurrencyCode}
+                                      voucherHistory={voucherHistory}
+                                      isProfile={false}
+                                      setSelVoucherCode={setSelVoucherCode}
+                                    />
+                                  )
+                                  : ''
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Tab.Pane>
+                  {
+                    // && actionState !== WORKFLOW.FARE_LOCK
+                    isPayNowAvail ? (
+                      <Tab.Pane eventKey="b2b_wallet_payment">
+                        <div className={`${styles.payTypeList}`}>
+                          <ul className={styles.resetList}>
+                            <li className="b2bWallet">
+                              <span className={`${styles.customRadio2}`}>
+                                <Form.Group>
+                                  <Form.Check
+                                    // required --Fiefox it's validated and return false while select creditcard so commented, payment validated while proceed
+                                    // {
+                                    // ...{
+                                    //   disabled: selectdCurrency !== DEFAULT_CURRENCY_CODE,
+                                    // }
+                                    // }
+                                    type="radio"
+                                    onClick={() => setPayTypeId(PAYMENT_METHOD_IDS.PAYNOW)}
+                                    label={
+                                      (
+                                        <span>
+                                          <b>{t('PaymentPage.lbltobpay')}</b>
+                                          {/* <small> */}
+                                          <p>
+                                          {t('Header.lblavlbal')}
+                                            <span>{availableAmt}</span>
+                                          </p>
+                                          {/* </small> */}
+                                        </span>
+                                      )
+                                    }
+                                    checked={payTypeId === PAYMENT_METHOD_IDS.PAYNOW}
+                                    id="payId_51"
+                                  />
+                                  <Form.Control.Feedback type="invalid">{t('PaymentPage.lblChsPaymntMethd')}</Form.Control.Feedback>
+                                </Form.Group>
+                              </span>
+                              {/* {
+                                selectdCurrency !== DEFAULT_CURRENCY_CODE ? (
+                                  <div>
+                                    <Alert variant="danger">
+                                      This payment applicable only for
+                                      {' '}
+                                      {DEFAULT_CURRENCY_CODE}
+                                      {' '}
+                                      {t('PaymentPP.lblCurrency')}
+                                      .
+                                    </Alert>
+                                  </div>
+                                ) : <Fragment />
+                              } */}
+                            </li>
+                          </ul>
+                        </div>
+                        {
+                          isPayNowAvail
+                          && currentTab === 'b2b_wallet_payment'
+                          && payTypeId === PAYMENT_METHOD_IDS.PAYNOW
+                            ? <Form.Control autoComplete="off" type="hidden" value={`${PAYMENT_METHOD_IDS.PAYNOW}`} name="cardInfo[paymentId][9]" />
+                            : ''
+                        }
+                      </Tab.Pane>
+                    ) : <Fragment />
+                  }
+                  {
+                    selectedCurrencyCode === DEFAULT_CURRENCY_CODE && canQiwiShow ? (
+                      <Tab.Pane key="qiwi_payment" eventKey="qiwi_payment">
+                        <div className={`${styles.payTypeList}`}>
+                          <ul className={styles.resetList}>
+                            <li>
+                              <span className={`${styles.customRadio2}`}>
+                                <Form.Group>
+                                  <Form.Check
+                                    required
+                                    checked
+                                    type="radio"
+                                    name="paymethod"
+                                    label="Qiwi Payment"
+                                    id="payId_258"
+                                    onChange={(ev: any) => console.log(ev)}
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {t('PaymentPage.lblChsPaymntMethd')}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                        {
+                          currentTab === 'qiwi_payment'
+                            ? <Form.Control autoComplete="off" type="hidden" value="258" name="cardInfo[paymentId]" />
+                            : ''
+                        }
+                      </Tab.Pane>
+                    ) : <></>
+                  }
+                      </>
+                      )
+                  }
+                </Tab.Content>
+                {
+                  isAmountBeyondWallet
+                  && currentTab !== 'new_card'
+                  && currentTab !== 'qiwi_payment'
+                  && currentTab !== 'b2b_wallet_payment'
+                    ? (
+                      <Fragment>
+                        <Form.Control autoComplete="off" type="hidden" value={cardID} name="cardInfo[cardID]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardNumber} name="cardInfo[cardNo]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardHolder} name="cardInfo[cardName]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardFName} name="cardInfo[FirstName]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardLName} name="cardInfo[LastName]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardExpiryMonth} name="cardInfo[expMonth]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardExpiryYear} name="cardInfo[expYear]" />
+                        <Form.Control autoComplete="off" type="hidden" value={cardCVV} name="cardInfo[cvv]" />
+                      </Fragment>
+                    ) : <Fragment />
+                }
+                {
+                  isAmountBeyondWallet && Number(payTypeId) !== PAYMENT_METHOD_IDS.WALLET
+                  && Number(payTypeId) !== PAYMENT_METHOD_IDS.VOUCHER
+                    ? <Form.Control autoComplete="off" type="hidden" value={payTypeId.toString()} name="cardInfo[paymentId][2]" />
+                    : <Fragment />
+                }
+                {
+                  walletActive
+                    ? <Form.Control autoComplete="off" type="hidden" value={PAYMENT_METHOD_IDS.WALLET.toString()} name="cardInfo[paymentId][3]" />
+                    : <Fragment />
+                }
+                {
+                  VOUCHER_STATUS.AVAILABLE === PromoDetails.status
+                    ? <Form.Control autoComplete="off" type="hidden" value={PAYMENT_METHOD_IDS.VOUCHER.toString()} name="cardInfo[paymentId][4]" />
+                    : <Fragment />
+                }
+              </div>
+            </Tab.Container>
+          ) : (
+            <Fragment>
+              <Form.Control autoComplete="off" type="hidden" value={`${PAYMENT_METHOD_IDS.VOUCHER}`} name="cardInfo[paymentId][5]" />
+              <Form.Control autoComplete="off" type="hidden" value="0" name="cardInfo[cardID]" />
+              <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[cardNo]" />
+              <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[cardName]" />
+              <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[expMonth]" />
+              <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[expYear]" />
+              <Form.Control autoComplete="off" type="hidden" value="" name="cardInfo[cvv]" />
+            </Fragment>
+          )
+      }
+    </Fragment>
+  );
+}
+
+const mapStateToProps = (state: IAppState) => ({
+  // paymentInfo: state.profile.paymentInfo,
+  paymentInfo: state.profile.profilePayment,
+  PromoDetails: state.payment.PromoDetails,
+  isAmountBeyondWallet: state.payment.isAmountBeyondWallet,
+  totalAmount: state.totalAmount,
+  walletSelected: state.payment.walletSelected,
+  isLoggedIn: state.auth.isLoggedIn,
+  userData: state.auth.userData,
+  portalType: state.workflow.actionType,
+  actionState: state.workflow.actionState,
+  isFetchingPayments: state.payment.isFetchingPayments,
+  selectedAddon: state.addon.selectedAddons,
+});
+
+export default connect(mapStateToProps)(PaymentTypes);
