@@ -1,0 +1,367 @@
+data = [
+    [
+        {
+            "price": 0,
+            "date": "2026-02-12",
+            "isLowestPrice": false,
+            "isFlightAvailable": false,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-13",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-14",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-15",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-16",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-17",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-18",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-19",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-20",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-21",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-22",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-23",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-24",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-25",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-26",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-27",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-02-28",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        }
+    ],
+    [
+        {
+            "price": 77,
+            "date": "2026-03-01",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-02",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-03",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-04",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-05",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-06",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-07",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-08",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-09",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-10",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-11",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-12",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-13",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-14",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-15",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-16",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-17",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-18",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-19",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-20",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-21",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-22",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-23",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-24",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-25",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-26",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-27",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 77,
+            "date": "2026-03-28",
+            "isLowestPrice": true,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 87,
+            "date": "2026-03-29",
+            "isLowestPrice": false,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 87,
+            "date": "2026-03-30",
+            "isLowestPrice": false,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        },
+        {
+            "price": 87,
+            "date": "2026-03-31",
+            "isLowestPrice": false,
+            "isFlightAvailable": true,
+            "curreny": "EUR"
+        }
+    ]
+]
+
+pax = {
+    "adult": 1,
+    "child": 0,
+    "infant": 0
+}
+
+beginDate = {
+    "value": "2026-02-12",
+    "label": "February, 2026"
+}
+
+endDate = {
+    "value": "2026-03-01",
+    "label": "March, 2026"
+}
+
+params = {
+    "arrCity": "IST",
+    "arrCityName": "Istanbul",
+    "depCity": "RMO",
+    "depCityName": "Kishinev Airport",
+    "endDate": "2026-03-01",
+    "startDate": "2026-02-12"
+}
